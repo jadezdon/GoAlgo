@@ -9,5 +9,18 @@
         android:id="@+id/homeFragment"
         android:name="com.zhouppei.goalgo.ui.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_sortingFragment"
+            app:destination="@id/sortingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/sortingFragment"
+        android:name="com.zhouppei.goalgo.ui.SortingFragment"
+        android:label="fragment_sorting"
+        tools:layout="@layout/fragment_sorting" >
+        <argument
+            android:name="algorithmName"
+            app:argType="string" />
+    </fragment>
 </navigation>

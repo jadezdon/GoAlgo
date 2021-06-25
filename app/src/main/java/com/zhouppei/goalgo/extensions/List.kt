@@ -1,5 +1,6 @@
 package com.zhouppei.goalgo.extensions
 
-fun <T> List<T>.clone(): List<T> {
-    return mutableListOf<T>().apply { addAll(this) }
+fun <T> List<T>.clone(): MutableList<T> {
+    val original = this
+    return mutableListOf<T>().apply { addAll(original) }
 }

@@ -41,33 +41,33 @@
         android:id="@+id/sortView_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/controls_layout"
-        android:layout_below="@id/topbar" />
+        android:layout_below="@id/topbar"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@id/controls_layout" />
 
     <LinearLayout
         android:id="@+id/controls_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/spacing_small"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal">
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:orientation="vertical"
+        android:layout_below="@id/topbar"
+        android:layout_marginHorizontal="@dimen/spacing_small"
+        android:gravity="center_vertical">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/sort_button"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sort"
-            android:layout_weight=".5"
-            android:layout_marginHorizontal="@dimen/spacing_normal"/>
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:text="Sort" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/new_button"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New"
-            android:layout_weight=".5"
-            android:layout_marginHorizontal="@dimen/spacing_normal"/>
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:text="New" />
 
     </LinearLayout>
 

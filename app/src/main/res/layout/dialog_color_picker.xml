@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/close_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_close"
+            android:layout_gravity="end"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="@dimen/spacing_normal">
+
+            <RelativeLayout
+                android:id="@+id/colorPreview_button"
+                android:layout_width="match_parent"
+                android:layout_height="100dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/dark_grey"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="#"
+                    android:textColor="@color/white" />
+
+                <EditText
+                    android:id="@+id/colorString_editText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:maxLength="8"
+                    android:paddingVertical="5dp"
+                    android:text="FFFF0000"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:background="@color/dark_grey"
+                    android:inputType="textNoSuggestions" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <SeekBar
+            android:id="@+id/colorA_seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:progress="255"
+            android:max="255"
+            android:thumbTint="@color/black"
+            android:progressTint="@color/black"/>
+
+        <SeekBar
+            android:id="@+id/colorR_seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:progress="255"
+            android:max="255"
+            android:thumbTint="@color/red"
+            android:progressTint="@color/red" />
+
+        <SeekBar
+            android:id="@+id/colorG_seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:progress="255"
+            android:max="255"
+            android:thumbTint="@color/green"
+            android:progressTint="@color/green"/>
+
+        <SeekBar
+            android:id="@+id/colorB_seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:progress="255"
+            android:max="255"
+            android:thumbTint="@color/blue"
+            android:progressTint="@color/blue" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/colorPresets_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            tools:listitem="@layout/item_color_button" />
+
+
+        <Button
+            android:id="@+id/apply_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="APPLY"
+            android:layout_marginHorizontal="@dimen/spacing_large"/>
+
+    </LinearLayout>
+
+</ScrollView>

@@ -6,8 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.zhouppei.goalgo.R
 import com.zhouppei.goalgo.databinding.FragmentHomeBinding
 import com.zhouppei.goalgo.models.GraphAlgorithm
 import com.zhouppei.goalgo.models.SortingAlgorithm
@@ -72,12 +74,14 @@ class HomeFragment : Fragment() {
         binding.sortingExpandButton.tag = false
 
         binding.graphExpandButton.setOnClickListener {
-            binding.graphAlgoRecyclerview.visibility = if (it.tag as Boolean) View.GONE else View.VISIBLE
+            binding.graphAlgoListLayout.visibility = if (it.tag as Boolean) View.GONE else View.VISIBLE
+            (it as ImageView).setImageResource(if (it.tag as Boolean) R.drawable.ic_arrow_down else R.drawable.ic_arrow_up)
             it.tag = !(it.tag as Boolean)
         }
 
         binding.sortingExpandButton.setOnClickListener {
-            binding.sortingAlgoRecyclerview.visibility = if (it.tag as Boolean) View.GONE else View.VISIBLE
+            binding.sortingAlgoListLayout.visibility = if (it.tag as Boolean) View.GONE else View.VISIBLE
+            (it as ImageView).setImageResource(if (it.tag as Boolean) R.drawable.ic_arrow_down else R.drawable.ic_arrow_up)
             it.tag = !(it.tag as Boolean)
         }
     }

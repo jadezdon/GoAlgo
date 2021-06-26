@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="@dimen/spacing_normal">
+    android:padding="@dimen/spacing_normal"
+    android:id="@+id/optionsBottomSheet_layout">
 
     <View
         android:layout_width="50dp"
@@ -25,6 +26,7 @@
             android:layout_centerVertical="true"/>
 
         <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/speed_buttonGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:singleSelection="true"
@@ -92,6 +94,63 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false"
+            android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/spacing_tiny">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Current item color"
+            android:layout_centerVertical="true"/>
+
+        <Button
+            android:id="@+id/showCurrentColorPicker_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/spacing_tiny">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Unsorted item color"
+            android:layout_centerVertical="true"/>
+
+        <Button
+            android:id="@+id/showUnsortedColorPicker_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/spacing_tiny">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sorted item color"
+            android:layout_centerVertical="true"/>
+
+        <Button
+            android:id="@+id/showSortedColorPicker_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"/>
 
     </RelativeLayout>

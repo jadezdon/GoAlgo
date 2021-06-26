@@ -12,19 +12,21 @@ class BubbleSortView @JvmOverloads constructor(
 ) : SortView(context, attrs, defStyleAttr) {
 
     override suspend fun sort() {
+        super.sort()
+
         for (i in 0 until items.size - 1) {
             for (j in 0 until items.size - i - 1) {
                 compare(j, j+1)
-                delay(speedInMiliSeconds)
+                delay(config.sortingSpeed)
                 if (items[j].value > items[j+1].value) {
                     swap(j, j+1)
-                    delay(speedInMiliSeconds)
+                    delay(config.sortingSpeed)
                 }
             }
             items[items.size - i - 1].state = ItemState.SORTED
             if (items.size - i - 2 >= 0) items[items.size - i - 2].state = ItemState.UNSORTED
             update()
-            delay(speedInMiliSeconds)
+            delay(config.sortingSpeed)
         }
         complete()
     }

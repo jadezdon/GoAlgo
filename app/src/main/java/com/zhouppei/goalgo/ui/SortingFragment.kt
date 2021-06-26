@@ -2,25 +2,29 @@ package com.zhouppei.goalgo.ui
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.zhouppei.goalgo.algorithms.sorting.BubbleSortView
-import com.zhouppei.goalgo.algorithms.sorting.OnCompleteListener
-import com.zhouppei.goalgo.algorithms.sorting.SortView
-import com.zhouppei.goalgo.algorithms.sorting.SortViewConfiguration
+import com.zhouppei.goalgo.R
+import com.zhouppei.goalgo.algorithms.sorting.*
 import com.zhouppei.goalgo.databinding.FragmentSortingBinding
 import com.zhouppei.goalgo.models.SortingAlgorithm
 import com.zhouppei.goalgo.utils.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+
 
 class SortingFragment : Fragment() {
 
@@ -33,6 +37,7 @@ class SortingFragment : Fragment() {
     private lateinit var optionsBottomSheet: OptionsBottomSheet
     private var sharedPreferences: SharedPreferences? = null
     private val gson = Gson()
+    private lateinit var sortingJob: Job
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +54,10 @@ class SortingFragment : Fragment() {
 
         sortView = when (args.algorithmName) {
             SortingAlgorithm.BubbleSort.str -> BubbleSortView(requireContext())
+            SortingAlgorithm.InsertionSort.str -> InsertionSortView(requireContext())
+            SortingAlgorithm.QuickSort.str -> QuickSortView(requireContext())
+            SortingAlgorithm.SelectionSort.str -> SelectionSortView(requireContext())
+            SortingAlgorithm.MergeSort.str -> MergeSortView(requireContext())
             else -> BubbleSortView(requireContext())
         }.apply {
             layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
@@ -56,7 +65,12 @@ class SortingFragment : Fragment() {
             setOnCompleteListener(object : OnCompleteListener {
                 override fun onComplete() {
                     binding.newButton.isEnabled = true
+                    binding.sortButton.visibility = View.VISIBLE
                     binding.sortButton.isEnabled = false
+                    binding.stopButton?.visibility = View.GONE
+                    Toast.makeText(context, "Complete!", Toast.LENGTH_SHORT).apply {
+                        setGravity(Gravity.CENTER, 0, 0)
+                    }.show()
                 }
             })
             getSortViewConfig()?.let { setSortViewConfiguration(it) }
@@ -65,11 +79,21 @@ class SortingFragment : Fragment() {
         binding.sortViewLayout.addView(sortView)
 
         binding.sortButton.setOnClickListener {
-            GlobalScope.launch(Dispatchers.Main) {
+            sortingJob = GlobalScope.launch(Dispatchers.Main) {
                 binding.newButton.isEnabled = false
-                binding.sortButton.isEnabled = false
                 sortView.sort()
             }
+            it.visibility = View.GONE
+            binding.stopButton?.visibility = View.VISIBLE
+            binding.newButton.isEnabled = false
+        }
+
+        binding.stopButton?.setOnClickListener {
+            sortingJob.cancel()
+            it.visibility = View.GONE
+            binding.sortButton.visibility = View.VISIBLE
+            binding.sortButton.isEnabled = false
+            binding.newButton.isEnabled = true
         }
 
         binding.newButton.setOnClickListener {
@@ -119,6 +143,10 @@ class SortingFragment : Fragment() {
         override fun onChangeSortedStateColor(colorString: String) {
             sortView.setSortedStateColor(colorString)
         }
+
+        override fun onChangePivotColor(colorString: String) {
+            sortView.setPivotColor(colorString)
+        }
     }
 
     private fun showOptionsBottomSheet() {
@@ -132,6 +160,7 @@ class SortingFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         if (this::optionsBottomSheet.isInitialized) optionsBottomSheet.dismiss()
+        sortingJob.cancel()
     }
 
     override fun onDestroyView() {

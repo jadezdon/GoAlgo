@@ -33,6 +33,8 @@ abstract class SortView @JvmOverloads constructor(
     private var canvasHeight = 100
     protected var config = SortViewConfiguration()
 
+    protected var captionText = ""
+
     private var isSorting = false
 
     private var onCompleteListener: OnCompleteListener? = null
@@ -41,17 +43,17 @@ abstract class SortView @JvmOverloads constructor(
         items = generateItems(config.itemsSize)
     }
 
-    private val currentStatePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+    private val currentItemPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
         color = Color.parseColor(config.currentStateColorString)
     }
 
-    private val unsortedStatePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+    private val unsortedItemPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
         color = Color.parseColor(config.unsortedStateColorString)
     }
 
-    private val sortedStatePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+    private val sortedItemPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
         color = Color.parseColor(config.sortedStateColorString)
     }
@@ -61,11 +63,22 @@ abstract class SortView @JvmOverloads constructor(
         textAlign = Paint.Align.CENTER
     }
 
+    private val captionTextPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        textSize = 35f
+    }
+
+    private val pivotItemPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+        color = Color.parseColor(config.pivotColorString)
+        strokeWidth = 5f
+    }
+
     private fun generateItems(size: Int): MutableList<Item> = MutableList(size) { Item(Random.nextInt(1, 100)) }
 
     fun new(size: Int = config.itemsSize) {
         items = generateItems(size)
         setItemsCoordinates()
+        captionText = ""
         invalidate()
     }
 
@@ -78,6 +91,7 @@ abstract class SortView @JvmOverloads constructor(
         setCurrentStateColor(config.currentStateColorString)
         setUnsortedStateColor(config.unsortedStateColorString)
         setSortedStateColor(config.sortedStateColorString)
+        setPivotColor(config.pivotColorString)
     }
 
     fun setSortingSpeed(speedInMiliSec: Long) {
@@ -95,16 +109,21 @@ abstract class SortView @JvmOverloads constructor(
     }
 
     fun setCurrentStateColor(colorString: String) {
-        currentStatePaint.color = Color.parseColor(colorString)
+        currentItemPaint.color = Color.parseColor(colorString)
     }
 
     fun setUnsortedStateColor(colorString: String) {
-        unsortedStatePaint.color = Color.parseColor(colorString)
+        unsortedItemPaint.color = Color.parseColor(colorString)
         if (!isSorting) invalidate()
     }
 
     fun setSortedStateColor(colorString: String) {
-        sortedStatePaint.color = Color.parseColor(colorString)
+        sortedItemPaint.color = Color.parseColor(colorString)
+        if (!isSorting) invalidate()
+    }
+
+    fun setPivotColor(colorString: String) {
+        pivotItemPaint.color = Color.parseColor(colorString)
         if (!isSorting) invalidate()
     }
 
@@ -120,9 +139,6 @@ abstract class SortView @JvmOverloads constructor(
         val tempValue = items[leftPosition].value
         items[leftPosition].value = items[rightPosition].value
         items[rightPosition].value = tempValue
-        val tempTop = items[leftPosition].coordinates.top
-        items[leftPosition].coordinates.top = items[rightPosition].coordinates.top
-        items[rightPosition].coordinates.top = tempTop
 
         invalidate()
     }
@@ -157,7 +173,7 @@ abstract class SortView @JvmOverloads constructor(
 
     private fun setItemsCoordinates() {
         sortItemWidth = (((canvasWidth - paddingLeft - paddingRight) / items.size) - 2 * sortItemPadding)
-        maxSortItemHeight = canvasHeight - 2 * sortItemPadding - paddingTop - paddingBottom
+        maxSortItemHeight = canvasHeight - 2 * sortItemPadding - paddingTop - paddingBottom - captionTextPaint.textSize.toInt()
 
         items.forEachIndexed { index, item ->
             item.coordinates.left = paddingLeft + ((2 * index + 1) * sortItemPadding + index * sortItemWidth).toFloat()
@@ -187,11 +203,18 @@ abstract class SortView @JvmOverloads constructor(
         super.onDraw(canvas)
         canvas?.let {
             items.forEachIndexed { index, item ->
+                item.coordinates.top = item.coordinates.bottom - (maxSortItemHeight * (item.value.toFloat() / 100))
+
                 when (item.state) {
-                    ItemState.CURRENT -> it.drawRoundRect(item.coordinates, 10f, 10f, currentStatePaint)
-                    ItemState.UNSORTED -> it.drawRoundRect(item.coordinates, 10f, 10f, unsortedStatePaint)
-                    ItemState.SORTED -> it.drawRoundRect(item.coordinates, 10f, 10f, sortedStatePaint)
+                    ItemState.CURRENT -> it.drawRoundRect(item.coordinates, 10f, 10f, currentItemPaint)
+                    ItemState.UNSORTED -> it.drawRoundRect(item.coordinates, 10f, 10f, unsortedItemPaint)
+                    ItemState.SORTED -> it.drawRoundRect(item.coordinates, 10f, 10f, sortedItemPaint)
                 }
+
+                if (item.isPivot) {
+                    it.drawRoundRect(item.coordinates, 10f, 10f, pivotItemPaint)
+                }
+
                 if (config.isShowItemValues) {
                     it.drawText(
                         item.value.toString(),
@@ -209,6 +232,15 @@ abstract class SortView @JvmOverloads constructor(
                         textPaint
                     )
                 }
+
+                if (isSorting && captionText.isNotBlank()) {
+                    it.drawText(
+                        captionText,
+                        paddingStart + 20f,
+                        paddingTop + captionTextPaint.textSize,
+                        captionTextPaint
+                    )
+                }
             }
         }
     }
@@ -222,6 +254,7 @@ abstract class SortView @JvmOverloads constructor(
         const val DEFAULT_CURRENT_STATE_COLOR = "#FEDD00"
         const val DEFAULT_UNSORTED_STATE_COLOR = "#C1CDCD"
         const val DEFAULT_SORTED_STATE_COLOR = "#2e8b57"
+        const val DEFAULT_PIVOT_COLOR = "#ff4040"
     }
 }
 
@@ -233,6 +266,7 @@ class SortViewConfiguration {
     var currentStateColorString = SortView.DEFAULT_CURRENT_STATE_COLOR
     var unsortedStateColorString = SortView.DEFAULT_UNSORTED_STATE_COLOR
     var sortedStateColorString = SortView.DEFAULT_SORTED_STATE_COLOR
+    var pivotColorString = SortView.DEFAULT_PIVOT_COLOR
     var sortingSpeed = Constants.SORTING_SPEED_NORMAL
     var isShowItemValues = true
     var isShowItemIndexes = false

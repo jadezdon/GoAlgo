@@ -69,6 +69,7 @@ class OptionsBottomSheet: BottomSheetDialogFragment() {
         setupPickCurrentStateColorButton()
         setupPickUnsortedStateColorButton()
         setupPickSortedStateColorButton()
+        setupPickPivotColorButton()
     }
 
     private fun setupSortViewParameters() {
@@ -86,6 +87,7 @@ class OptionsBottomSheet: BottomSheetDialogFragment() {
             showCurrentColorPickerButton.setBackgroundColor(Color.parseColor(sortViewConfig.currentStateColorString))
             showUnsortedColorPickerButton.setBackgroundColor(Color.parseColor(sortViewConfig.unsortedStateColorString))
             showSortedColorPickerButton.setBackgroundColor(Color.parseColor(sortViewConfig.sortedStateColorString))
+            showPivotColorPickerButton.setBackgroundColor(Color.parseColor(sortViewConfig.pivotColorString))
 
             when (sortViewConfig.sortingSpeed) {
                 Constants.SORTING_SPEED_SLOW -> speedButtonGroup.check(R.id.speed_slow_button)
@@ -149,6 +151,23 @@ class OptionsBottomSheet: BottomSheetDialogFragment() {
         }
     }
 
+    private fun setupPickPivotColorButton() {
+        binding.showPivotColorPickerButton.setOnClickListener {
+            colorPickerDialog = ColorPickerDialog(
+                requireContext(),
+                sortViewConfig.pivotColorString,
+                object : ColorPickerDialogListener {
+                    override fun setSelectedColorString(colorString: String) {
+                        sortViewConfig.pivotColorString = colorString
+                        binding.showPivotColorPickerButton.setBackgroundColor(Color.parseColor(colorString))
+                        listener.onChangePivotColor(colorString)
+                    }
+                }
+            )
+            colorPickerDialog.show()
+        }
+    }
+
     private fun saveSortViewParameters() {
         sharedPreferences?.let {
             it.edit().apply {
@@ -182,4 +201,5 @@ interface OptionsBottomSheetListener {
     fun onChangeCurrentStateColor(colorString: String)
     fun onChangeUnsortedStateColor(colorString: String)
     fun onChangeSortedStateColor(colorString: String)
+    fun onChangePivotColor(colorString: String)
 }

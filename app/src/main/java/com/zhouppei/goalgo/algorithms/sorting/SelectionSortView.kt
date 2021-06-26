@@ -19,7 +19,7 @@ class SelectionSortView @JvmOverloads constructor(
         for (i in 0 until items.size-1) {
             preMinIdx = i
             minIdx = i
-            captionText = "Min value = ${items[minIdx].value}, min value index = $minIdx"
+            captionText = "Min: [$minIdx] = ${items[minIdx].value}"
             items[i].isPivot = true
             update()
             delay(config.sortingSpeed)
@@ -29,7 +29,7 @@ class SelectionSortView @JvmOverloads constructor(
                 delay(config.sortingSpeed)
                 if (items[j].value < items[minIdx].value) {
                     minIdx = j
-                    captionText = "Min value = ${items[minIdx].value}, min value index = $minIdx"
+                    captionText = "Min: [$minIdx] = ${items[minIdx].value}"
                     items[preMinIdx].state = ItemState.UNSORTED
                     preMinIdx = minIdx
                     update()
@@ -40,14 +40,17 @@ class SelectionSortView @JvmOverloads constructor(
             items[items.size - 1].state = ItemState.UNSORTED
             items[minIdx].state = ItemState.CURRENT
             items[i].state = ItemState.CURRENT
+            items[i].isPivot = false
             update()
             delay(config.sortingSpeed)
 
-            items[minIdx].state = ItemState.UNSORTED
-            swap(i, minIdx)
-            items[i].isPivot = false
-            items[i].state = ItemState.SORTED
             captionText = ""
+            swap(i, minIdx)
+            delay(config.sortingSpeed)
+
+            items[minIdx].state = ItemState.UNSORTED
+            items[i].state = ItemState.SORTED
+            update()
             delay(config.sortingSpeed)
         }
 

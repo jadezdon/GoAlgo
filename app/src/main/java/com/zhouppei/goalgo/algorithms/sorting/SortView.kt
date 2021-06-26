@@ -6,6 +6,9 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Build
+import android.text.Layout
+import android.text.StaticLayout
+import android.text.TextPaint
 import android.util.AttributeSet
 import android.util.DisplayMetrics
 import android.util.Log
@@ -33,14 +36,17 @@ abstract class SortView @JvmOverloads constructor(
     private var canvasHeight = 100
     protected var config = SortViewConfiguration()
 
-    protected var captionText = ""
+    protected var sortingInterval: Pair<Int, Int>
 
+    protected var captionText = ""
+    private var captionTextLayout: StaticLayout? = null
     private var isSorting = false
 
     private var onCompleteListener: OnCompleteListener? = null
 
     init {
         items = generateItems(config.itemsSize)
+        sortingInterval = Pair(0, config.itemsSize-1)
     }
 
     private val currentItemPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -53,6 +59,12 @@ abstract class SortView @JvmOverloads constructor(
         color = Color.parseColor(config.unsortedStateColorString)
     }
 
+    private val unsortedItemNotInIntervalPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.FILL
+        color = Color.parseColor(config.unsortedStateColorString)
+        alpha = 128
+    }
+
     private val sortedItemPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
         color = Color.parseColor(config.sortedStateColorString)
@@ -63,7 +75,7 @@ abstract class SortView @JvmOverloads constructor(
         textAlign = Paint.Align.CENTER
     }
 
-    private val captionTextPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+    private val captionTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
         textSize = 35f
     }
 
@@ -84,6 +96,13 @@ abstract class SortView @JvmOverloads constructor(
 
     fun update() {
         invalidate()
+    }
+
+    fun setCaption(text: String) {
+        captionText = text
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            captionTextLayout = StaticLayout.Builder.obtain(text, 0, text.length, captionTextPaint, canvasWidth - paddingLeft - paddingRight).build()
+        }
     }
 
     fun setSortViewConfiguration(configuration: SortViewConfiguration) {
@@ -173,7 +192,8 @@ abstract class SortView @JvmOverloads constructor(
 
     private fun setItemsCoordinates() {
         sortItemWidth = (((canvasWidth - paddingLeft - paddingRight) / items.size) - 2 * sortItemPadding)
-        maxSortItemHeight = canvasHeight - 2 * sortItemPadding - paddingTop - paddingBottom - captionTextPaint.textSize.toInt()
+        textPaint.textSize = min(25f, sortItemWidth * (2f / 3f))
+        maxSortItemHeight = canvasHeight - 2 * sortItemPadding - paddingTop - paddingBottom - captionTextPaint.textSize.toInt() - textPaint.textSize.toInt()
 
         items.forEachIndexed { index, item ->
             item.coordinates.left = paddingLeft + ((2 * index + 1) * sortItemPadding + index * sortItemWidth).toFloat()
@@ -181,7 +201,6 @@ abstract class SortView @JvmOverloads constructor(
             item.coordinates.bottom = maxSortItemHeight + sortItemPadding.toFloat() + paddingTop
             item.coordinates.top = item.coordinates.bottom - (maxSortItemHeight * (item.value.toFloat() / 100))
         }
-        textPaint.textSize = min(25f, sortItemWidth * (2f / 3f))
         config.isShowItemValues = (textPaint.textSize > 15)
         config.isShowItemIndexes = config.isShowItemIndexes && (textPaint.textSize > 15)
     }
@@ -205,10 +224,14 @@ abstract class SortView @JvmOverloads constructor(
             items.forEachIndexed { index, item ->
                 item.coordinates.top = item.coordinates.bottom - (maxSortItemHeight * (item.value.toFloat() / 100))
 
-                when (item.state) {
-                    ItemState.CURRENT -> it.drawRoundRect(item.coordinates, 10f, 10f, currentItemPaint)
-                    ItemState.UNSORTED -> it.drawRoundRect(item.coordinates, 10f, 10f, unsortedItemPaint)
-                    ItemState.SORTED -> it.drawRoundRect(item.coordinates, 10f, 10f, sortedItemPaint)
+                if (sortingInterval.first <= index && index <= sortingInterval.second) {
+                    when (item.state) {
+                        ItemState.CURRENT -> it.drawRoundRect(item.coordinates, 10f, 10f, currentItemPaint)
+                        ItemState.UNSORTED -> it.drawRoundRect(item.coordinates, 10f, 10f, unsortedItemPaint)
+                        ItemState.SORTED -> it.drawRoundRect(item.coordinates, 10f, 10f, sortedItemPaint)
+                    }
+                } else {
+                    it.drawRoundRect(item.coordinates, 10f, 10f, unsortedItemNotInIntervalPaint)
                 }
 
                 if (item.isPivot) {
@@ -232,14 +255,21 @@ abstract class SortView @JvmOverloads constructor(
                         textPaint
                     )
                 }
+            }
 
-                if (isSorting && captionText.isNotBlank()) {
+            if (isSorting && captionText.isNotBlank()) {
+                if (captionTextLayout == null) {
                     it.drawText(
                         captionText,
                         paddingStart + 20f,
-                        paddingTop + captionTextPaint.textSize,
+                        captionTextPaint.textSize,
                         captionTextPaint
                     )
+                } else {
+                    it.save()
+                    it.translate(paddingLeft.toFloat(), 0f)
+                    captionTextLayout!!.draw(it)
+                    it.restore()
                 }
             }
         }

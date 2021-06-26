@@ -19,20 +19,20 @@ class InsertionSortView @JvmOverloads constructor(
             key = items[i].value
             captionText = "key = $key"
             items[i].state = ItemState.CURRENT
-            items[i].isPivot = true
             j = i - 1
             update()
             delay(config.sortingSpeed)
             items[i].state = ItemState.UNSORTED
-            items[i].isPivot = false
 
             while (j >= 0 && items[j].value > key) {
-                items[j+1].state = ItemState.CURRENT
+                items[j + 1].state = ItemState.CURRENT
                 items[j + 1].value = items[j].value
-                items[j].value = 0
+                items[j].value = key
+                items[j].state = ItemState.CURRENT
                 update()
                 delay(config.sortingSpeed)
-                items[j+1].state = ItemState.UNSORTED
+                items[j + 1].state = ItemState.UNSORTED
+                items[j].state = ItemState.UNSORTED
 
                 j -= 1
             }

@@ -59,14 +59,20 @@
             android:id="@+id/sort_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_normal"
             android:text="Sort" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/stop_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stop"
+            android:visibility="gone"
+            android:backgroundTint="@color/red"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/new_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_normal"
             android:text="New" />
 
     </LinearLayout>

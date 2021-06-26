@@ -160,7 +160,7 @@ class SortingFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         if (this::optionsBottomSheet.isInitialized) optionsBottomSheet.dismiss()
-        sortingJob.cancel()
+        if (this::sortingJob.isInitialized && !sortingJob.isCancelled) sortingJob.cancel()
     }
 
     override fun onDestroyView() {

@@ -32,33 +32,20 @@ class QuickSortView @JvmOverloads constructor(
             items[end].isPivot = true
             items[pivotIdx].state = ItemState.CURRENT
             update()
-            delay(config.sortingSpeed)
 
             for (j in start until end) {
                 compare(j, end)
-                delay(config.sortingSpeed)
-                items[j].state = ItemState.UNSORTED
-                items[end].state = ItemState.UNSORTED
 
                 if (items[j].value <= items[end].value) {
-                    items[j].state = ItemState.CURRENT
                     swap(pivotIdx, j)
-                    delay(config.sortingSpeed)
-                    items[pivotIdx].state = ItemState.UNSORTED
-                    items[j].state = ItemState.UNSORTED
 
                     pivotIdx += 1
 
                     items[pivotIdx].state = ItemState.CURRENT
                     update()
-                    delay(config.sortingSpeed)
                 }
             }
-            items[end].state = ItemState.CURRENT
             swap(pivotIdx, end)
-            delay(config.sortingSpeed)
-            items[pivotIdx].state = ItemState.UNSORTED
-            items[end].state = ItemState.UNSORTED
             items[end].isPivot = false
 
             if (start < pivotIdx-1) {
@@ -73,5 +60,13 @@ class QuickSortView @JvmOverloads constructor(
         completeAnimation()
 
         complete()
+    }
+
+    override fun sourceCode(): String {
+        TODO("Not yet implemented")
+    }
+
+    override fun description(): String {
+        TODO("Not yet implemented")
     }
 }

@@ -95,9 +95,7 @@ abstract class SortView @JvmOverloads constructor(
         invalidate()
     }
 
-    fun update() {
-        invalidate()
-    }
+
 
     fun setCaption(text: String) {
         captionText = text
@@ -151,13 +149,23 @@ abstract class SortView @JvmOverloads constructor(
         if (!isSorting) invalidate()
     }
 
-    fun compare(leftPosition: Int, rightPosition: Int) {
+    suspend fun update() {
+        invalidate()
+        delay(config.sortingSpeed)
+    }
+
+    suspend fun compare(leftPosition: Int, rightPosition: Int) {
         items[leftPosition].state = ItemState.CURRENT
         items[rightPosition].state = ItemState.CURRENT
         invalidate()
+
+        delay(config.sortingSpeed)
+
+        items[leftPosition].state = ItemState.UNSORTED
+        items[rightPosition].state = ItemState.UNSORTED
     }
 
-    fun swap(leftPosition: Int, rightPosition: Int) {
+    suspend fun swap(leftPosition: Int, rightPosition: Int) {
         val tempValue = items[leftPosition].value
         items[leftPosition].value = items[rightPosition].value
         items[rightPosition].value = tempValue
@@ -166,6 +174,11 @@ abstract class SortView @JvmOverloads constructor(
         items[rightPosition].state = ItemState.CURRENT
 
         invalidate()
+
+        delay(config.sortingSpeed)
+
+        items[leftPosition].state = ItemState.UNSORTED
+        items[rightPosition].state = ItemState.UNSORTED
     }
 
     suspend fun completeAnimation() {
@@ -174,7 +187,7 @@ abstract class SortView @JvmOverloads constructor(
 
             for (i in 0 until items.size) {
                 items[i].state = ItemState.SORTED
-                update()
+                invalidate()
                 delay(30L)
             }
         }
@@ -296,6 +309,9 @@ abstract class SortView @JvmOverloads constructor(
     open suspend fun sort() {
         isSorting = true
     }
+
+    abstract fun sourceCode(): String
+    abstract fun description(): String
 
     companion object {
         val LOG_TAG = SortView::class.qualifiedName

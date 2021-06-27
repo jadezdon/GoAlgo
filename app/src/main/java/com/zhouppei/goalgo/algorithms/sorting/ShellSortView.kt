@@ -14,8 +14,54 @@ class ShellSortView @JvmOverloads constructor(
     override suspend fun sort() {
         super.sort()
 
+        var gap = items.size / 2
+        while (gap > 0) {
+            for (i in gap until items.size) {
+                val temp = items[i].value
 
+                captionText = "gap = $gap, key = $temp"
+                items[i].state = ItemState.CURRENT
+                items[i].isPivot = true
+                update()
 
+                var j = i
+
+                compare(i, j - gap)
+                items[i].isPivot = false
+
+                while (j >= gap && items[j - gap].value > temp) {
+                    items[j].isPivot = false
+                    items[j - gap].isPivot = true
+                    swap(j-gap, j)
+
+                    j -= gap
+
+                    if (j >= gap) {
+                        compare(j - gap, j)
+                    }
+                }
+
+                items[j].value = temp
+
+                items[j].state = ItemState.CURRENT
+                items[j].isPivot = true
+                update()
+                items[j].state = ItemState.UNSORTED
+                items[j].isPivot = false
+            }
+
+            gap /= 2
+        }
+
+        completeAnimation()
         complete()
+    }
+
+    override fun sourceCode(): String {
+        TODO("Not yet implemented")
+    }
+
+    override fun description(): String {
+        TODO("Not yet implemented")
     }
 }

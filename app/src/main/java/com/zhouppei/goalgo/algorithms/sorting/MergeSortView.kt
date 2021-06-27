@@ -37,7 +37,8 @@ class MergeSortView @JvmOverloads constructor(
 
                 while (left <= mid && right <= end) {
                     compare(left, right)
-                    delay(config.sortingSpeed)
+                    items[left].state = ItemState.CURRENT
+                    items[right].state = ItemState.CURRENT
 
                     if (items[left].value < items[right].value) {
                         tempList.add(items[left].value)
@@ -45,9 +46,7 @@ class MergeSortView @JvmOverloads constructor(
                         setCaption(listToString(tempList))
                         items[left].isPivot = true
                         update()
-                        delay(config.sortingSpeed)
                         items[left].isPivot = false
-
                         items[left].state = ItemState.UNSORTED
 
                         left += 1
@@ -57,7 +56,6 @@ class MergeSortView @JvmOverloads constructor(
                         setCaption(listToString(tempList))
                         items[right].isPivot = true
                         update()
-                        delay(config.sortingSpeed)
                         items[right].isPivot = false
                         items[right].state = ItemState.UNSORTED
 
@@ -68,13 +66,11 @@ class MergeSortView @JvmOverloads constructor(
                 if (left > mid) {
                     items[left-1].state = ItemState.UNSORTED
                     update()
-                    delay(config.sortingSpeed)
                 }
 
                 if (right > end) {
                     items[right-1].state = ItemState.UNSORTED
                     update()
-                    delay(config.sortingSpeed)
                 }
 
                 while (left <= mid) {
@@ -84,7 +80,6 @@ class MergeSortView @JvmOverloads constructor(
                     items[left].state = ItemState.CURRENT
                     items[left].isPivot = true
                     update()
-                    delay(config.sortingSpeed)
                     items[left].state = ItemState.UNSORTED
                     items[left].isPivot = false
 
@@ -98,7 +93,6 @@ class MergeSortView @JvmOverloads constructor(
                     items[right].state = ItemState.CURRENT
                     items[right].isPivot = true
                     update()
-                    delay(config.sortingSpeed)
                     items[right].state = ItemState.UNSORTED
                     items[right].isPivot = false
 
@@ -110,13 +104,11 @@ class MergeSortView @JvmOverloads constructor(
                     setCaption(listToString(tempList, tempIdx))
                     items[idx].state = ItemState.CURRENT
                     update()
-                    delay(config.sortingSpeed)
 
                     items[idx].value = tempList[tempIdx]
 
                     setCaption(listToString(tempList, tempIdx))
                     update()
-                    delay(config.sortingSpeed)
                     items[idx].state = ItemState.UNSORTED
 
                     tempIdx += 1
@@ -125,11 +117,11 @@ class MergeSortView @JvmOverloads constructor(
 
             setCaption("")
             update()
-            delay(config.sortingSpeed)
 
             m *= 2
         }
 
+        completeAnimation()
         complete()
     }
 
@@ -139,5 +131,13 @@ class MergeSortView @JvmOverloads constructor(
             s += if (index == selectedPosition) "[$item] " else " $item  "
         }
         return s
+    }
+
+    override fun sourceCode(): String {
+        TODO("Not yet implemented")
+    }
+
+    override fun description(): String {
+        TODO("Not yet implemented")
     }
 }

@@ -20,12 +20,9 @@ class SelectionSortView @JvmOverloads constructor(
             captionText = "Min: [$minIdx] = ${items[minIdx].value}"
             items[i].isPivot = true
             update()
-            delay(config.sortingSpeed)
 
             for (j in i+1 until items.size) {
                 compare(minIdx, j)
-                delay(config.sortingSpeed)
-                items[j].state = ItemState.UNSORTED
 
                 if (items[j].value < items[minIdx].value) {
                     items[minIdx].state = ItemState.UNSORTED
@@ -35,7 +32,6 @@ class SelectionSortView @JvmOverloads constructor(
 
                     items[minIdx].state = ItemState.CURRENT
                     update()
-                    delay(config.sortingSpeed)
                 }
             }
 
@@ -44,18 +40,23 @@ class SelectionSortView @JvmOverloads constructor(
             items[i].state = ItemState.CURRENT
             items[i].isPivot = false
             update()
-            delay(config.sortingSpeed)
 
             captionText = ""
             swap(i, minIdx)
-            delay(config.sortingSpeed)
 
             items[minIdx].state = ItemState.UNSORTED
             items[i].state = ItemState.SORTED
             update()
-            delay(config.sortingSpeed)
         }
 
         complete()
+    }
+
+    override fun sourceCode(): String {
+        TODO("Not yet implemented")
+    }
+
+    override fun description(): String {
+        TODO("Not yet implemented")
     }
 }

@@ -218,8 +218,6 @@ abstract class SortView @JvmOverloads constructor(
             item.coordinates.bottom = maxSortItemHeight + sortItemPadding.toFloat() + paddingTop
             item.coordinates.top = item.coordinates.bottom - (maxSortItemHeight * (item.value.toFloat() / ITEM_MAX_VALUE))
         }
-        config.isShowItemValues = (textPaint.textSize > 15)
-        config.isShowItemIndexes = config.isShowItemIndexes && (textPaint.textSize > 15)
     }
 
     override fun onDraw(canvas: Canvas?) {

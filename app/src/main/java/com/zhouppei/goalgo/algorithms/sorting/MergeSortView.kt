@@ -48,6 +48,8 @@ class MergeSortView @JvmOverloads constructor(
                         delay(config.sortingSpeed)
                         items[left].isPivot = false
 
+                        items[left].state = ItemState.UNSORTED
+
                         left += 1
                     } else {
                         tempList.add(items[right].value)
@@ -57,6 +59,7 @@ class MergeSortView @JvmOverloads constructor(
                         update()
                         delay(config.sortingSpeed)
                         items[right].isPivot = false
+                        items[right].state = ItemState.UNSORTED
 
                         right += 1
                     }
@@ -87,6 +90,7 @@ class MergeSortView @JvmOverloads constructor(
 
                     left += 1
                 }
+
                 while (right <= end) {
                     tempList.add(items[right].value)
 

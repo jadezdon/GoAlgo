@@ -58,16 +58,23 @@ class SortingFragment : Fragment() {
             SortingAlgorithm.QuickSort.str -> QuickSortView(requireContext())
             SortingAlgorithm.SelectionSort.str -> SelectionSortView(requireContext())
             SortingAlgorithm.MergeSort.str -> MergeSortView(requireContext())
+            SortingAlgorithm.ShellSort.str -> ShellSortView(requireContext())
             else -> BubbleSortView(requireContext())
         }.apply {
             layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
             setPadding(40, 50, 40, 50)
             setOnCompleteListener(object : OnCompleteListener {
                 override fun onComplete() {
-                    binding.newButton.isEnabled = true
-                    binding.sortButton.visibility = View.VISIBLE
-                    binding.sortButton.isEnabled = false
-                    binding.stopButton?.visibility = View.GONE
+                    binding.newButton.apply {
+                        isEnabled = true
+                        alpha = 1f
+                    }
+                    binding.sortButton.apply {
+                        visibility = View.VISIBLE
+                        isEnabled = false
+                        alpha = 0.5f
+                    }
+                    binding.stopButton.visibility = View.GONE
                     Toast.makeText(context, "Complete!", Toast.LENGTH_SHORT).apply {
                         setGravity(Gravity.CENTER, 0, 0)
                     }.show()
@@ -80,24 +87,43 @@ class SortingFragment : Fragment() {
 
         binding.sortButton.setOnClickListener {
             sortingJob = GlobalScope.launch(Dispatchers.Main) {
-                binding.newButton.isEnabled = false
+                binding.newButton.apply {
+                    isEnabled = false
+                    alpha = 0.5f
+                }
                 sortView.sort()
             }
             it.visibility = View.GONE
-            binding.stopButton?.visibility = View.VISIBLE
-            binding.newButton.isEnabled = false
+            binding.stopButton.visibility = View.VISIBLE
+            binding.newButton.apply {
+                isEnabled = false
+                alpha = 0.5f
+            }
         }
 
-        binding.stopButton?.setOnClickListener {
+        binding.stopButton.setOnClickListener {
             sortingJob.cancel()
-            it.visibility = View.GONE
-            binding.sortButton.visibility = View.VISIBLE
-            binding.sortButton.isEnabled = false
-            binding.newButton.isEnabled = true
+            it.apply {
+                isEnabled = false
+                alpha = 0.5f
+            }
+            binding.newButton.apply {
+                isEnabled = true
+                alpha = 1f
+            }
         }
 
         binding.newButton.setOnClickListener {
-            binding.sortButton.isEnabled = true
+            binding.stopButton.apply {
+                visibility = View.GONE
+                isEnabled = true
+                alpha = 1f
+            }
+            binding.sortButton.apply {
+                visibility = View.VISIBLE
+                isEnabled = true
+                alpha = 1f
+            }
             sortView.new()
         }
 
@@ -146,6 +172,10 @@ class SortingFragment : Fragment() {
 
         override fun onChangePivotColor(colorString: String) {
             sortView.setPivotColor(colorString)
+        }
+
+        override fun toggleCompleteAnimation() {
+            sortView.toggleCompleteAnimation()
         }
     }
 

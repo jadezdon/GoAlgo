@@ -49,31 +49,51 @@
         android:id="@+id/controls_layout"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:orientation="vertical"
         android:layout_below="@id/topbar"
-        android:layout_marginHorizontal="@dimen/spacing_small"
-        android:gravity="center_vertical">
+        android:layout_alignParentEnd="true"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/sort_button"
+            style="@style/IconOnlyButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sort" />
+            android:layout_margin="@dimen/spacing_small"
+            app:icon="@drawable/ic_play"
+            app:iconTint="@color/white"
+            app:backgroundTint="@color/green" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/stop_button"
+            style="@style/IconOnlyButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/stop"
+            android:layout_margin="@dimen/spacing_small"
             android:visibility="gone"
-            android:backgroundTint="@color/red"/>
+            app:icon="@drawable/ic_stop"
+            app:iconTint="@color/white"
+            app:backgroundTint="@color/red" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/new_button"
+            style="@style/IconOnlyButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New" />
+            android:layout_margin="@dimen/spacing_small"
+            app:iconTint="@color/white"
+            app:icon="@drawable/ic_refresh"
+            app:backgroundTint="@color/blue_600"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/showCode_button"
+            style="@style/IconOnlyButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_small"
+            app:icon="@drawable/ic_code"
+            app:iconTint="@color/white"
+            app:backgroundTint="@color/dark_grey" />
 
     </LinearLayout>
 

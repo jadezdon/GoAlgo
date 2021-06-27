@@ -18,9 +18,14 @@ class BubbleSortView @JvmOverloads constructor(
             for (j in 0 until items.size - i - 1) {
                 compare(j, j+1)
                 delay(config.sortingSpeed)
+                items[j].state = ItemState.UNSORTED
+                items[j+1].state = ItemState.UNSORTED
+
                 if (items[j].value > items[j+1].value) {
                     swap(j, j+1)
                     delay(config.sortingSpeed)
+                    items[j].state = ItemState.UNSORTED
+                    items[j+1].state = ItemState.UNSORTED
                 }
             }
             items[items.size - i - 1].state = ItemState.SORTED

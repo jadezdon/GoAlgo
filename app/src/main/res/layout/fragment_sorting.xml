@@ -49,35 +49,49 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/spacing_small"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/sort_button"
-            android:layout_width="0dp"
+            style="@style/IconOnlyButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sort"
-            android:layout_weight=".5"
-            android:layout_marginHorizontal="@dimen/spacing_normal"/>
+            android:layout_margin="@dimen/spacing_small"
+            app:icon="@drawable/ic_play"
+            app:iconTint="@color/white"
+            app:backgroundTint="@color/green" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/stop_button"
-            android:layout_width="0dp"
+            style="@style/IconOnlyButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/stop"
-            android:layout_weight=".5"
+            android:layout_margin="@dimen/spacing_small"
             android:visibility="gone"
-            android:backgroundTint="@color/red"
-            android:layout_marginHorizontal="@dimen/spacing_normal"/>
+            app:icon="@drawable/ic_stop"
+            app:iconTint="@color/white"
+            app:backgroundTint="@color/red" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/new_button"
-            android:layout_width="0dp"
+            style="@style/IconOnlyButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New"
-            android:layout_weight=".5"
-            android:layout_marginHorizontal="@dimen/spacing_normal"/>
+            android:layout_margin="@dimen/spacing_small"
+            app:iconTint="@color/white"
+            app:icon="@drawable/ic_refresh"
+            app:backgroundTint="@color/blue_600"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/showCode_button"
+            style="@style/IconOnlyButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_small"
+            app:icon="@drawable/ic_code"
+            app:iconTint="@color/white"
+            app:backgroundTint="@color/dark_grey" />
 
     </LinearLayout>
 

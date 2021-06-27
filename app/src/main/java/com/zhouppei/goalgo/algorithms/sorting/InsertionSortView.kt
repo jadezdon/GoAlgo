@@ -13,21 +13,26 @@ class InsertionSortView @JvmOverloads constructor(
 
     override suspend fun sort() {
         super.sort()
+
         var key = 0
         var j = 0
         for (i in 1 until items.size) {
             key = items[i].value
+            j = i - 1
+
+            sortingInterval = Pair(0, i)
+
             captionText = "key = $key"
             items[i].state = ItemState.CURRENT
-            j = i - 1
             update()
             delay(config.sortingSpeed)
             items[i].state = ItemState.UNSORTED
 
             while (j >= 0 && items[j].value > key) {
-                items[j + 1].state = ItemState.CURRENT
                 items[j + 1].value = items[j].value
                 items[j].value = key
+
+                items[j + 1].state = ItemState.CURRENT
                 items[j].state = ItemState.CURRENT
                 update()
                 delay(config.sortingSpeed)
@@ -37,8 +42,9 @@ class InsertionSortView @JvmOverloads constructor(
                 j -= 1
             }
 
-            items[j + 1].state = ItemState.CURRENT
             items[j + 1].value = key
+
+            items[j + 1].state = ItemState.CURRENT
             update()
             delay(config.sortingSpeed)
             items[j + 1].state = ItemState.UNSORTED

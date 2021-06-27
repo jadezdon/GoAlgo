@@ -15,9 +15,7 @@ class SelectionSortView @JvmOverloads constructor(
         super.sort()
 
         var minIdx = 0
-        var preMinIdx = 0
         for (i in 0 until items.size-1) {
-            preMinIdx = i
             minIdx = i
             captionText = "Min: [$minIdx] = ${items[minIdx].value}"
             items[i].isPivot = true
@@ -27,11 +25,15 @@ class SelectionSortView @JvmOverloads constructor(
             for (j in i+1 until items.size) {
                 compare(minIdx, j)
                 delay(config.sortingSpeed)
+                items[j].state = ItemState.UNSORTED
+
                 if (items[j].value < items[minIdx].value) {
+                    items[minIdx].state = ItemState.UNSORTED
+
                     minIdx = j
                     captionText = "Min: [$minIdx] = ${items[minIdx].value}"
-                    items[preMinIdx].state = ItemState.UNSORTED
-                    preMinIdx = minIdx
+
+                    items[minIdx].state = ItemState.CURRENT
                     update()
                     delay(config.sortingSpeed)
                 }

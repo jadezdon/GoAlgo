@@ -66,6 +66,11 @@ class OptionsBottomSheet: BottomSheetDialogFragment() {
             listener.onShowIndexesChanged(isChecked)
         }
 
+        binding.toggleCompleteAnimationSwitch.setOnCheckedChangeListener { _, isChecked ->
+            sortViewConfig.isCompleteAnimationEnabled = isChecked
+            listener.toggleCompleteAnimation()
+        }
+
         setupPickCurrentStateColorButton()
         setupPickUnsortedStateColorButton()
         setupPickSortedStateColorButton()
@@ -97,6 +102,7 @@ class OptionsBottomSheet: BottomSheetDialogFragment() {
 
             showValuesSwitch.isChecked = sortViewConfig.isShowItemValues
             showIndexesSwitch.isChecked = sortViewConfig.isShowItemIndexes
+            toggleCompleteAnimationSwitch.isChecked = sortViewConfig.isCompleteAnimationEnabled
         }
     }
 
@@ -202,4 +208,5 @@ interface OptionsBottomSheetListener {
     fun onChangeUnsortedStateColor(colorString: String)
     fun onChangeSortedStateColor(colorString: String)
     fun onChangePivotColor(colorString: String)
+    fun toggleCompleteAnimation()
 }

@@ -17,6 +17,7 @@ import android.view.WindowInsets
 import com.zhouppei.goalgo.models.Item
 import com.zhouppei.goalgo.models.ItemState
 import com.zhouppei.goalgo.utils.Constants
+import kotlinx.coroutines.delay
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.random.Random
@@ -85,7 +86,7 @@ abstract class SortView @JvmOverloads constructor(
         strokeWidth = 5f
     }
 
-    private fun generateItems(size: Int): MutableList<Item> = MutableList(size) { Item(Random.nextInt(1, 100)) }
+    private fun generateItems(size: Int): MutableList<Item> = MutableList(size) { Item(Random.nextInt(1, ITEM_MAX_VALUE)) }
 
     fun new(size: Int = config.itemsSize) {
         items = generateItems(size)
@@ -127,6 +128,10 @@ abstract class SortView @JvmOverloads constructor(
         if (!isSorting) invalidate()
     }
 
+    fun toggleCompleteAnimation() {
+        config.isCompleteAnimationEnabled = !config.isCompleteAnimationEnabled
+    }
+
     fun setCurrentStateColor(colorString: String) {
         currentItemPaint.color = Color.parseColor(colorString)
     }
@@ -147,10 +152,8 @@ abstract class SortView @JvmOverloads constructor(
     }
 
     fun compare(leftPosition: Int, rightPosition: Int) {
-        items.forEachIndexed { index, item ->
-            if (item.state == ItemState.CURRENT) item.state = ItemState.UNSORTED
-            if (index == leftPosition || index == rightPosition) item.state = ItemState.CURRENT
-        }
+        items[leftPosition].state = ItemState.CURRENT
+        items[rightPosition].state = ItemState.CURRENT
         invalidate()
     }
 
@@ -159,7 +162,22 @@ abstract class SortView @JvmOverloads constructor(
         items[leftPosition].value = items[rightPosition].value
         items[rightPosition].value = tempValue
 
+        items[leftPosition].state = ItemState.CURRENT
+        items[rightPosition].state = ItemState.CURRENT
+
         invalidate()
+    }
+
+    suspend fun completeAnimation() {
+        if (config.isCompleteAnimationEnabled) {
+            sortingInterval = Pair(0, items.size - 1)
+
+            for (i in 0 until items.size) {
+                items[i].state = ItemState.SORTED
+                update()
+                delay(30L)
+            }
+        }
     }
 
     fun complete() {
@@ -199,7 +217,7 @@ abstract class SortView @JvmOverloads constructor(
             item.coordinates.left = paddingLeft + ((2 * index + 1) * sortItemPadding + index * sortItemWidth).toFloat()
             item.coordinates.right = item.coordinates.left + sortItemWidth
             item.coordinates.bottom = maxSortItemHeight + sortItemPadding.toFloat() + paddingTop
-            item.coordinates.top = item.coordinates.bottom - (maxSortItemHeight * (item.value.toFloat() / 100))
+            item.coordinates.top = item.coordinates.bottom - (maxSortItemHeight * (item.value.toFloat() / ITEM_MAX_VALUE))
         }
         config.isShowItemValues = (textPaint.textSize > 15)
         config.isShowItemIndexes = config.isShowItemIndexes && (textPaint.textSize > 15)
@@ -224,7 +242,7 @@ abstract class SortView @JvmOverloads constructor(
             items.forEachIndexed { index, item ->
                 item.coordinates.top = item.coordinates.bottom - (maxSortItemHeight * (item.value.toFloat() / 100))
 
-                if (sortingInterval.first <= index && index <= sortingInterval.second) {
+                if ((sortingInterval.first <= index && index <= sortingInterval.second) || !isSorting) {
                     when (item.state) {
                         ItemState.CURRENT -> it.drawRoundRect(item.coordinates, 10f, 10f, currentItemPaint)
                         ItemState.UNSORTED -> it.drawRoundRect(item.coordinates, 10f, 10f, unsortedItemPaint)
@@ -285,6 +303,7 @@ abstract class SortView @JvmOverloads constructor(
         const val DEFAULT_UNSORTED_STATE_COLOR = "#C1CDCD"
         const val DEFAULT_SORTED_STATE_COLOR = "#2e8b57"
         const val DEFAULT_PIVOT_COLOR = "#ff4040"
+        const val ITEM_MAX_VALUE = 100
     }
 }
 
@@ -301,4 +320,6 @@ class SortViewConfiguration {
     var isShowItemValues = true
     var isShowItemIndexes = false
     var itemsSize = 20
+
+    var isCompleteAnimationEnabled = true
 }

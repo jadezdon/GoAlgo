@@ -154,6 +154,17 @@ abstract class SortView @JvmOverloads constructor(
         delay(config.sortingSpeed)
     }
 
+    suspend fun highlight(indexList: List<Int>) {
+        indexList.forEach {
+            items[it].state = ItemState.CURRENT
+        }
+        invalidate()
+        delay(config.sortingSpeed)
+        indexList.forEach {
+            items[it].state = ItemState.UNSORTED
+        }
+    }
+
     suspend fun compare(leftPosition: Int, rightPosition: Int) {
         items[leftPosition].state = ItemState.CURRENT
         items[rightPosition].state = ItemState.CURRENT

@@ -3,7 +3,6 @@ package com.zhouppei.goalgo.algorithms.sorting
 import android.content.Context
 import android.util.AttributeSet
 import com.zhouppei.goalgo.models.ItemState
-import kotlinx.coroutines.delay
 
 class QuickSortView @JvmOverloads constructor(
     context: Context,
@@ -28,37 +27,36 @@ class QuickSortView @JvmOverloads constructor(
             sortingInterval = Pair(start, end)
 
             // rearrange elements across pivot
-            var pivotIdx = start
+            var partitionIdx = start
             items[end].isPivot = true
-            items[pivotIdx].state = ItemState.CURRENT
+            items[partitionIdx].state = ItemState.CURRENT
             update()
 
             for (j in start until end) {
                 compare(j, end)
 
                 if (items[j].value <= items[end].value) {
-                    swap(pivotIdx, j)
+                    highlight(listOf(partitionIdx, j))
+                    swap(partitionIdx, j)
 
-                    pivotIdx += 1
+                    partitionIdx += 1
 
-                    items[pivotIdx].state = ItemState.CURRENT
-                    update()
+                    highlight(listOf(partitionIdx))
                 }
             }
-            swap(pivotIdx, end)
+            swap(partitionIdx, end)
             items[end].isPivot = false
 
-            if (start < pivotIdx-1) {
-                stack.add(Pair(start, pivotIdx - 1))
+            if (start < partitionIdx-1) {
+                stack.add(Pair(start, partitionIdx - 1))
             }
 
-            if (pivotIdx + 1 < end) {
-                stack.add(Pair(pivotIdx + 1, end))
+            if (partitionIdx + 1 < end) {
+                stack.add(Pair(partitionIdx + 1, end))
             }
         }
 
         completeAnimation()
-
         complete()
     }
 
@@ -67,6 +65,6 @@ class QuickSortView @JvmOverloads constructor(
     }
 
     override fun description(): String {
-        TODO("Not yet implemented")
+        return ""
     }
 }

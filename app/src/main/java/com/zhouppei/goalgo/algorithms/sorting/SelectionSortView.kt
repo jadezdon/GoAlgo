@@ -3,7 +3,6 @@ package com.zhouppei.goalgo.algorithms.sorting
 import android.content.Context
 import android.util.AttributeSet
 import com.zhouppei.goalgo.models.ItemState
-import kotlinx.coroutines.delay
 
 class SelectionSortView @JvmOverloads constructor(
     context: Context,
@@ -11,8 +10,8 @@ class SelectionSortView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : SortView(context, attrs, defStyleAttr) {
 
-    override suspend fun sort() {
-        super.sort()
+    override suspend fun run() {
+        super.run()
 
         var minIdx = 0
         for (i in 0 until items.size-1) {

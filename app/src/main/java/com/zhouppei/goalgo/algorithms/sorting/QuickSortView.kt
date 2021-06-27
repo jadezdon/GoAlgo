@@ -10,8 +10,8 @@ class QuickSortView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : SortView(context, attrs, defStyleAttr) {
 
-    override suspend fun sort() {
-        super.sort()
+    override suspend fun run() {
+        super.run()
 
         val stack = mutableListOf<Pair<Int, Int>>()
         var start = 0

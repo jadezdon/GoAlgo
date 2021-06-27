@@ -13,25 +13,25 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.zhouppei.goalgo.R
-import com.zhouppei.goalgo.algorithms.sorting.SortViewConfiguration
-import com.zhouppei.goalgo.databinding.BottomSheetOptionsBinding
+import com.zhouppei.goalgo.algorithms.sorting.SortViewConfig
+import com.zhouppei.goalgo.databinding.BottomSheetSortingConfigBinding
 import com.zhouppei.goalgo.ui.colorpicker.ColorPickerDialog
 import com.zhouppei.goalgo.ui.colorpicker.ColorPickerDialogListener
 import com.zhouppei.goalgo.utils.Constants
 
 
-class OptionsBottomSheet: BottomSheetDialogFragment() {
-    private var _binding: BottomSheetOptionsBinding? = null
+class SortingConfigBottomSheet: BottomSheetDialogFragment() {
+    private var _binding: BottomSheetSortingConfigBinding? = null
     private val binding get() = _binding!!
-    private lateinit var listener: OptionsBottomSheetListener
+    private lateinit var listener: SortingConfigListener
     private lateinit var colorPickerDialog: ColorPickerDialog
     private var sharedPreferences: SharedPreferences? = null
 
-    private var sortViewConfig = SortViewConfiguration()
+    private var sortViewConfig = SortViewConfig()
     private val gson = Gson()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        _binding = BottomSheetOptionsBinding.inflate(layoutInflater)
+        _binding = BottomSheetSortingConfigBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -83,7 +83,7 @@ class OptionsBottomSheet: BottomSheetDialogFragment() {
         sharedPreferences?.let {
             if (it.contains(Constants.SHARED_PREF_SORTVIEW_CONFIGURATION)) {
                 val str = it.getString(Constants.SHARED_PREF_SORTVIEW_CONFIGURATION, "")
-                val itemType = object : TypeToken<SortViewConfiguration>() {}.type
+                val itemType = object : TypeToken<SortViewConfig>() {}.type
                 sortViewConfig = gson.fromJson(str, itemType)
             }
         }
@@ -192,21 +192,10 @@ class OptionsBottomSheet: BottomSheetDialogFragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(listener: OptionsBottomSheetListener): OptionsBottomSheet {
-            val fragment = OptionsBottomSheet()
+        fun newInstance(listener: SortingConfigListener): SortingConfigBottomSheet {
+            val fragment = SortingConfigBottomSheet()
             fragment.listener = listener
             return fragment
         }
     }
-}
-
-interface OptionsBottomSheetListener {
-    fun onChangeSpeed(speedInMiliSec: Long)
-    fun onShowValuesChanged(isShow: Boolean)
-    fun onShowIndexesChanged(isShow: Boolean)
-    fun onChangeCurrentStateColor(colorString: String)
-    fun onChangeUnsortedStateColor(colorString: String)
-    fun onChangeSortedStateColor(colorString: String)
-    fun onChangePivotColor(colorString: String)
-    fun toggleCompleteAnimation()
 }

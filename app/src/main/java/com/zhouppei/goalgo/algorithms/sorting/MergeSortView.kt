@@ -2,9 +2,7 @@ package com.zhouppei.goalgo.algorithms.sorting
 
 import android.content.Context
 import android.util.AttributeSet
-import com.zhouppei.goalgo.extensions.clone
 import com.zhouppei.goalgo.models.ItemState
-import kotlinx.coroutines.delay
 import kotlin.math.min
 
 class MergeSortView @JvmOverloads constructor(
@@ -13,8 +11,8 @@ class MergeSortView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : SortView(context, attrs, defStyleAttr) {
 
-    override suspend fun sort() {
-        super.sort()
+    override suspend fun run() {
+        super.run()
 
         // divide the list into blocks of size m
         // m = [1, 2, 4, 8, 16 …]

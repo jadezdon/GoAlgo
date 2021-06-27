@@ -3,7 +3,6 @@ package com.zhouppei.goalgo.algorithms.sorting
 import android.content.Context
 import android.util.AttributeSet
 import com.zhouppei.goalgo.models.ItemState
-import kotlinx.coroutines.delay
 
 class InsertionSortView @JvmOverloads constructor(
     context: Context,
@@ -11,8 +10,8 @@ class InsertionSortView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : SortView(context, attrs, defStyleAttr) {
 
-    override suspend fun sort() {
-        super.sort()
+    override suspend fun run() {
+        super.run()
 
         var key = 0
         var j = 0

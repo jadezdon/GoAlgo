@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.SortingFragment">
+    tools:context=".ui.AlgorithmFragment">
 
     <RelativeLayout
         android:id="@+id/topbar"
@@ -38,7 +38,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/sortView_layout"
+        android:id="@+id/algorithmView_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/topbar"
@@ -55,7 +55,7 @@
         android:orientation="vertical">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/sort_button"
+            android:id="@+id/run_button"
             style="@style/IconOnlyButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

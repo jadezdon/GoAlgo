@@ -11,14 +11,14 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_homeFragment_to_sortingFragment"
-            app:destination="@id/sortingFragment" />
+            android:id="@+id/action_homeFragment_to_algorithmFragment"
+            app:destination="@id/algorithmFragment" />
     </fragment>
     <fragment
-        android:id="@+id/sortingFragment"
-        android:name="com.zhouppei.goalgo.ui.SortingFragment"
-        android:label="fragment_sorting"
-        tools:layout="@layout/fragment_sorting" >
+        android:id="@+id/algorithmFragment"
+        android:name="com.zhouppei.goalgo.ui.AlgorithmFragment"
+        android:label="fragment_algorithm"
+        tools:layout="@layout/fragment_algorithm" >
         <argument
             android:name="algorithmName"
             app:argType="string" />

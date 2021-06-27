@@ -1,13 +1,11 @@
 package com.zhouppei.goalgo.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.zhouppei.goalgo.R
 import com.zhouppei.goalgo.databinding.FragmentHomeBinding
@@ -45,7 +43,7 @@ class HomeFragment : Fragment() {
     private fun setupRecyclerViews() {
         graphAlgoListAdapter = AlgorithmNameListAdapter(object : NameClickListener {
             override fun onClick(name: String) {
-                goToGraphAnimationView(name)
+                goToRunAlgorithmPage(name)
             }
         })
         binding.graphAlgoRecyclerview.adapter = graphAlgoListAdapter
@@ -53,18 +51,15 @@ class HomeFragment : Fragment() {
 
         sortingAlgoListAdapter = AlgorithmNameListAdapter(object : NameClickListener {
             override fun onClick(name: String) {
-                goToSortingAnimationView(name)
+                goToRunAlgorithmPage(name)
             }
         })
         binding.sortingAlgoRecyclerview.adapter = sortingAlgoListAdapter
         sortingAlgoListAdapter.submitList(sortingAlgorithmNames)
     }
 
-    private fun goToGraphAnimationView(name: String) {
-    }
-
-    private fun goToSortingAnimationView(name: String) {
-        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSortingFragment(name))
+    private fun goToRunAlgorithmPage(name: String) {
+        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAlgorithmFragment(name))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

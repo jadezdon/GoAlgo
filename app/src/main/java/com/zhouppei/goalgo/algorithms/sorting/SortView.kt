@@ -4,9 +4,6 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.os.Build
-import android.text.StaticLayout
-import android.text.TextPaint
 import android.util.AttributeSet
 import com.zhouppei.goalgo.algorithms.AlgorithmView
 import com.zhouppei.goalgo.models.Item
@@ -31,8 +28,6 @@ abstract class SortView @JvmOverloads constructor(
 
     protected var sortingInterval: Pair<Int, Int>
 
-    protected var captionText = ""
-    private var captionTextLayout: StaticLayout? = null
 
     init {
         items = generateItems(config.itemsSize)
@@ -41,23 +36,23 @@ abstract class SortView @JvmOverloads constructor(
 
     private val currentItemPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
-        color = Color.parseColor(config.currentStateColorString)
+        color = Color.parseColor(config.currentStateColor)
     }
 
     private val unsortedItemPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
-        color = Color.parseColor(config.unsortedStateColorString)
+        color = Color.parseColor(config.unsortedStateColor)
     }
 
     private val unsortedItemNotInIntervalPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
-        color = Color.parseColor(config.unsortedStateColorString)
+        color = Color.parseColor(config.unsortedStateColor)
         alpha = 128
     }
 
     private val sortedItemPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
-        color = Color.parseColor(config.sortedStateColorString)
+        color = Color.parseColor(config.sortedStateColor)
     }
 
     private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -65,13 +60,11 @@ abstract class SortView @JvmOverloads constructor(
         textAlign = Paint.Align.CENTER
     }
 
-    private val captionTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
-        textSize = 35f
-    }
+
 
     private val pivotItemPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
-        color = Color.parseColor(config.pivotColorString)
+        color = Color.parseColor(config.pivotColor)
         strokeWidth = 5f
     }
 
@@ -80,37 +73,29 @@ abstract class SortView @JvmOverloads constructor(
     override fun new() {
         items = generateItems(config.itemsSize)
         setItemsCoordinates()
-        captionText = ""
         sortingInterval = Pair(0, config.itemsSize)
-        invalidate()
-    }
-
-    fun setCaption(text: String) {
-        captionText = text
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            captionTextLayout = StaticLayout.Builder.obtain(text, 0, text.length, captionTextPaint, canvasWidth - paddingLeft - paddingRight).build()
-        }
+        super.new()
     }
 
     fun setSortViewConfiguration(config: SortViewConfig) {
         this.config = config
-        setCurrentStateColor(this.config.currentStateColorString)
-        setUnsortedStateColor(this.config.unsortedStateColorString)
-        setSortedStateColor(this.config.sortedStateColorString)
-        setPivotColor(this.config.pivotColorString)
+        setCurrentStateColor(this.config.currentStateColor)
+        setUnsortedStateColor(this.config.unsortedStateColor)
+        setSortedStateColor(this.config.sortedStateColor)
+        setPivotColor(this.config.pivotColor)
     }
 
-    fun setSortingSpeed(speedInMiliSec: Long) {
-        config.sortingSpeed = speedInMiliSec
+    fun setAnimationSpeed(speedInMiliSec: Long) {
+        config.animationSpeed = speedInMiliSec
     }
 
     fun setIsShowValues(isShow: Boolean) {
-        config.isShowItemValues = isShow
+        config.isItemValuesVisible = isShow
         if (!isRunning) invalidate()
     }
 
     fun setIsShowIndexes(isShow: Boolean) {
-        config.isShowItemIndexes = isShow
+        config.isItemIndexesVisible = isShow
         if (!isRunning) invalidate()
     }
 
@@ -139,7 +124,7 @@ abstract class SortView @JvmOverloads constructor(
 
     suspend fun update() {
         invalidate()
-        delay(config.sortingSpeed)
+        delay(config.animationSpeed)
     }
 
     suspend fun highlight(indexList: List<Int>) {
@@ -147,7 +132,7 @@ abstract class SortView @JvmOverloads constructor(
             items[it].state = ItemState.CURRENT
         }
         invalidate()
-        delay(config.sortingSpeed)
+        delay(config.animationSpeed)
         indexList.forEach {
             items[it].state = ItemState.UNSORTED
         }
@@ -158,7 +143,7 @@ abstract class SortView @JvmOverloads constructor(
         items[rightPosition].state = ItemState.CURRENT
         invalidate()
 
-        delay(config.sortingSpeed)
+        delay(config.animationSpeed)
 
         items[leftPosition].state = ItemState.UNSORTED
         items[rightPosition].state = ItemState.UNSORTED
@@ -174,7 +159,7 @@ abstract class SortView @JvmOverloads constructor(
 
         invalidate()
 
-        delay(config.sortingSpeed)
+        delay(config.animationSpeed)
 
         items[leftPosition].state = ItemState.UNSORTED
         items[rightPosition].state = ItemState.UNSORTED
@@ -193,7 +178,6 @@ abstract class SortView @JvmOverloads constructor(
     }
 
     override fun complete() {
-        isRunning = false
         items.forEach { it.state = ItemState.SORTED }
         invalidate()
 
@@ -240,7 +224,7 @@ abstract class SortView @JvmOverloads constructor(
                     it.drawRoundRect(item.coordinates, 10f, 10f, pivotItemPaint)
                 }
 
-                if (config.isShowItemValues) {
+                if (config.isItemValuesVisible) {
                     it.drawText(
                         item.value.toString(),
                         item.coordinates.centerX(),
@@ -249,7 +233,7 @@ abstract class SortView @JvmOverloads constructor(
                     )
                 }
 
-                if (config.isShowItemIndexes) {
+                if (config.isItemIndexesVisible) {
                     it.drawText(
                         "[$index]",
                         item.coordinates.centerX(),
@@ -263,7 +247,7 @@ abstract class SortView @JvmOverloads constructor(
                 if (captionTextLayout == null) {
                     it.drawText(
                         captionText,
-                        paddingStart + 20f,
+                        paddingLeft + 20f,
                         captionTextPaint.textSize,
                         captionTextPaint
                     )
@@ -288,13 +272,13 @@ abstract class SortView @JvmOverloads constructor(
 }
 
 class SortViewConfig {
-    var currentStateColorString = SortView.DEFAULT_CURRENT_STATE_COLOR
-    var unsortedStateColorString = SortView.DEFAULT_UNSORTED_STATE_COLOR
-    var sortedStateColorString = SortView.DEFAULT_SORTED_STATE_COLOR
-    var pivotColorString = SortView.DEFAULT_PIVOT_COLOR
-    var sortingSpeed = Constants.SORTING_SPEED_NORMAL
-    var isShowItemValues = true
-    var isShowItemIndexes = false
+    var currentStateColor = SortView.DEFAULT_CURRENT_STATE_COLOR
+    var unsortedStateColor = SortView.DEFAULT_UNSORTED_STATE_COLOR
+    var sortedStateColor = SortView.DEFAULT_SORTED_STATE_COLOR
+    var pivotColor = SortView.DEFAULT_PIVOT_COLOR
+    var animationSpeed = Constants.ANIMATION_SPEED_NORMAL
+    var isItemValuesVisible = true
+    var isItemIndexesVisible = false
     var itemsSize = 20
 
     var isCompleteAnimationEnabled = true

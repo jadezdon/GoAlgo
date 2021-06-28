@@ -2,7 +2,10 @@ package com.zhouppei.goalgo.algorithms
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Paint
 import android.os.Build
+import android.text.StaticLayout
+import android.text.TextPaint
 import android.util.AttributeSet
 import android.util.DisplayMetrics
 import android.util.Log
@@ -19,6 +22,8 @@ abstract class AlgorithmView @JvmOverloads constructor(
     protected var canvasWidth = 100
     protected var canvasHeight = 100
     protected var isRunning = false
+    protected var captionText = ""
+    protected var captionTextLayout: StaticLayout? = null
 
     private var onCompleteListener: OnCompleteListener? = null
 
@@ -37,6 +42,10 @@ abstract class AlgorithmView @JvmOverloads constructor(
         }
     }
 
+    protected val captionTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
+        textSize = 35f
+    }
+
     private fun getScreenSize(activity: Activity): Pair<Int, Int> {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             val windowMetrics = activity.windowManager.currentWindowMetrics
@@ -50,10 +59,22 @@ abstract class AlgorithmView @JvmOverloads constructor(
         }
     }
 
-    abstract fun new()
+    open fun new() {
+        isRunning = false
+        captionText = ""
+        invalidate()
+    }
 
     open fun complete() {
+        isRunning = false
         onCompleteListener?.onComplete()
+    }
+
+    fun setCaption(text: String) {
+        captionText = text
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            captionTextLayout = StaticLayout.Builder.obtain(text, 0, text.length, captionTextPaint, canvasWidth - paddingLeft - paddingRight).build()
+        }
     }
 
     fun setOnCompleteListener(listener: OnCompleteListener) {

@@ -15,6 +15,8 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.zhouppei.goalgo.algorithms.AlgorithmView
 import com.zhouppei.goalgo.algorithms.OnCompleteListener
+import com.zhouppei.goalgo.algorithms.graph.AStarView
+import com.zhouppei.goalgo.algorithms.graph.BFSView
 import com.zhouppei.goalgo.algorithms.graph.DFSView
 import com.zhouppei.goalgo.algorithms.graph.GraphView
 import com.zhouppei.goalgo.algorithms.sorting.*
@@ -81,6 +83,8 @@ class AlgorithmFragment : Fragment() {
             SortingAlgorithm.MergeSort.str -> MergeSortView(requireContext())
             SortingAlgorithm.ShellSort.str -> ShellSortView(requireContext())
             GraphAlgorithm.DFS.str -> DFSView(requireContext())
+            GraphAlgorithm.BFS.str -> BFSView(requireContext())
+            GraphAlgorithm.ASTAR.str -> AStarView(requireContext())
             else -> BubbleSortView(requireContext())
         }.apply {
             layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
@@ -187,17 +191,17 @@ class AlgorithmFragment : Fragment() {
         sortingConfigListener = object : SortingConfigListener {
             override fun onChangeSpeed(speedInMiliSec: Long) {
                 if (algorithmView is SortView) {
-                    (algorithmView as SortView).setSortingSpeed(speedInMiliSec)
+                    (algorithmView as SortView).setAnimationSpeed(speedInMiliSec)
                 }
             }
 
-            override fun onShowValuesChanged(isShow: Boolean) {
+            override fun onChangeItemValuesVisibility(isShow: Boolean) {
                 if (algorithmView is SortView) {
                     (algorithmView as SortView).setIsShowValues(isShow)
                 }
             }
 
-            override fun onShowIndexesChanged(isShow: Boolean) {
+            override fun onChangeItemIndexesVisibility(isShow: Boolean) {
                 if (algorithmView is SortView) {
                     (algorithmView as SortView).setIsShowIndexes(isShow)
                 }

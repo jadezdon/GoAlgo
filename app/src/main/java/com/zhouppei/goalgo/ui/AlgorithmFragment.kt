@@ -182,7 +182,39 @@ class AlgorithmFragment : Fragment() {
     private fun initGraphConfigListener() {
         graphConfigListener = object : GraphConfigListener {
             override fun onChangeSpeed(speedInMiliSec: Long) {
-                TODO("Not yet implemented")
+                (algorithmView as? GraphView)?.setAnimationSpeed(speedInMiliSec)
+            }
+
+            override fun onChangeLabelsVisibility(isVisible: Boolean) {
+                (algorithmView as? GraphView)?.setLabelsVisibility(isVisible)
+            }
+
+            override fun onChangeCurrentStateColor(colorString: String) {
+                (algorithmView as? GraphView)?.setCurrentStateColor(colorString)
+            }
+
+            override fun onChangeUnvisitedStateColor(colorString: String) {
+                (algorithmView as? GraphView)?.setUnvisitedStateColor(colorString)
+            }
+
+            override fun onChangeVisitedStateColor(colorString: String) {
+                (algorithmView as? GraphView)?.setVisitedStateColor(colorString)
+            }
+
+            override fun onChangeStartVertexColor(colorString: String) {
+                (algorithmView as? GraphView)?.setStartVertexColor(colorString)
+            }
+
+            override fun onChangeEdgeDefaultColor(colorString: String) {
+                (algorithmView as? GraphView)?.setEdgeDefaultColor(colorString)
+            }
+
+            override fun onChangeEdgeHighlightedColor(colorString: String) {
+                (algorithmView as? GraphView)?.setEdgeHighlightedColor(colorString)
+            }
+
+            override fun toggleCompleteAnimation() {
+                (algorithmView as? GraphView)?.toggleCompleteAnimation()
             }
         }
     }
@@ -190,51 +222,35 @@ class AlgorithmFragment : Fragment() {
     private fun initSortingConfigListener() {
         sortingConfigListener = object : SortingConfigListener {
             override fun onChangeSpeed(speedInMiliSec: Long) {
-                if (algorithmView is SortView) {
-                    (algorithmView as SortView).setAnimationSpeed(speedInMiliSec)
-                }
+                (algorithmView as? SortView)?.setAnimationSpeed(speedInMiliSec)
             }
 
             override fun onChangeItemValuesVisibility(isShow: Boolean) {
-                if (algorithmView is SortView) {
-                    (algorithmView as SortView).setIsShowValues(isShow)
-                }
+                (algorithmView as? SortView)?.setValuesVisibility(isShow)
             }
 
             override fun onChangeItemIndexesVisibility(isShow: Boolean) {
-                if (algorithmView is SortView) {
-                    (algorithmView as SortView).setIsShowIndexes(isShow)
-                }
+                (algorithmView as? SortView)?.setIndexesVisibility(isShow)
             }
 
             override fun onChangeCurrentStateColor(colorString: String) {
-                if (algorithmView is SortView) {
-                    (algorithmView as SortView).setCurrentStateColor(colorString)
-                }
+                (algorithmView as? SortView)?.setCurrentStateColor(colorString)
             }
 
             override fun onChangeUnsortedStateColor(colorString: String) {
-                if (algorithmView is SortView) {
-                    (algorithmView as SortView).setUnsortedStateColor(colorString)
-                }
+                (algorithmView as? SortView)?.setUnsortedStateColor(colorString)
             }
 
             override fun onChangeSortedStateColor(colorString: String) {
-                if (algorithmView is SortView) {
-                    (algorithmView as SortView).setSortedStateColor(colorString)
-                }
+                (algorithmView as? SortView)?.setSortedStateColor(colorString)
             }
 
             override fun onChangePivotColor(colorString: String) {
-                if (algorithmView is SortView) {
-                    (algorithmView as SortView).setPivotColor(colorString)
-                }
+                (algorithmView as? SortView)?.setPivotColor(colorString)
             }
 
             override fun toggleCompleteAnimation() {
-                if (algorithmView is SortView) {
-                    (algorithmView as SortView).toggleCompleteAnimation()
-                }
+                (algorithmView as? SortView)?.toggleCompleteAnimation()
             }
         }
     }
@@ -246,9 +262,7 @@ class AlgorithmFragment : Fragment() {
                     GraphConfigBottomSheet.newInstance(listener).apply { show(it, tag) }
                 }
                 is SortView -> sortingConfigListener?.let { listener ->
-                    SortingConfigBottomSheet.newInstance(listener).apply {
-                        show(it, tag)
-                    }
+                    SortingConfigBottomSheet.newInstance(listener).apply { show(it, tag) }
                 }
                 else -> {}
             }

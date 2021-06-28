@@ -28,10 +28,9 @@ abstract class SortView @JvmOverloads constructor(
 
     protected var sortingInterval: Pair<Int, Int>
 
-
     init {
         items = generateItems(config.itemsSize)
-        sortingInterval = Pair(0, config.itemsSize-1)
+        sortingInterval = Pair(0, config.itemsSize - 1)
     }
 
     private val currentItemPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -61,7 +60,6 @@ abstract class SortView @JvmOverloads constructor(
     }
 
 
-
     private val pivotItemPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
         color = Color.parseColor(config.pivotColor)
@@ -89,13 +87,13 @@ abstract class SortView @JvmOverloads constructor(
         config.animationSpeed = speedInMiliSec
     }
 
-    fun setIsShowValues(isShow: Boolean) {
-        config.isItemValuesVisible = isShow
+    fun setValuesVisibility(isVisible: Boolean) {
+        config.isItemValuesVisible = isVisible
         if (!isRunning) invalidate()
     }
 
-    fun setIsShowIndexes(isShow: Boolean) {
-        config.isItemIndexesVisible = isShow
+    fun setIndexesVisibility(isVisible: Boolean) {
+        config.isItemIndexesVisible = isVisible
         if (!isRunning) invalidate()
     }
 
@@ -105,6 +103,7 @@ abstract class SortView @JvmOverloads constructor(
 
     fun setCurrentStateColor(colorString: String) {
         currentItemPaint.color = Color.parseColor(colorString)
+        if (!isRunning) invalidate()
     }
 
     fun setUnsortedStateColor(colorString: String) {
@@ -193,7 +192,7 @@ abstract class SortView @JvmOverloads constructor(
     private fun initializeParams() {
         sortItemWidth = (((canvasWidth - paddingLeft - paddingRight) / items.size) - 2 * sortItemPadding)
         textPaint.textSize = min(25f, sortItemWidth * (2f / 3f))
-        maxSortItemHeight = canvasHeight - 2 * sortItemPadding - paddingTop - paddingBottom - captionTextPaint.textSize.toInt() - textPaint.textSize.toInt()
+        maxSortItemHeight = (canvasHeight - 2 * sortItemPadding - paddingTop - paddingBottom - captionTextPaint.textSize - textPaint.textSize).toInt()
 
         items.forEachIndexed { index, item ->
             item.coordinates.left = paddingLeft + ((2 * index + 1) * sortItemPadding + index * sortItemWidth).toFloat()

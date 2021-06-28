@@ -70,10 +70,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="Show values" />
+                android:text="Show labels" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/showValues_switch"
+                android:id="@+id/showLabels_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -90,27 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="Show indexes" />
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/showIndexes_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:checked="false" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/spacing_tiny">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="Current item color" />
+                android:text="Current vertex color" />
 
             <Button
                 android:id="@+id/showCurrentColorPicker_button"
@@ -129,10 +109,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="Unsorted item color" />
+                android:text="Unvisited vertex color" />
 
             <Button
-                android:id="@+id/showUnsortedColorPicker_button"
+                android:id="@+id/showUnvisitedColorPicker_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true" />
@@ -148,10 +128,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="Sorted item color" />
+                android:text="Visited vertex color" />
 
             <Button
-                android:id="@+id/showSortedColorPicker_button"
+                android:id="@+id/showVisitedColorPicker_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true" />
@@ -167,10 +147,48 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="Pivot item color" />
+                android:text="Start vertex color" />
 
             <Button
-                android:id="@+id/showPivotColorPicker_button"
+                android:id="@+id/showStartVertexColorPicker_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/spacing_tiny">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Edge default color" />
+
+            <Button
+                android:id="@+id/showEdgeDefaultColorPicker_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/spacing_tiny">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Edge highlighted color" />
+
+            <Button
+                android:id="@+id/showEdgeHighlightedColorPicker_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true" />

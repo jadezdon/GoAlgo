@@ -1,6 +1,8 @@
 package com.zhouppei.goalgo.ui
 
+import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +11,12 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.zhouppei.goalgo.R
 import com.zhouppei.goalgo.algorithms.graph.GraphViewConfig
 import com.zhouppei.goalgo.databinding.BottomSheetGraphConfigBinding
 import com.zhouppei.goalgo.ui.colorpicker.ColorPickerDialog
+import com.zhouppei.goalgo.ui.colorpicker.ColorPickerDialogListener
 import com.zhouppei.goalgo.utils.Constants
 
 
@@ -36,143 +41,175 @@ class GraphConfigBottomSheet: BottomSheetDialogFragment() {
             state = BottomSheetBehavior.STATE_EXPANDED
         }
 
-//        setupSortViewParameters()
-//
-//        binding.speedSlowButton.setOnClickListener {
-//            graphViewConfig.sortingSpeed = Constants.SORTING_SPEED_SLOW
-//            listener.onChangeSpeed(Constants.SORTING_SPEED_SLOW)
-//        }
-//        binding.speedNormalButton.setOnClickListener {
-//            graphViewConfig.sortingSpeed = Constants.SORTING_SPEED_NORMAL
-//            listener.onChangeSpeed(Constants.SORTING_SPEED_NORMAL)
-//        }
-//        binding.speedFastButton.setOnClickListener {
-//            graphViewConfig.sortingSpeed = Constants.SORTING_SPEED_FAST
-//            listener.onChangeSpeed(Constants.SORTING_SPEED_FAST)
-//        }
+        setupGraphViewParams()
 
-//        binding.showValuesSwitch.setOnCheckedChangeListener { _, isChecked ->
-//            graphViewConfig.isShowItemValues = isChecked
-//            listener.onShowValuesChanged(isChecked)
-//        }
-//
-//        binding.showIndexesSwitch.setOnCheckedChangeListener { _, isChecked ->
-//            graphViewConfig.isShowItemIndexes = isChecked
-//            listener.onShowIndexesChanged(isChecked)
-//        }
-//
-//        binding.toggleCompleteAnimationSwitch.setOnCheckedChangeListener { _, isChecked ->
-//            graphViewConfig.isCompleteAnimationEnabled = isChecked
-//            listener.toggleCompleteAnimation()
-//        }
+        binding.speedSlowButton.setOnClickListener {
+            graphViewConfig.animationSpeed = Constants.ANIMATION_SPEED_SLOW
+            listener.onChangeSpeed(Constants.ANIMATION_SPEED_SLOW)
+        }
+        binding.speedNormalButton.setOnClickListener {
+            graphViewConfig.animationSpeed = Constants.ANIMATION_SPEED_NORMAL
+            listener.onChangeSpeed(Constants.ANIMATION_SPEED_NORMAL)
+        }
+        binding.speedFastButton.setOnClickListener {
+            graphViewConfig.animationSpeed = Constants.ANIMATION_SPEED_FAST
+            listener.onChangeSpeed(Constants.ANIMATION_SPEED_FAST)
+        }
 
-//        setupPickCurrentStateColorButton()
-//        setupPickUnsortedStateColorButton()
-//        setupPickSortedStateColorButton()
-//        setupPickPivotColorButton()
+        binding.showLabelsSwitch.setOnCheckedChangeListener { _, isChecked ->
+            graphViewConfig.isLabelVisible = isChecked
+            listener.onChangeLabelsVisibility(isChecked)
+        }
+
+        binding.toggleCompleteAnimationSwitch.setOnCheckedChangeListener { _, isChecked ->
+            graphViewConfig.isCompleteAnimationEnabled = isChecked
+            listener.toggleCompleteAnimation()
+        }
+
+        setupPickCurrentStateColorButton()
+        setupPickUnvisitedStateColorButton()
+        setupPickVisitedStateColorButton()
+        setupPickStartVertexColorButton()
+        setupPickEdgeDefaultColorButton()
+        setupPickEdgeHighlightedColorButton()
     }
 
-//    private fun setupSortViewParameters() {
-//        sharedPreferences = context?.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
-//
-//        sharedPreferences?.let {
-//            if (it.contains(Constants.SHARED_PREF_SORTVIEW_CONFIGURATION)) {
-//                val str = it.getString(Constants.SHARED_PREF_SORTVIEW_CONFIGURATION, "")
-//                val itemType = object : TypeToken<graphViewConfig>() {}.type
-//                graphViewConfig = gson.fromJson(str, itemType)
-//            }
-//        }
-//
-//        binding.apply {
-//            showCurrentColorPickerButton.setBackgroundColor(Color.parseColor(graphViewConfig.currentStateColorString))
-//            showUnsortedColorPickerButton.setBackgroundColor(Color.parseColor(graphViewConfig.unsortedStateColorString))
-//            showSortedColorPickerButton.setBackgroundColor(Color.parseColor(graphViewConfig.sortedStateColorString))
-//            showPivotColorPickerButton.setBackgroundColor(Color.parseColor(graphViewConfig.pivotColorString))
-//
-//            when (graphViewConfig.sortingSpeed) {
-//                Constants.SORTING_SPEED_SLOW -> speedButtonGroup.check(R.id.speed_slow_button)
-//                Constants.SORTING_SPEED_NORMAL -> speedButtonGroup.check(R.id.speed_normal_button)
-//                Constants.SORTING_SPEED_FAST -> speedButtonGroup.check(R.id.speed_fast_button)
-//            }
-//
-//            showValuesSwitch.isChecked = graphViewConfig.isShowItemValues
-//            showIndexesSwitch.isChecked = graphViewConfig.isShowItemIndexes
-//            toggleCompleteAnimationSwitch.isChecked = graphViewConfig.isCompleteAnimationEnabled
-//        }
-//    }
-//
-//    private fun setupPickCurrentStateColorButton() {
-//        binding.showCurrentColorPickerButton.setOnClickListener {
-//            colorPickerDialog = ColorPickerDialog(
-//                requireContext(),
-//                graphViewConfig.currentStateColorString,
-//                object : ColorPickerDialogListener {
-//                    override fun setSelectedColorString(colorString: String) {
-//                        graphViewConfig.currentStateColorString = colorString
-//                        binding.showCurrentColorPickerButton.setBackgroundColor(Color.parseColor(colorString))
-//                        listener.onChangeCurrentStateColor(colorString)
-//                    }
-//                }
-//            )
-//            colorPickerDialog.show()
-//        }
-//    }
-//
-//    private fun setupPickUnsortedStateColorButton() {
-//        binding.showUnsortedColorPickerButton.setOnClickListener {
-//            colorPickerDialog = ColorPickerDialog(
-//                requireContext(),
-//                graphViewConfig.unsortedStateColorString,
-//                object : ColorPickerDialogListener {
-//                    override fun setSelectedColorString(colorString: String) {
-//                        graphViewConfig.unsortedStateColorString = colorString
-//                        binding.showUnsortedColorPickerButton.setBackgroundColor(Color.parseColor(colorString))
-//                        listener.onChangeUnsortedStateColor(colorString)
-//                    }
-//                }
-//            )
-//            colorPickerDialog.show()
-//        }
-//    }
-//
-//    private fun setupPickSortedStateColorButton() {
-//        binding.showSortedColorPickerButton.setOnClickListener {
-//            colorPickerDialog = ColorPickerDialog(
-//                requireContext(),
-//                graphViewConfig.sortedStateColorString,
-//                object : ColorPickerDialogListener {
-//                    override fun setSelectedColorString(colorString: String) {
-//                        graphViewConfig.sortedStateColorString = colorString
-//                        binding.showSortedColorPickerButton.setBackgroundColor(Color.parseColor(colorString))
-//                        listener.onChangeSortedStateColor(colorString)
-//                    }
-//                }
-//            )
-//            colorPickerDialog.show()
-//        }
-//    }
-//
-//    private fun setupPickPivotColorButton() {
-//        binding.showPivotColorPickerButton.setOnClickListener {
-//            colorPickerDialog = ColorPickerDialog(
-//                requireContext(),
-//                graphViewConfig.pivotColorString,
-//                object : ColorPickerDialogListener {
-//                    override fun setSelectedColorString(colorString: String) {
-//                        graphViewConfig.pivotColorString = colorString
-//                        binding.showPivotColorPickerButton.setBackgroundColor(Color.parseColor(colorString))
-//                        listener.onChangePivotColor(colorString)
-//                    }
-//                }
-//            )
-//            colorPickerDialog.show()
-//        }
-//    }
+    private fun setupGraphViewParams() {
+        sharedPreferences = context?.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
 
-    private fun saveSortViewParameters() {
+        sharedPreferences?.let {
+            if (it.contains(Constants.SHARED_PREF_GRAPHVIEW_CONFIGURATION)) {
+                val str = it.getString(Constants.SHARED_PREF_GRAPHVIEW_CONFIGURATION, "")
+                val itemType = object : TypeToken<GraphViewConfig>() {}.type
+                graphViewConfig = gson.fromJson(str, itemType)
+            }
+        }
+
+        binding.apply {
+            showCurrentColorPickerButton.setBackgroundColor(Color.parseColor(graphViewConfig.currentStateColor))
+            showUnvisitedColorPickerButton.setBackgroundColor(Color.parseColor(graphViewConfig.unvisitedStateColor))
+            showVisitedColorPickerButton.setBackgroundColor(Color.parseColor(graphViewConfig.visitedStateColor))
+            showStartVertexColorPickerButton.setBackgroundColor(Color.parseColor(graphViewConfig.startVertexColor))
+            showEdgeDefaultColorPickerButton.setBackgroundColor(Color.parseColor(graphViewConfig.edgeDefaultColor))
+            showEdgeHighlightedColorPickerButton.setBackgroundColor(Color.parseColor(graphViewConfig.edgeHighlightedColor))
+
+            when (graphViewConfig.animationSpeed) {
+                Constants.ANIMATION_SPEED_SLOW -> speedButtonGroup.check(R.id.speed_slow_button)
+                Constants.ANIMATION_SPEED_NORMAL -> speedButtonGroup.check(R.id.speed_normal_button)
+                Constants.ANIMATION_SPEED_FAST -> speedButtonGroup.check(R.id.speed_fast_button)
+            }
+
+            showLabelsSwitch.isChecked = graphViewConfig.isLabelVisible
+            toggleCompleteAnimationSwitch.isChecked = graphViewConfig.isCompleteAnimationEnabled
+        }
+    }
+
+    private fun setupPickCurrentStateColorButton() {
+        binding.showCurrentColorPickerButton.setOnClickListener {
+            colorPickerDialog = ColorPickerDialog(
+                requireContext(),
+                graphViewConfig.currentStateColor,
+                object : ColorPickerDialogListener {
+                    override fun setSelectedColorString(colorString: String) {
+                        graphViewConfig.currentStateColor = colorString
+                        binding.showCurrentColorPickerButton.setBackgroundColor(Color.parseColor(colorString))
+                        listener.onChangeCurrentStateColor(colorString)
+                    }
+                }
+            )
+            colorPickerDialog.show()
+        }
+    }
+
+    private fun setupPickUnvisitedStateColorButton() {
+        binding.showUnvisitedColorPickerButton.setOnClickListener {
+            colorPickerDialog = ColorPickerDialog(
+                requireContext(),
+                graphViewConfig.unvisitedStateColor,
+                object : ColorPickerDialogListener {
+                    override fun setSelectedColorString(colorString: String) {
+                        graphViewConfig.unvisitedStateColor = colorString
+                        it.setBackgroundColor(Color.parseColor(colorString))
+                        listener.onChangeUnvisitedStateColor(colorString)
+                    }
+                }
+            )
+            colorPickerDialog.show()
+        }
+    }
+
+    private fun setupPickVisitedStateColorButton() {
+        binding.showVisitedColorPickerButton.setOnClickListener {
+            colorPickerDialog = ColorPickerDialog(
+                requireContext(),
+                graphViewConfig.visitedStateColor,
+                object : ColorPickerDialogListener {
+                    override fun setSelectedColorString(colorString: String) {
+                        graphViewConfig.visitedStateColor = colorString
+                        it.setBackgroundColor(Color.parseColor(colorString))
+                        listener.onChangeVisitedStateColor(colorString)
+                    }
+                }
+            )
+            colorPickerDialog.show()
+        }
+    }
+
+    private fun setupPickEdgeDefaultColorButton() {
+        binding.showEdgeDefaultColorPickerButton.setOnClickListener {
+            colorPickerDialog = ColorPickerDialog(
+                requireContext(),
+                graphViewConfig.edgeDefaultColor,
+                object : ColorPickerDialogListener {
+                    override fun setSelectedColorString(colorString: String) {
+                        graphViewConfig.edgeDefaultColor = colorString
+                        it.setBackgroundColor(Color.parseColor(colorString))
+                        listener.onChangeEdgeDefaultColor(colorString)
+                    }
+                }
+            )
+            colorPickerDialog.show()
+        }
+    }
+
+    private fun setupPickEdgeHighlightedColorButton() {
+        binding.showEdgeHighlightedColorPickerButton.setOnClickListener {
+            colorPickerDialog = ColorPickerDialog(
+                requireContext(),
+                graphViewConfig.edgeHighlightedColor,
+                object : ColorPickerDialogListener {
+                    override fun setSelectedColorString(colorString: String) {
+                        graphViewConfig.edgeHighlightedColor = colorString
+                        it.setBackgroundColor(Color.parseColor(colorString))
+                        listener.onChangeEdgeHighlightedColor(colorString)
+                    }
+                }
+            )
+            colorPickerDialog.show()
+        }
+    }
+
+    private fun setupPickStartVertexColorButton() {
+        binding.showStartVertexColorPickerButton.setOnClickListener {
+            colorPickerDialog = ColorPickerDialog(
+                requireContext(),
+                graphViewConfig.startVertexColor,
+                object : ColorPickerDialogListener {
+                    override fun setSelectedColorString(colorString: String) {
+                        graphViewConfig.startVertexColor = colorString
+                        it.setBackgroundColor(Color.parseColor(colorString))
+                        listener.onChangeStartVertexColor(colorString)
+                    }
+                }
+            )
+            colorPickerDialog.show()
+        }
+    }
+
+    private fun saveGraphViewConfig() {
         sharedPreferences?.let {
             it.edit().apply {
-                putString(Constants.SHARED_PREF_SORTVIEW_CONFIGURATION, gson.toJson(graphViewConfig))
+                putString(Constants.SHARED_PREF_GRAPHVIEW_CONFIGURATION, gson.toJson(graphViewConfig))
                 apply()
             }
         }
@@ -182,7 +219,7 @@ class GraphConfigBottomSheet: BottomSheetDialogFragment() {
         super.onDestroy()
         _binding = null
         if (this::colorPickerDialog.isInitialized) colorPickerDialog.dismiss()
-        saveSortViewParameters()
+        saveGraphViewConfig()
     }
 
     companion object {

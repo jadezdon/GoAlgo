@@ -73,7 +73,7 @@ abstract class AlgorithmView @JvmOverloads constructor(
 
     fun setCaption(text: String) {
         captionText = text
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             captionTextLayout = StaticLayout.Builder.obtain(text, 0, text.length, captionTextPaint, canvasWidth - paddingLeft - paddingRight).build()
         }
     }

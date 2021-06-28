@@ -70,6 +70,7 @@ class GraphConfigBottomSheet: BottomSheetDialogFragment() {
         setupPickUnvisitedStateColorButton()
         setupPickVisitedStateColorButton()
         setupPickStartVertexColorButton()
+        setupPickTargetVertexColorButton()
         setupPickEdgeDefaultColorButton()
         setupPickEdgeHighlightedColorButton()
     }
@@ -90,6 +91,7 @@ class GraphConfigBottomSheet: BottomSheetDialogFragment() {
             showUnvisitedColorPickerButton.setBackgroundColor(Color.parseColor(graphViewConfig.unvisitedStateColor))
             showVisitedColorPickerButton.setBackgroundColor(Color.parseColor(graphViewConfig.visitedStateColor))
             showStartVertexColorPickerButton.setBackgroundColor(Color.parseColor(graphViewConfig.startVertexColor))
+            showTargetVertexColorPickerButton.setBackgroundColor(Color.parseColor(graphViewConfig.targetVertexColor))
             showEdgeDefaultColorPickerButton.setBackgroundColor(Color.parseColor(graphViewConfig.edgeDefaultColor))
             showEdgeHighlightedColorPickerButton.setBackgroundColor(Color.parseColor(graphViewConfig.edgeHighlightedColor))
 
@@ -199,6 +201,23 @@ class GraphConfigBottomSheet: BottomSheetDialogFragment() {
                         graphViewConfig.startVertexColor = colorString
                         it.setBackgroundColor(Color.parseColor(colorString))
                         listener.onChangeStartVertexColor(colorString)
+                    }
+                }
+            )
+            colorPickerDialog.show()
+        }
+    }
+
+    private fun setupPickTargetVertexColorButton() {
+        binding.showTargetVertexColorPickerButton.setOnClickListener {
+            colorPickerDialog = ColorPickerDialog(
+                requireContext(),
+                graphViewConfig.targetVertexColor,
+                object : ColorPickerDialogListener {
+                    override fun setSelectedColorString(colorString: String) {
+                        graphViewConfig.targetVertexColor = colorString
+                        it.setBackgroundColor(Color.parseColor(colorString))
+                        listener.onChangeTargetVertexColor(colorString)
                     }
                 }
             )

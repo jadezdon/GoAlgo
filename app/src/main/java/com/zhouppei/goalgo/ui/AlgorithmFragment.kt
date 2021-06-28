@@ -216,6 +216,10 @@ class AlgorithmFragment : Fragment() {
             override fun toggleCompleteAnimation() {
                 (algorithmView as? GraphView)?.toggleCompleteAnimation()
             }
+
+            override fun onChangeTargetVertexColor(colorString: String) {
+                (algorithmView as? GraphView)?.setTargetVertexColor(colorString)
+            }
         }
     }
 

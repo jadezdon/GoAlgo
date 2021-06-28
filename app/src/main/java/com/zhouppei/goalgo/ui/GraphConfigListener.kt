@@ -7,6 +7,7 @@ interface GraphConfigListener {
     fun onChangeUnvisitedStateColor(colorString: String)
     fun onChangeVisitedStateColor(colorString: String)
     fun onChangeStartVertexColor(colorString: String)
+    fun onChangeTargetVertexColor(colorString: String)
     fun onChangeEdgeDefaultColor(colorString: String)
     fun onChangeEdgeHighlightedColor(colorString: String)
     fun toggleCompleteAnimation()

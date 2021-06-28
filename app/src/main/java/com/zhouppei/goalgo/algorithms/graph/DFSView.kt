@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.AttributeSet
 import com.zhouppei.goalgo.models.EdgeState
 import com.zhouppei.goalgo.models.VertexState
-import java.util.*
 
 class DFSView @JvmOverloads constructor(
     context: Context,
@@ -15,7 +14,7 @@ class DFSView @JvmOverloads constructor(
     override suspend fun run() {
         super.run()
 
-        dfs(startVertixLabel)
+        dfs(startVertexLabel)
 
         complete()
     }

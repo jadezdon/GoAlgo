@@ -7,9 +7,7 @@ import com.zhouppei.goalgo.algorithms.AlgorithmConfig
 import com.zhouppei.goalgo.algorithms.AlgorithmView
 import com.zhouppei.goalgo.extensions.clone
 import com.zhouppei.goalgo.models.*
-import com.zhouppei.goalgo.utils.Constants
 import kotlinx.coroutines.delay
-import kotlin.math.abs
 import kotlin.math.min
 import kotlin.random.Random
 
@@ -20,7 +18,8 @@ abstract class GraphView @JvmOverloads constructor(
 ) : AlgorithmView(context, attrs, defStyleAttr) {
 
     protected var graph: Graph
-    protected var startVertixLabel = 0
+    protected var startVertexLabel = 0
+    protected var targetVertexLabel = 0
     private var config = GraphViewConfig()
     private var vertexRadius = 10f
     private var vertexPadding = 8
@@ -35,6 +34,7 @@ abstract class GraphView @JvmOverloads constructor(
                 possiblePositions.add(Pair(x, y))
             }
         }
+        targetVertexLabel = config.vertexCount - 1
     }
 
     private val edgeDefaultPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -76,6 +76,12 @@ abstract class GraphView @JvmOverloads constructor(
     private val startVertexPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
         color = Color.parseColor(config.startVertexColor)
+        strokeWidth = 5f
+    }
+
+    private val targetVertexPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+        color = Color.parseColor(config.targetVertexColor)
         strokeWidth = 5f
     }
 
@@ -229,7 +235,8 @@ abstract class GraphView @JvmOverloads constructor(
             }
         }
 
-        canvas.drawRoundRect(graph.vertices[startVertixLabel].boundingRectF, ROUND_RECT_RADIUS, ROUND_RECT_RADIUS, startVertexPaint)
+        canvas.drawRoundRect(graph.vertices[startVertexLabel].boundingRectF, ROUND_RECT_RADIUS, ROUND_RECT_RADIUS, startVertexPaint)
+        canvas.drawRoundRect(graph.vertices[targetVertexLabel].boundingRectF, ROUND_RECT_RADIUS, ROUND_RECT_RADIUS, targetVertexPaint)
     }
 
     private fun drawCaption(canvas: Canvas) {
@@ -298,12 +305,18 @@ abstract class GraphView @JvmOverloads constructor(
         config.isCompleteAnimationEnabled = !config.isCompleteAnimationEnabled
     }
 
+    fun setTargetVertexColor(colorString: String) {
+        targetVertexPaint.color = Color.parseColor(colorString)
+        if (!isRunning) invalidate()
+    }
+
     companion object {
         private val LOG_TAG = GraphView::class.qualifiedName
         const val DEFAULT_CURRENT_STATE_COLOR = "#FEDD00"
         const val DEFAULT_UNVISITED_STATE_COLOR = "#C1CDCD"
         const val DEFAULT_VISITED_STATE_COLOR = "#2e8b57"
-        const val DEFAULT_START_VERTEX_COLOR = "#191970"
+        const val DEFAULT_START_VERTEX_COLOR = "#7575a9"
+        const val DEFAULT_TARGET_VERTEX_COLOR = "#191970"
         const val EDGE_DEFAULT_COLOR = "#C1CDCD"
         const val EDGE_HIGHLIGHTED_COLOR = "#ff033e"
         const val MAX_VERTEX_COUNT_IN_ROW = 15
@@ -315,6 +328,8 @@ abstract class GraphView @JvmOverloads constructor(
 class GraphViewConfig : AlgorithmConfig() {
     var vertexCount = 30
     var startVertexColor = GraphView.DEFAULT_START_VERTEX_COLOR
+    var targetVertexColor = GraphView.DEFAULT_TARGET_VERTEX_COLOR
+
     var currentStateColor = GraphView.DEFAULT_CURRENT_STATE_COLOR
     var visitedStateColor = GraphView.DEFAULT_VISITED_STATE_COLOR
     var unvisitedStateColor = GraphView.DEFAULT_UNVISITED_STATE_COLOR

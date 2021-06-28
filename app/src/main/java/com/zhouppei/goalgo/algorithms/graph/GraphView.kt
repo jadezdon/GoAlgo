@@ -3,6 +3,7 @@ package com.zhouppei.goalgo.algorithms.graph
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import com.zhouppei.goalgo.algorithms.AlgorithmConfig
 import com.zhouppei.goalgo.algorithms.AlgorithmView
 import com.zhouppei.goalgo.extensions.clone
 import com.zhouppei.goalgo.models.Graph
@@ -140,55 +141,64 @@ abstract class GraphView @JvmOverloads constructor(
         super.onDraw(canvas)
 
         canvas?.let {
-            // draw edges
-            for (i in 0 until graph.adjMatrix.size) {
-                for (j in i + 1 until graph.adjMatrix[i].size) {
-                    if (graph.hasEdge(i, j)) {
-                        it.drawLine(
-                            graph.vertices[i].boundingRectF.centerX(),
-                            graph.vertices[i].boundingRectF.centerY(),
-                            graph.vertices[j].boundingRectF.centerX(),
-                            graph.vertices[j].boundingRectF.centerY(),
-                            edgePaint
-                        )
-                    }
-                }
-            }
+            drawEdges(it)
+            drawVertices(it)
+            drawCaption(it)
 
-            // draw vertexes
-            graph.vertices.forEach { vertex ->
-                when (vertex.state) {
-                    VertexState.CURRENT -> it.drawRoundRect(vertex.boundingRectF, 10f, 10f, currentVertexPaint)
-                    VertexState.VISITED -> it.drawRoundRect(vertex.boundingRectF, 10f, 10f, visitedVertexPaint)
-                    VertexState.UNVISITED -> it.drawRoundRect(vertex.boundingRectF, 10f, 10f, unvisitedVertexPaint)
-                }
+        }
+    }
 
-                if (config.isLabelVisible) {
-                    labelPaint.getTextBounds(vertex.label.toString(), 0, vertex.label.toString().length, labelTextBounds)
-                    it.drawText(
-                        vertex.label.toString(),
-                        vertex.boundingRectF.centerX(),
-                        vertex.boundingRectF.centerY() + labelTextBounds.height() / 2,
-                        labelPaint
+    private fun drawEdges(canvas: Canvas) {
+        for (i in 0 until graph.adjMatrix.size) {
+            for (j in i + 1 until graph.adjMatrix[i].size) {
+                if (graph.hasEdge(i, j)) {
+                    canvas.drawLine(
+                        graph.vertices[i].boundingRectF.centerX(),
+                        graph.vertices[i].boundingRectF.centerY(),
+                        graph.vertices[j].boundingRectF.centerX(),
+                        graph.vertices[j].boundingRectF.centerY(),
+                        edgePaint
                     )
                 }
             }
+        }
 
-            // draw caption
-            if (isRunning && captionText.isNotBlank()) {
-                if (captionTextLayout == null) {
-                    it.drawText(
-                        captionText,
-                        paddingLeft + 20f,
-                        captionTextPaint.textSize,
-                        captionTextPaint
-                    )
-                } else {
-                    it.save()
-                    it.translate(paddingLeft.toFloat(), 0f)
-                    captionTextLayout!!.draw(it)
-                    it.restore()
-                }
+    }
+
+    private fun drawVertices(canvas: Canvas) {
+        graph.vertices.forEach { vertex ->
+            when (vertex.state) {
+                VertexState.CURRENT -> canvas.drawRoundRect(vertex.boundingRectF, 10f, 10f, currentVertexPaint)
+                VertexState.VISITED -> canvas.drawRoundRect(vertex.boundingRectF, 10f, 10f, visitedVertexPaint)
+                VertexState.UNVISITED -> canvas.drawRoundRect(vertex.boundingRectF, 10f, 10f, unvisitedVertexPaint)
+            }
+
+            if (config.isLabelVisible) {
+                labelPaint.getTextBounds(vertex.label.toString(), 0, vertex.label.toString().length, labelTextBounds)
+                canvas.drawText(
+                    vertex.label.toString(),
+                    vertex.boundingRectF.centerX(),
+                    vertex.boundingRectF.centerY() + labelTextBounds.height() / 2,
+                    labelPaint
+                )
+            }
+        }
+    }
+
+    private fun drawCaption(canvas: Canvas) {
+        if (isRunning && captionText.isNotBlank()) {
+            if (captionTextLayout == null) {
+                canvas.drawText(
+                    captionText,
+                    paddingLeft + 20f,
+                    captionTextPaint.textSize,
+                    captionTextPaint
+                )
+            } else {
+                canvas.save()
+                canvas.translate(paddingLeft.toFloat(), 0f)
+                captionTextLayout!!.draw(canvas)
+                canvas.restore()
             }
         }
     }
@@ -217,12 +227,12 @@ abstract class GraphView @JvmOverloads constructor(
     }
 }
 
-class GraphViewConfig {
-    var animationSpeed = Constants.ANIMATION_SPEED_NORMAL
+class GraphViewConfig : AlgorithmConfig() {
+    var vertexCount = 30
+
     var currentStateColor = GraphView.DEFAULT_CURRENT_STATE_COLOR
     var visitedStateColor = GraphView.DEFAULT_VISITED_STATE_COLOR
     var unvisitedStateColor = GraphView.DEFAULT_UNVISITED_STATE_COLOR
-    var vertexCount = 30
 
     var edgeDefaultColor = GraphView.EDGE_DEFAULT_COLOR
     var edgeHighlightedColor = GraphView.EDGE_HIGHLIGHTED_COLOR

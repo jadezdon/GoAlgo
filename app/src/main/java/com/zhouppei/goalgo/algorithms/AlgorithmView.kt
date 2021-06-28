@@ -11,6 +11,7 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import android.view.WindowInsets
+import com.zhouppei.goalgo.utils.Constants
 import kotlin.math.max
 import kotlin.math.min
 
@@ -91,4 +92,9 @@ abstract class AlgorithmView @JvmOverloads constructor(
     companion object {
         private val LOG_TAG = AlgorithmView::class.qualifiedName
     }
+}
+
+open class AlgorithmConfig {
+    var animationSpeed = Constants.ANIMATION_SPEED_NORMAL
+    var isCompleteAnimationEnabled = true
 }

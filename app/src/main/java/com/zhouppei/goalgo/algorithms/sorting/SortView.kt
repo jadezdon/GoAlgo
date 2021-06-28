@@ -5,10 +5,10 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
+import com.zhouppei.goalgo.algorithms.AlgorithmConfig
 import com.zhouppei.goalgo.algorithms.AlgorithmView
 import com.zhouppei.goalgo.models.Item
 import com.zhouppei.goalgo.models.ItemState
-import com.zhouppei.goalgo.utils.Constants
 import kotlinx.coroutines.delay
 import kotlin.math.min
 import kotlin.random.Random
@@ -72,7 +72,7 @@ abstract class SortView @JvmOverloads constructor(
 
     override fun new() {
         items = generateItems(config.itemsSize)
-        setItemsCoordinates()
+        initializeParams()
         sortingInterval = Pair(0, config.itemsSize)
         super.new()
     }
@@ -187,11 +187,10 @@ abstract class SortView @JvmOverloads constructor(
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-
-        setItemsCoordinates()
+        initializeParams()
     }
 
-    private fun setItemsCoordinates() {
+    private fun initializeParams() {
         sortItemWidth = (((canvasWidth - paddingLeft - paddingRight) / items.size) - 2 * sortItemPadding)
         textPaint.textSize = min(25f, sortItemWidth * (2f / 3f))
         maxSortItemHeight = canvasHeight - 2 * sortItemPadding - paddingTop - paddingBottom - captionTextPaint.textSize.toInt() - textPaint.textSize.toInt()
@@ -207,56 +206,63 @@ abstract class SortView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         canvas?.let {
-            items.forEachIndexed { index, item ->
-                item.coordinates.top = item.coordinates.bottom - (maxSortItemHeight * (item.value.toFloat() / 100))
+            drawItems(it)
+            drawCaption(it)
+        }
+    }
 
-                if ((sortingInterval.first <= index && index <= sortingInterval.second) || !isRunning) {
-                    when (item.state) {
-                        ItemState.CURRENT -> it.drawRoundRect(item.coordinates, 10f, 10f, currentItemPaint)
-                        ItemState.UNSORTED -> it.drawRoundRect(item.coordinates, 10f, 10f, unsortedItemPaint)
-                        ItemState.SORTED -> it.drawRoundRect(item.coordinates, 10f, 10f, sortedItemPaint)
-                    }
-                } else {
-                    it.drawRoundRect(item.coordinates, 10f, 10f, unsortedItemNotInIntervalPaint)
-                }
+    private fun drawItems(canvas: Canvas) {
+        items.forEachIndexed { index, item ->
+            item.coordinates.top = item.coordinates.bottom - (maxSortItemHeight * (item.value.toFloat() / 100))
 
-                if (item.isPivot) {
-                    it.drawRoundRect(item.coordinates, 10f, 10f, pivotItemPaint)
+            if ((sortingInterval.first <= index && index <= sortingInterval.second) || !isRunning) {
+                when (item.state) {
+                    ItemState.CURRENT -> canvas.drawRoundRect(item.coordinates, 10f, 10f, currentItemPaint)
+                    ItemState.UNSORTED -> canvas.drawRoundRect(item.coordinates, 10f, 10f, unsortedItemPaint)
+                    ItemState.SORTED -> canvas.drawRoundRect(item.coordinates, 10f, 10f, sortedItemPaint)
                 }
-
-                if (config.isItemValuesVisible) {
-                    it.drawText(
-                        item.value.toString(),
-                        item.coordinates.centerX(),
-                        item.coordinates.top - sortItemPadding,
-                        textPaint
-                    )
-                }
-
-                if (config.isItemIndexesVisible) {
-                    it.drawText(
-                        "[$index]",
-                        item.coordinates.centerX(),
-                        item.coordinates.bottom + textPaint.textSize + sortItemPadding,
-                        textPaint
-                    )
-                }
+            } else {
+                canvas.drawRoundRect(item.coordinates, 10f, 10f, unsortedItemNotInIntervalPaint)
             }
 
-            if (isRunning && captionText.isNotBlank()) {
-                if (captionTextLayout == null) {
-                    it.drawText(
-                        captionText,
-                        paddingLeft + 20f,
-                        captionTextPaint.textSize,
-                        captionTextPaint
-                    )
-                } else {
-                    it.save()
-                    it.translate(paddingLeft.toFloat(), 0f)
-                    captionTextLayout!!.draw(it)
-                    it.restore()
-                }
+            if (item.isPivot) {
+                canvas.drawRoundRect(item.coordinates, 10f, 10f, pivotItemPaint)
+            }
+
+            if (config.isItemValuesVisible) {
+                canvas.drawText(
+                    item.value.toString(),
+                    item.coordinates.centerX(),
+                    item.coordinates.top - sortItemPadding,
+                    textPaint
+                )
+            }
+
+            if (config.isItemIndexesVisible) {
+                canvas.drawText(
+                    "[$index]",
+                    item.coordinates.centerX(),
+                    item.coordinates.bottom + textPaint.textSize + sortItemPadding,
+                    textPaint
+                )
+            }
+        }
+    }
+
+    private fun drawCaption(canvas: Canvas) {
+        if (isRunning && captionText.isNotBlank()) {
+            if (captionTextLayout == null) {
+                canvas.drawText(
+                    captionText,
+                    paddingLeft + 20f,
+                    captionTextPaint.textSize,
+                    captionTextPaint
+                )
+            } else {
+                canvas.save()
+                canvas.translate(paddingLeft.toFloat(), 0f)
+                captionTextLayout!!.draw(canvas)
+                canvas.restore()
             }
         }
     }
@@ -271,15 +277,14 @@ abstract class SortView @JvmOverloads constructor(
     }
 }
 
-class SortViewConfig {
+class SortViewConfig : AlgorithmConfig() {
+    var itemsSize = 20
+
     var currentStateColor = SortView.DEFAULT_CURRENT_STATE_COLOR
     var unsortedStateColor = SortView.DEFAULT_UNSORTED_STATE_COLOR
     var sortedStateColor = SortView.DEFAULT_SORTED_STATE_COLOR
     var pivotColor = SortView.DEFAULT_PIVOT_COLOR
-    var animationSpeed = Constants.ANIMATION_SPEED_NORMAL
+
     var isItemValuesVisible = true
     var isItemIndexesVisible = false
-    var itemsSize = 20
-
-    var isCompleteAnimationEnabled = true
 }

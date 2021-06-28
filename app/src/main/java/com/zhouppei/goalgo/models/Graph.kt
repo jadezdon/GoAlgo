@@ -2,7 +2,7 @@ package com.zhouppei.goalgo.models
 
 import android.graphics.RectF
 
-class Graph(var vertexCount: Int) {
+class Graph(private var vertexCount: Int) {
     var vertices = MutableList(vertexCount) { Vertex(it) }
     var adjMatrix = MutableList(vertexCount) { MutableList(vertexCount) { 0 } }
 

@@ -1,12 +1,10 @@
-package com.zhouppei.goalgo.algorithms.sorting
+package com.zhouppei.goalgo.views
 
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
-import com.zhouppei.goalgo.algorithms.AlgorithmConfig
-import com.zhouppei.goalgo.algorithms.AlgorithmView
 import com.zhouppei.goalgo.models.Item
 import com.zhouppei.goalgo.models.ItemState
 import kotlinx.coroutines.delay
@@ -59,7 +57,6 @@ abstract class SortView @JvmOverloads constructor(
         textAlign = Paint.Align.CENTER
     }
 
-
     private val pivotItemPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
         color = Color.parseColor(config.pivotColor)
@@ -75,49 +72,12 @@ abstract class SortView @JvmOverloads constructor(
         super.new()
     }
 
-    fun setSortViewConfiguration(sortViewConfig: SortViewConfig) {
+    fun setSortViewConfig(sortViewConfig: SortViewConfig) {
         config = sortViewConfig
-        setCurrentStateColor(config.currentStateColor)
-        setUnsortedStateColor(config.unsortedStateColor)
-        setSortedStateColor(config.sortedStateColor)
-        setPivotColor(config.pivotColor)
-    }
-
-    fun setAnimationSpeed(speedInMiliSec: Long) {
-        config.animationSpeed = speedInMiliSec
-    }
-
-    fun setValuesVisibility(isVisible: Boolean) {
-        config.isItemValuesVisible = isVisible
-        if (!isRunning) invalidate()
-    }
-
-    fun setIndexesVisibility(isVisible: Boolean) {
-        config.isItemIndexesVisible = isVisible
-        if (!isRunning) invalidate()
-    }
-
-    fun toggleCompleteAnimation() {
-        config.isCompleteAnimationEnabled = !config.isCompleteAnimationEnabled
-    }
-
-    fun setCurrentStateColor(colorString: String) {
-        currentItemPaint.color = Color.parseColor(colorString)
-        if (!isRunning) invalidate()
-    }
-
-    fun setUnsortedStateColor(colorString: String) {
-        unsortedItemPaint.color = Color.parseColor(colorString)
-        if (!isRunning) invalidate()
-    }
-
-    fun setSortedStateColor(colorString: String) {
-        sortedItemPaint.color = Color.parseColor(colorString)
-        if (!isRunning) invalidate()
-    }
-
-    fun setPivotColor(colorString: String) {
-        pivotItemPaint.color = Color.parseColor(colorString)
+        currentItemPaint.color = Color.parseColor(config.currentStateColor)
+        unsortedItemPaint.color = Color.parseColor(config.unsortedStateColor)
+        sortedItemPaint.color = Color.parseColor(config.sortedStateColor)
+        pivotItemPaint.color = Color.parseColor(config.pivotColor)
         if (!isRunning) invalidate()
     }
 
@@ -140,8 +100,8 @@ abstract class SortView @JvmOverloads constructor(
     suspend fun compare(leftPosition: Int, rightPosition: Int) {
         items[leftPosition].state = ItemState.CURRENT
         items[rightPosition].state = ItemState.CURRENT
-        invalidate()
 
+        invalidate()
         delay(config.animationSpeed)
 
         items[leftPosition].state = ItemState.UNSORTED
@@ -157,7 +117,6 @@ abstract class SortView @JvmOverloads constructor(
         items[rightPosition].state = ItemState.CURRENT
 
         invalidate()
-
         delay(config.animationSpeed)
 
         items[leftPosition].state = ItemState.UNSORTED
@@ -183,7 +142,6 @@ abstract class SortView @JvmOverloads constructor(
         super.complete()
     }
 
-
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         initializeParams()
@@ -206,7 +164,6 @@ abstract class SortView @JvmOverloads constructor(
         super.onDraw(canvas)
         canvas?.let {
             drawItems(it)
-            drawCaption(it)
         }
     }
 
@@ -248,24 +205,6 @@ abstract class SortView @JvmOverloads constructor(
         }
     }
 
-    private fun drawCaption(canvas: Canvas) {
-        if (isRunning && captionText.isNotBlank()) {
-            if (captionTextLayout == null) {
-                canvas.drawText(
-                    captionText,
-                    paddingLeft + 20f,
-                    captionTextPaint.textSize,
-                    captionTextPaint
-                )
-            } else {
-                canvas.save()
-                canvas.translate(paddingLeft.toFloat(), 0f)
-                captionTextLayout!!.draw(canvas)
-                canvas.restore()
-            }
-        }
-    }
-
     companion object {
         private val LOG_TAG = SortView::class.qualifiedName
         const val DEFAULT_CURRENT_STATE_COLOR = "#FEDD00"
@@ -273,11 +212,12 @@ abstract class SortView @JvmOverloads constructor(
         const val DEFAULT_SORTED_STATE_COLOR = "#2e8b57"
         const val DEFAULT_PIVOT_COLOR = "#ff4040"
         const val ITEM_MAX_VALUE = 100
+        const val DEFAULT_ITEM_SIZE = 20
     }
 }
 
 class SortViewConfig : AlgorithmConfig() {
-    var itemsSize = 20
+    var itemsSize = SortView.DEFAULT_ITEM_SIZE
 
     var currentStateColor = SortView.DEFAULT_CURRENT_STATE_COLOR
     var unsortedStateColor = SortView.DEFAULT_UNSORTED_STATE_COLOR

@@ -1,14 +1,7 @@
 package com.zhouppei.goalgo.ui
 
+import com.zhouppei.goalgo.views.GraphViewConfig
+
 interface GraphConfigListener {
-    fun onChangeSpeed(speedInMiliSec: Long)
-    fun onChangeLabelsVisibility(isVisible: Boolean)
-    fun onChangeCurrentStateColor(colorString: String)
-    fun onChangeUnvisitedStateColor(colorString: String)
-    fun onChangeVisitedStateColor(colorString: String)
-    fun onChangeStartVertexColor(colorString: String)
-    fun onChangeTargetVertexColor(colorString: String)
-    fun onChangeEdgeDefaultColor(colorString: String)
-    fun onChangeEdgeHighlightedColor(colorString: String)
-    fun toggleCompleteAnimation()
+    fun setConfig(config: GraphViewConfig)
 }

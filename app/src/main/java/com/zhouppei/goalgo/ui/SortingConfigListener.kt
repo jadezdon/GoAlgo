@@ -1,12 +1,7 @@
 package com.zhouppei.goalgo.ui
 
+import com.zhouppei.goalgo.views.SortViewConfig
+
 interface SortingConfigListener {
-    fun onChangeSpeed(speedInMiliSec: Long)
-    fun onChangeItemValuesVisibility(isShow: Boolean)
-    fun onChangeItemIndexesVisibility(isShow: Boolean)
-    fun onChangeCurrentStateColor(colorString: String)
-    fun onChangeUnsortedStateColor(colorString: String)
-    fun onChangeSortedStateColor(colorString: String)
-    fun onChangePivotColor(colorString: String)
-    fun toggleCompleteAnimation()
+    fun setConfig(config: SortViewConfig)
 }

@@ -12,5 +12,6 @@ enum class SortingAlgorithm(val str: String) {
     InsertionSort(" Insertion sort"),
     SelectionSort(" Selection sort"),
     MergeSort(" Merge sort"),
-    ShellSort(" Shell sort")
+    ShellSort(" Shell sort"),
+    CocktailShakerSort("Cocktail shaker sort")
 }

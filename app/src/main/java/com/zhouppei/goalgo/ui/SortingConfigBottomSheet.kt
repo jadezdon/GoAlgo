@@ -13,7 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.zhouppei.goalgo.R
-import com.zhouppei.goalgo.algorithms.sorting.SortViewConfig
+import com.zhouppei.goalgo.views.SortViewConfig
 import com.zhouppei.goalgo.databinding.BottomSheetSortingConfigBinding
 import com.zhouppei.goalgo.ui.colorpicker.ColorPickerDialog
 import com.zhouppei.goalgo.ui.colorpicker.ColorPickerDialogListener
@@ -41,34 +41,41 @@ class SortingConfigBottomSheet: BottomSheetDialogFragment() {
             state = BottomSheetBehavior.STATE_EXPANDED
         }
 
+        getConfigFromSharedPref()
         setupSortViewParams()
 
         binding.speedSlowButton.setOnClickListener {
             sortViewConfig.animationSpeed = Constants.ANIMATION_SPEED_SLOW
-            listener.onChangeSpeed(Constants.ANIMATION_SPEED_SLOW)
+            listener.setConfig(sortViewConfig)
         }
         binding.speedNormalButton.setOnClickListener {
             sortViewConfig.animationSpeed = Constants.ANIMATION_SPEED_NORMAL
-            listener.onChangeSpeed(Constants.ANIMATION_SPEED_NORMAL)
+            listener.setConfig(sortViewConfig)
         }
         binding.speedFastButton.setOnClickListener {
             sortViewConfig.animationSpeed = Constants.ANIMATION_SPEED_FAST
-            listener.onChangeSpeed(Constants.ANIMATION_SPEED_FAST)
+            listener.setConfig(sortViewConfig)
         }
 
         binding.showValuesSwitch.setOnCheckedChangeListener { _, isChecked ->
             sortViewConfig.isItemValuesVisible = isChecked
-            listener.onChangeItemValuesVisibility(isChecked)
+            listener.setConfig(sortViewConfig)
         }
 
         binding.showIndexesSwitch.setOnCheckedChangeListener { _, isChecked ->
             sortViewConfig.isItemIndexesVisible = isChecked
-            listener.onChangeItemIndexesVisibility(isChecked)
+            listener.setConfig(sortViewConfig)
         }
 
         binding.toggleCompleteAnimationSwitch.setOnCheckedChangeListener { _, isChecked ->
             sortViewConfig.isCompleteAnimationEnabled = isChecked
-            listener.toggleCompleteAnimation()
+            listener.setConfig(sortViewConfig)
+        }
+
+        binding.resetButton.setOnClickListener {
+            sortViewConfig = SortViewConfig()
+            setupSortViewParams()
+            listener.setConfig(sortViewConfig)
         }
 
         setupPickCurrentStateColorButton()
@@ -77,7 +84,7 @@ class SortingConfigBottomSheet: BottomSheetDialogFragment() {
         setupPickPivotColorButton()
     }
 
-    private fun setupSortViewParams() {
+    private fun getConfigFromSharedPref() {
         sharedPreferences = context?.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
 
         sharedPreferences?.let {
@@ -87,7 +94,9 @@ class SortingConfigBottomSheet: BottomSheetDialogFragment() {
                 sortViewConfig = gson.fromJson(str, itemType)
             }
         }
+    }
 
+    private fun setupSortViewParams() {
         binding.apply {
             showCurrentColorPickerButton.setBackgroundColor(Color.parseColor(sortViewConfig.currentStateColor))
             showUnsortedColorPickerButton.setBackgroundColor(Color.parseColor(sortViewConfig.unsortedStateColor))
@@ -114,8 +123,8 @@ class SortingConfigBottomSheet: BottomSheetDialogFragment() {
                 object : ColorPickerDialogListener {
                     override fun setSelectedColorString(colorString: String) {
                         sortViewConfig.currentStateColor = colorString
-                        binding.showCurrentColorPickerButton.setBackgroundColor(Color.parseColor(colorString))
-                        listener.onChangeCurrentStateColor(colorString)
+                        it.setBackgroundColor(Color.parseColor(colorString))
+                        listener.setConfig(sortViewConfig)
                     }
                 }
             )
@@ -131,8 +140,8 @@ class SortingConfigBottomSheet: BottomSheetDialogFragment() {
                 object : ColorPickerDialogListener {
                     override fun setSelectedColorString(colorString: String) {
                         sortViewConfig.unsortedStateColor = colorString
-                        binding.showUnsortedColorPickerButton.setBackgroundColor(Color.parseColor(colorString))
-                        listener.onChangeUnsortedStateColor(colorString)
+                        it.setBackgroundColor(Color.parseColor(colorString))
+                        listener.setConfig(sortViewConfig)
                     }
                 }
             )
@@ -148,8 +157,8 @@ class SortingConfigBottomSheet: BottomSheetDialogFragment() {
                 object : ColorPickerDialogListener {
                     override fun setSelectedColorString(colorString: String) {
                         sortViewConfig.sortedStateColor = colorString
-                        binding.showSortedColorPickerButton.setBackgroundColor(Color.parseColor(colorString))
-                        listener.onChangeSortedStateColor(colorString)
+                        it.setBackgroundColor(Color.parseColor(colorString))
+                        listener.setConfig(sortViewConfig)
                     }
                 }
             )
@@ -165,8 +174,8 @@ class SortingConfigBottomSheet: BottomSheetDialogFragment() {
                 object : ColorPickerDialogListener {
                     override fun setSelectedColorString(colorString: String) {
                         sortViewConfig.pivotColor = colorString
-                        binding.showPivotColorPickerButton.setBackgroundColor(Color.parseColor(colorString))
-                        listener.onChangePivotColor(colorString)
+                        it.setBackgroundColor(Color.parseColor(colorString))
+                        listener.setConfig(sortViewConfig)
                     }
                 }
             )

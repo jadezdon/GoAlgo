@@ -1,7 +1,8 @@
-package com.zhouppei.goalgo.algorithms
+package com.zhouppei.goalgo.views
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Canvas
 import android.graphics.Paint
 import android.os.Build
 import android.text.StaticLayout
@@ -63,6 +64,29 @@ abstract class AlgorithmView @JvmOverloads constructor(
         }
     }
 
+    override fun onDraw(canvas: Canvas?) {
+        super.onDraw(canvas)
+        canvas?.let { drawCaption(it) }
+    }
+
+    private fun drawCaption(canvas: Canvas) {
+        if (isRunning && captionText.isNotBlank()) {
+            if (captionTextLayout == null) {
+                canvas.drawText(
+                    captionText,
+                    paddingLeft + 20f,
+                    captionTextPaint.textSize,
+                    captionTextPaint
+                )
+            } else {
+                canvas.save()
+                canvas.translate(paddingLeft.toFloat(), 0f)
+                captionTextLayout!!.draw(canvas)
+                canvas.restore()
+            }
+        }
+    }
+
     open fun new() {
         isRunning = false
         captionText = ""
@@ -71,7 +95,7 @@ abstract class AlgorithmView @JvmOverloads constructor(
 
     open fun complete() {
         isRunning = false
-        onCompleteListener?.onComplete()
+        onCompleteListener?.onAlgorithmComplete()
     }
 
     fun setCaption(text: String) {
@@ -100,4 +124,8 @@ abstract class AlgorithmView @JvmOverloads constructor(
 open class AlgorithmConfig {
     var animationSpeed = Constants.ANIMATION_SPEED_NORMAL
     var isCompleteAnimationEnabled = true
+}
+
+interface OnCompleteListener {
+    fun onAlgorithmComplete()
 }

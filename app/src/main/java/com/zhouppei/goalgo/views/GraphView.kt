@@ -1,11 +1,8 @@
-package com.zhouppei.goalgo.algorithms.graph
+package com.zhouppei.goalgo.views
 
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
-import android.util.Log
-import com.zhouppei.goalgo.algorithms.AlgorithmConfig
-import com.zhouppei.goalgo.algorithms.AlgorithmView
 import com.zhouppei.goalgo.extensions.clone
 import com.zhouppei.goalgo.models.*
 import kotlinx.coroutines.delay
@@ -25,7 +22,7 @@ abstract class GraphView @JvmOverloads constructor(
     private var hasTarget = true
     private var config = GraphViewConfig()
     private var vertexRadius = 10f
-    private var vertexPadding = 8
+    private val vertexPadding = 8
     private var possiblePositions = mutableListOf<Pair<Int, Int>>()
     private var topLeftCorner = Pair(0f, 0f)
     private var labelTextBounds = Rect()
@@ -94,13 +91,14 @@ abstract class GraphView @JvmOverloads constructor(
 
     fun setGraphViewConfig(graphViewConfig: GraphViewConfig) {
         config = graphViewConfig
-        setCurrentStateColor(config.currentStateColor)
-        setUnvisitedStateColor(config.unvisitedStateColor)
-        setVisitedStateColor(config.visitedStateColor)
-        setStartVertexColor(config.startVertexColor)
-        setTargetVertexColor(config.targetVertexColor)
-        setEdgeDefaultColor(config.edgeDefaultColor)
-        setEdgeHighlightedColor(config.edgeHighlightedColor)
+        visitedVertexPaint.color = Color.parseColor(config.visitedStateColor)
+        unvisitedVertexPaint.color = Color.parseColor(config.unvisitedStateColor)
+        currentVertexPaint.color = Color.parseColor(config.currentStateColor)
+        startVertexPaint.color = Color.parseColor(config.startVertexColor)
+        edgeDefaultPaint.color = Color.parseColor(config.edgeDefaultColor)
+        edgeHighlightedPaint.color = Color.parseColor(config.edgeHighlightedColor)
+        targetVertexPaint.color = Color.parseColor(config.targetVertexColor)
+        if (!isRunning) invalidate()
     }
 
     fun setIsTargetExist(isExist: Boolean) {
@@ -113,15 +111,15 @@ abstract class GraphView @JvmOverloads constructor(
         delay(config.animationSpeed)
     }
 
-    suspend fun highlightUndirectedEdge(vertexLabel1: Int, vertexLabel2: Int) {
+    suspend fun highlightEdge(vertexLabel1: Int, vertexLabel2: Int) {
         if (!graph.hasEdge(vertexLabel1, vertexLabel2)) return
 
         val prevState = graph.adjMatrix[vertexLabel1][vertexLabel2]?.state
         graph.adjMatrix[vertexLabel1][vertexLabel2]?.state = EdgeState.HIGHLIGHT
-        graph.adjMatrix[vertexLabel2][vertexLabel1]?.state = EdgeState.HIGHLIGHT
+        if (graph.isUndirected) graph.adjMatrix[vertexLabel2][vertexLabel1]?.state = EdgeState.HIGHLIGHT
         update()
         graph.adjMatrix[vertexLabel1][vertexLabel2]?.state = prevState ?: EdgeState.DEFAULT
-        graph.adjMatrix[vertexLabel2][vertexLabel1]?.state = prevState ?: EdgeState.DEFAULT
+        if (graph.isUndirected) graph.adjMatrix[vertexLabel2][vertexLabel1]?.state = prevState ?: EdgeState.DEFAULT
     }
 
     suspend fun highlightDirectedEdge(vertexLabel1: Int, vertexLabel2: Int) {
@@ -153,7 +151,6 @@ abstract class GraphView @JvmOverloads constructor(
         }
 
         labelPaint.textSize = vertexRadius
-        config.vertexCount = min(config.vertexCount, (maxVertexCountInRow * maxVertexCountInCol) / 5)
         graph = Graph(config.vertexCount)
 
         generateVertices()
@@ -361,54 +358,7 @@ abstract class GraphView @JvmOverloads constructor(
         super.new()
     }
 
-    fun setAnimationSpeed(speedInMiliSec: Long) {
-        config.animationSpeed = speedInMiliSec
-    }
 
-    fun setLabelsVisibility(isVisible: Boolean) {
-        config.isLabelVisible = isVisible
-        if (!isRunning) invalidate()
-    }
-
-    fun setCurrentStateColor(colorString: String) {
-        currentVertexPaint.color = Color.parseColor(colorString)
-        if (!isRunning) invalidate()
-    }
-
-    fun setUnvisitedStateColor(colorString: String) {
-        unvisitedVertexPaint.color = Color.parseColor(colorString)
-        if (!isRunning) invalidate()
-    }
-
-    fun setVisitedStateColor(colorString: String) {
-        visitedVertexPaint.color = Color.parseColor(colorString)
-        edgeDonePaint.color = Color.parseColor(colorString)
-        if (!isRunning) invalidate()
-    }
-
-    fun setStartVertexColor(colorString: String) {
-        startVertexPaint.color = Color.parseColor(colorString)
-        if (!isRunning) invalidate()
-    }
-
-    fun setEdgeDefaultColor(colorString: String) {
-        edgeDefaultPaint.color = Color.parseColor(colorString)
-        if (!isRunning) invalidate()
-    }
-
-    fun setEdgeHighlightedColor(colorString: String) {
-        edgeHighlightedPaint.color = Color.parseColor(colorString)
-        if (!isRunning) invalidate()
-    }
-
-    fun toggleCompleteAnimation() {
-        config.isCompleteAnimationEnabled = !config.isCompleteAnimationEnabled
-    }
-
-    fun setTargetVertexColor(colorString: String) {
-        targetVertexPaint.color = Color.parseColor(colorString)
-        if (!isRunning) invalidate()
-    }
 
     override fun complete() {
         invalidate()
@@ -419,18 +369,18 @@ abstract class GraphView @JvmOverloads constructor(
         private val LOG_TAG = GraphView::class.qualifiedName
         const val DEFAULT_CURRENT_STATE_COLOR = "#FEDD00"
         const val DEFAULT_UNVISITED_STATE_COLOR = "#C1CDCD"
-        const val DEFAULT_VISITED_STATE_COLOR = "#2e8b57"
-        const val DEFAULT_START_VERTEX_COLOR = "#7575a9"
-        const val DEFAULT_TARGET_VERTEX_COLOR = "#191970"
+        const val DEFAULT_VISITED_STATE_COLOR = "#4ae057"
+        const val DEFAULT_START_VERTEX_COLOR = "#fe4600"
+        const val DEFAULT_TARGET_VERTEX_COLOR = "#fe46ef"
         const val EDGE_DEFAULT_COLOR = "#C1CDCD"
         const val EDGE_HIGHLIGHTED_COLOR = "#ff033e"
-
+        const val DEFAULT_VERTEX_COUNT = 50
         const val ROUND_RECT_RADIUS = 10f
     }
 }
 
 class GraphViewConfig : AlgorithmConfig() {
-    var vertexCount = 50
+    var vertexCount = GraphView.DEFAULT_VERTEX_COUNT
     var startVertexColor = GraphView.DEFAULT_START_VERTEX_COLOR
     var targetVertexColor = GraphView.DEFAULT_TARGET_VERTEX_COLOR
 

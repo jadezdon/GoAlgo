@@ -13,14 +13,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.zhouppei.goalgo.algorithms.AlgorithmView
-import com.zhouppei.goalgo.algorithms.OnCompleteListener
 import com.zhouppei.goalgo.algorithms.graph.*
 import com.zhouppei.goalgo.algorithms.sorting.*
 import com.zhouppei.goalgo.databinding.FragmentAlgorithmBinding
 import com.zhouppei.goalgo.models.GraphAlgorithm
 import com.zhouppei.goalgo.models.SortingAlgorithm
 import com.zhouppei.goalgo.utils.Constants
+import com.zhouppei.goalgo.views.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
@@ -35,11 +34,15 @@ class AlgorithmFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var algorithmView: AlgorithmView
+
     private lateinit var sortingConfigBottomSheet: SortingConfigBottomSheet
     private var sortingConfigListener: SortingConfigListener? = null
 
     private lateinit var graphConfigBottomSheet: GraphConfigBottomSheet
     private var graphConfigListener: GraphConfigListener? = null
+
+    private lateinit var gridConfigBottomSheet: GridConfigBottomSheet
+    private var gridConfigListener: GridConfigListener? = null
 
     private var sharedPreferences: SharedPreferences? = null
     private val gson = Gson()
@@ -72,22 +75,11 @@ class AlgorithmFragment : Fragment() {
     }
 
     private fun initAlgorithmView() {
-        algorithmView = when (args.algorithmName) {
-            SortingAlgorithm.BubbleSort.str -> BubbleSortView(requireContext())
-            SortingAlgorithm.InsertionSort.str -> InsertionSortView(requireContext())
-            SortingAlgorithm.QuickSort.str -> QuickSortView(requireContext())
-            SortingAlgorithm.SelectionSort.str -> SelectionSortView(requireContext())
-            SortingAlgorithm.MergeSort.str -> MergeSortView(requireContext())
-            SortingAlgorithm.ShellSort.str -> ShellSortView(requireContext())
-            GraphAlgorithm.DFS.str -> DFSView(requireContext())
-            GraphAlgorithm.BFS.str -> BFSView(requireContext())
-            GraphAlgorithm.ASTAR.str -> AStarView(requireContext())
-            else -> BubbleSortView(requireContext())
-        }.apply {
+        algorithmView = mapAlgorithmNameToView(args.algorithmName).apply {
             layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
             setPadding(40, 50, 40, 50)
             setOnCompleteListener(object : OnCompleteListener {
-                override fun onComplete() {
+                override fun onAlgorithmComplete() {
                     binding.newButton.apply {
                         isEnabled = true
                         alpha = 1f
@@ -106,11 +98,41 @@ class AlgorithmFragment : Fragment() {
 
             when (this) {
                 is GraphView -> getGraphViewConfig()?.let { setGraphViewConfig(it) }
-                is SortView -> getSortViewConfig()?.let { setSortViewConfiguration(it) }
+                is SortView -> getSortViewConfig()?.let { setSortViewConfig(it) }
+                is GridView -> getGridViewConfig()?.let {  }
             }
 
             if (this is DFSView) setIsTargetExist(false)
         }
+    }
+
+    private fun mapAlgorithmNameToView(name: String): AlgorithmView {
+        return when (name) {
+            SortingAlgorithm.BubbleSort.str -> BubbleSortView(requireContext())
+            SortingAlgorithm.InsertionSort.str -> InsertionSortView(requireContext())
+            SortingAlgorithm.QuickSort.str -> QuickSortView(requireContext())
+            SortingAlgorithm.SelectionSort.str -> SelectionSortView(requireContext())
+            SortingAlgorithm.MergeSort.str -> MergeSortView(requireContext())
+            SortingAlgorithm.ShellSort.str -> ShellSortView(requireContext())
+            SortingAlgorithm.CocktailShakerSort.str -> CocktailShakerSortView(requireContext())
+            GraphAlgorithm.DFS.str -> DFSView(requireContext())
+            GraphAlgorithm.BFS.str -> BFSView(requireContext())
+            GraphAlgorithm.ASTAR.str -> AStarView(requireContext())
+            else -> BubbleSortView(requireContext())
+        }
+    }
+
+    private fun getGridViewConfig(): GridViewConfig? {
+        sharedPreferences = context?.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
+
+        sharedPreferences?.let {
+            if (it.contains(Constants.SHARED_PREF_GRIDVIEW_CONFIGURATION)) {
+                val str = it.getString(Constants.SHARED_PREF_GRIDVIEW_CONFIGURATION, "")
+                val itemType = object : TypeToken<GridViewConfig>() {}.type
+                return gson.fromJson(str, itemType)
+            }
+        }
+        return null
     }
 
     private fun getGraphViewConfig(): GraphViewConfig? {
@@ -188,85 +210,30 @@ class AlgorithmFragment : Fragment() {
         when (algorithmView) {
             is GraphView -> initGraphConfigListener()
             is SortView -> initSortingConfigListener()
+            is GridView -> initGridConfigListener()
         }
     }
 
     private fun initGraphConfigListener() {
         graphConfigListener = object : GraphConfigListener {
-            override fun onChangeSpeed(speedInMiliSec: Long) {
-                (algorithmView as? GraphView)?.setAnimationSpeed(speedInMiliSec)
+            override fun setConfig(config: GraphViewConfig) {
+                (algorithmView as? GraphView)?.setGraphViewConfig(config)
             }
+        }
+    }
 
-            override fun onChangeLabelsVisibility(isVisible: Boolean) {
-                (algorithmView as? GraphView)?.setLabelsVisibility(isVisible)
-            }
-
-            override fun onChangeCurrentStateColor(colorString: String) {
-                (algorithmView as? GraphView)?.setCurrentStateColor(colorString)
-            }
-
-            override fun onChangeUnvisitedStateColor(colorString: String) {
-                (algorithmView as? GraphView)?.setUnvisitedStateColor(colorString)
-            }
-
-            override fun onChangeVisitedStateColor(colorString: String) {
-                (algorithmView as? GraphView)?.setVisitedStateColor(colorString)
-            }
-
-            override fun onChangeStartVertexColor(colorString: String) {
-                (algorithmView as? GraphView)?.setStartVertexColor(colorString)
-            }
-
-            override fun onChangeEdgeDefaultColor(colorString: String) {
-                (algorithmView as? GraphView)?.setEdgeDefaultColor(colorString)
-            }
-
-            override fun onChangeEdgeHighlightedColor(colorString: String) {
-                (algorithmView as? GraphView)?.setEdgeHighlightedColor(colorString)
-            }
-
-            override fun toggleCompleteAnimation() {
-                (algorithmView as? GraphView)?.toggleCompleteAnimation()
-            }
-
-            override fun onChangeTargetVertexColor(colorString: String) {
-                (algorithmView as? GraphView)?.setTargetVertexColor(colorString)
+    private fun initGridConfigListener() {
+        gridConfigListener = object : GridConfigListener {
+            override fun setConfig(config: GridViewConfig) {
+                (algorithmView as? GridView)?.setGridViewConfig(config)
             }
         }
     }
 
     private fun initSortingConfigListener() {
         sortingConfigListener = object : SortingConfigListener {
-            override fun onChangeSpeed(speedInMiliSec: Long) {
-                (algorithmView as? SortView)?.setAnimationSpeed(speedInMiliSec)
-            }
-
-            override fun onChangeItemValuesVisibility(isShow: Boolean) {
-                (algorithmView as? SortView)?.setValuesVisibility(isShow)
-            }
-
-            override fun onChangeItemIndexesVisibility(isShow: Boolean) {
-                (algorithmView as? SortView)?.setIndexesVisibility(isShow)
-            }
-
-            override fun onChangeCurrentStateColor(colorString: String) {
-                (algorithmView as? SortView)?.setCurrentStateColor(colorString)
-            }
-
-            override fun onChangeUnsortedStateColor(colorString: String) {
-                (algorithmView as? SortView)?.setUnsortedStateColor(colorString)
-            }
-
-            override fun onChangeSortedStateColor(colorString: String) {
-                (algorithmView as? SortView)?.setSortedStateColor(colorString)
-            }
-
-            override fun onChangePivotColor(colorString: String) {
-                (algorithmView as? SortView)?.setPivotColor(colorString)
-            }
-
-            override fun toggleCompleteAnimation() {
-                (algorithmView as? SortView)?.toggleCompleteAnimation()
+            override fun setConfig(config: SortViewConfig) {
+                (algorithmView as? SortView)?.setSortViewConfig(config)
             }
         }
     }
@@ -280,6 +247,9 @@ class AlgorithmFragment : Fragment() {
                 is SortView -> sortingConfigListener?.let { listener ->
                     SortingConfigBottomSheet.newInstance(listener).apply { show(it, tag) }
                 }
+                is GridView -> gridConfigListener?.let { listener ->
+                    GridConfigBottomSheet.newInstance(listener).apply { show(it, tag) }
+                }
                 else -> {}
             }
         }
@@ -289,6 +259,7 @@ class AlgorithmFragment : Fragment() {
         super.onDestroy()
         if (this::sortingConfigBottomSheet.isInitialized) sortingConfigBottomSheet.dismiss()
         if (this::graphConfigBottomSheet.isInitialized) graphConfigBottomSheet.dismiss()
+        if (this::gridConfigBottomSheet.isInitialized) gridConfigBottomSheet.dismiss()
         if (this::algorithmJob.isInitialized && !algorithmJob.isCancelled) algorithmJob.cancel()
     }
 

@@ -3,6 +3,7 @@ package com.zhouppei.goalgo.algorithms.sorting
 import android.content.Context
 import android.util.AttributeSet
 import com.zhouppei.goalgo.models.ItemState
+import com.zhouppei.goalgo.views.SortView
 import kotlin.math.min
 
 class MergeSortView @JvmOverloads constructor(

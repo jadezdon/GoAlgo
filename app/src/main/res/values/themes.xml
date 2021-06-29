@@ -32,4 +32,10 @@
         <item name="android:insetLeft">0dp</item>
         <item name="android:insetRight">0dp</item>
     </style>
+
+    <style name="Theme.TextButton" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="textAllCaps">true</item>
+    </style>
 </resources>

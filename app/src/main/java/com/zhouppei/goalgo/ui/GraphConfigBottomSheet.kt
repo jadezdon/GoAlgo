@@ -13,7 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.zhouppei.goalgo.R
-import com.zhouppei.goalgo.algorithms.graph.GraphViewConfig
+import com.zhouppei.goalgo.views.GraphViewConfig
 import com.zhouppei.goalgo.databinding.BottomSheetGraphConfigBinding
 import com.zhouppei.goalgo.ui.colorpicker.ColorPickerDialog
 import com.zhouppei.goalgo.ui.colorpicker.ColorPickerDialogListener
@@ -41,29 +41,38 @@ class GraphConfigBottomSheet: BottomSheetDialogFragment() {
             state = BottomSheetBehavior.STATE_EXPANDED
         }
 
+        getConfigFromSharedPref()
         setupGraphViewParams()
 
         binding.speedSlowButton.setOnClickListener {
             graphViewConfig.animationSpeed = Constants.ANIMATION_SPEED_SLOW
-            listener.onChangeSpeed(Constants.ANIMATION_SPEED_SLOW)
+            listener.setConfig(graphViewConfig)
         }
+
         binding.speedNormalButton.setOnClickListener {
             graphViewConfig.animationSpeed = Constants.ANIMATION_SPEED_NORMAL
-            listener.onChangeSpeed(Constants.ANIMATION_SPEED_NORMAL)
+            listener.setConfig(graphViewConfig)
         }
+
         binding.speedFastButton.setOnClickListener {
             graphViewConfig.animationSpeed = Constants.ANIMATION_SPEED_FAST
-            listener.onChangeSpeed(Constants.ANIMATION_SPEED_FAST)
+            listener.setConfig(graphViewConfig)
         }
 
         binding.showLabelsSwitch.setOnCheckedChangeListener { _, isChecked ->
             graphViewConfig.isLabelVisible = isChecked
-            listener.onChangeLabelsVisibility(isChecked)
+            listener.setConfig(graphViewConfig)
         }
 
         binding.toggleCompleteAnimationSwitch.setOnCheckedChangeListener { _, isChecked ->
             graphViewConfig.isCompleteAnimationEnabled = isChecked
-            listener.toggleCompleteAnimation()
+            listener.setConfig(graphViewConfig)
+        }
+
+        binding.resetButton.setOnClickListener {
+            graphViewConfig = GraphViewConfig()
+            setupGraphViewParams()
+            listener.setConfig(graphViewConfig)
         }
 
         setupPickCurrentStateColorButton()
@@ -75,7 +84,7 @@ class GraphConfigBottomSheet: BottomSheetDialogFragment() {
         setupPickEdgeHighlightedColorButton()
     }
 
-    private fun setupGraphViewParams() {
+    private fun getConfigFromSharedPref() {
         sharedPreferences = context?.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
 
         sharedPreferences?.let {
@@ -85,7 +94,9 @@ class GraphConfigBottomSheet: BottomSheetDialogFragment() {
                 graphViewConfig = gson.fromJson(str, itemType)
             }
         }
+    }
 
+    private fun setupGraphViewParams() {
         binding.apply {
             showCurrentColorPickerButton.setBackgroundColor(Color.parseColor(graphViewConfig.currentStateColor))
             showUnvisitedColorPickerButton.setBackgroundColor(Color.parseColor(graphViewConfig.unvisitedStateColor))
@@ -114,8 +125,8 @@ class GraphConfigBottomSheet: BottomSheetDialogFragment() {
                 object : ColorPickerDialogListener {
                     override fun setSelectedColorString(colorString: String) {
                         graphViewConfig.currentStateColor = colorString
-                        binding.showCurrentColorPickerButton.setBackgroundColor(Color.parseColor(colorString))
-                        listener.onChangeCurrentStateColor(colorString)
+                        it.setBackgroundColor(Color.parseColor(colorString))
+                        listener.setConfig(graphViewConfig)
                     }
                 }
             )
@@ -132,7 +143,7 @@ class GraphConfigBottomSheet: BottomSheetDialogFragment() {
                     override fun setSelectedColorString(colorString: String) {
                         graphViewConfig.unvisitedStateColor = colorString
                         it.setBackgroundColor(Color.parseColor(colorString))
-                        listener.onChangeUnvisitedStateColor(colorString)
+                        listener.setConfig(graphViewConfig)
                     }
                 }
             )
@@ -149,7 +160,7 @@ class GraphConfigBottomSheet: BottomSheetDialogFragment() {
                     override fun setSelectedColorString(colorString: String) {
                         graphViewConfig.visitedStateColor = colorString
                         it.setBackgroundColor(Color.parseColor(colorString))
-                        listener.onChangeVisitedStateColor(colorString)
+                        listener.setConfig(graphViewConfig)
                     }
                 }
             )
@@ -166,7 +177,7 @@ class GraphConfigBottomSheet: BottomSheetDialogFragment() {
                     override fun setSelectedColorString(colorString: String) {
                         graphViewConfig.edgeDefaultColor = colorString
                         it.setBackgroundColor(Color.parseColor(colorString))
-                        listener.onChangeEdgeDefaultColor(colorString)
+                        listener.setConfig(graphViewConfig)
                     }
                 }
             )
@@ -183,7 +194,7 @@ class GraphConfigBottomSheet: BottomSheetDialogFragment() {
                     override fun setSelectedColorString(colorString: String) {
                         graphViewConfig.edgeHighlightedColor = colorString
                         it.setBackgroundColor(Color.parseColor(colorString))
-                        listener.onChangeEdgeHighlightedColor(colorString)
+                        listener.setConfig(graphViewConfig)
                     }
                 }
             )
@@ -200,7 +211,7 @@ class GraphConfigBottomSheet: BottomSheetDialogFragment() {
                     override fun setSelectedColorString(colorString: String) {
                         graphViewConfig.startVertexColor = colorString
                         it.setBackgroundColor(Color.parseColor(colorString))
-                        listener.onChangeStartVertexColor(colorString)
+                        listener.setConfig(graphViewConfig)
                     }
                 }
             )
@@ -217,7 +228,7 @@ class GraphConfigBottomSheet: BottomSheetDialogFragment() {
                     override fun setSelectedColorString(colorString: String) {
                         graphViewConfig.targetVertexColor = colorString
                         it.setBackgroundColor(Color.parseColor(colorString))
-                        listener.onChangeTargetVertexColor(colorString)
+                        listener.setConfig(graphViewConfig)
                     }
                 }
             )

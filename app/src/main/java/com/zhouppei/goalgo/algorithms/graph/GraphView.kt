@@ -3,6 +3,7 @@ package com.zhouppei.goalgo.algorithms.graph
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import android.util.Log
 import com.zhouppei.goalgo.algorithms.AlgorithmConfig
 import com.zhouppei.goalgo.algorithms.AlgorithmView
 import com.zhouppei.goalgo.extensions.clone
@@ -21,7 +22,7 @@ abstract class GraphView @JvmOverloads constructor(
     protected var graph: Graph
     protected var startVertexLabel = 0
     protected var targetVertexLabel = 0
-    protected var hasTarget = true
+    private var hasTarget = true
     private var config = GraphViewConfig()
     private var vertexRadius = 10f
     private var vertexPadding = 8
@@ -29,13 +30,12 @@ abstract class GraphView @JvmOverloads constructor(
     private var topLeftCorner = Pair(0f, 0f)
     private var labelTextBounds = Rect()
 
+    private var maxVertexCountInRow = 15
+    private var maxVertexCountInCol = 15
+
+
     init {
         graph = Graph(config.vertexCount)
-        for (x in 0 until MAX_VERTEX_COUNT_IN_ROW) {
-            for (y in 0 until MAX_VERTEX_COUNT_IN_ROW) {
-                possiblePositions.add(Pair(x, y))
-            }
-        }
         targetVertexLabel = config.vertexCount - 1
     }
 
@@ -139,12 +139,21 @@ abstract class GraphView @JvmOverloads constructor(
     }
 
     private fun initializeParams() {
-        val canvasSideLength = min(canvasWidth - paddingLeft - paddingRight, canvasHeight - paddingTop - paddingBottom)
-        topLeftCorner = Pair((canvasWidth - canvasSideLength) / 2f, (canvasHeight - canvasSideLength) / 2f)
+        topLeftCorner = Pair(paddingLeft.toFloat(), paddingTop.toFloat())
 
-        vertexRadius = (canvasSideLength / MAX_VERTEX_COUNT_IN_ROW - 2 * vertexPadding) / 2f
+        vertexRadius = (min(canvasWidth, canvasHeight) / maxVertexCountInRow - 2 * vertexPadding) / 2f
+        maxVertexCountInRow = (canvasWidth / ((vertexRadius + vertexPadding) * 2)).toInt()
+        maxVertexCountInCol = (canvasHeight / ((vertexRadius + vertexPadding) * 2)).toInt()
+
+        possiblePositions.clear()
+        for (x in 0 until maxVertexCountInRow) {
+            for (y in 0 until maxVertexCountInCol) {
+                possiblePositions.add(Pair(x, y))
+            }
+        }
+
         labelPaint.textSize = vertexRadius
-
+        config.vertexCount = min(config.vertexCount, (maxVertexCountInRow * maxVertexCountInCol) / 5)
         graph = Graph(config.vertexCount)
 
         generateVertices()
@@ -415,14 +424,13 @@ abstract class GraphView @JvmOverloads constructor(
         const val DEFAULT_TARGET_VERTEX_COLOR = "#191970"
         const val EDGE_DEFAULT_COLOR = "#C1CDCD"
         const val EDGE_HIGHLIGHTED_COLOR = "#ff033e"
-        const val MAX_VERTEX_COUNT_IN_ROW = 15
 
         const val ROUND_RECT_RADIUS = 10f
     }
 }
 
 class GraphViewConfig : AlgorithmConfig() {
-    var vertexCount = 30
+    var vertexCount = 50
     var startVertexColor = GraphView.DEFAULT_START_VERTEX_COLOR
     var targetVertexColor = GraphView.DEFAULT_TARGET_VERTEX_COLOR
 

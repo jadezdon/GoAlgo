@@ -190,9 +190,9 @@ abstract class SortView @JvmOverloads constructor(
     }
 
     private fun initializeParams() {
-        sortItemWidth = (((canvasWidth - paddingLeft - paddingRight) / items.size) - 2 * sortItemPadding)
+        sortItemWidth = ((canvasWidth / items.size) - 2 * sortItemPadding)
         textPaint.textSize = min(25f, sortItemWidth * (2f / 3f))
-        maxSortItemHeight = (canvasHeight - 2 * sortItemPadding - paddingTop - paddingBottom - captionTextPaint.textSize - textPaint.textSize).toInt()
+        maxSortItemHeight = (canvasHeight - 2 * sortItemPadding - captionTextPaint.textSize - textPaint.textSize).toInt()
 
         items.forEachIndexed { index, item ->
             item.coordinates.left = paddingLeft + ((2 * index + 1) * sortItemPadding + index * sortItemWidth).toFloat()

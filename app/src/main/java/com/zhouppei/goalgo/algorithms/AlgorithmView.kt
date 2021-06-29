@@ -41,6 +41,9 @@ abstract class AlgorithmView @JvmOverloads constructor(
             canvasWidth = max(width, size.first)
             canvasHeight = max(min(800, size.second), height)
         }
+
+        canvasWidth = canvasWidth - paddingLeft - paddingRight
+        canvasHeight = canvasHeight - paddingTop - paddingBottom
     }
 
     protected val captionTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {

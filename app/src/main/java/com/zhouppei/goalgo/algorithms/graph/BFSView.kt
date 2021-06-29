@@ -15,32 +15,30 @@ class BFSView @JvmOverloads constructor(
     override suspend fun run() {
         super.run()
 
-        val labelsQueue: Queue<Int> = LinkedList<Int>()
-        graph.vertices[startVertexLabel].state = VertexState.CURRENT
+        val labelsQueue: Queue<Int> = LinkedList()
+        graph.vertices[startVertexLabel].state = VertexState.VISITED
         update()
         labelsQueue.add(startVertexLabel)
 
         while (labelsQueue.isNotEmpty()) {
             val v = labelsQueue.poll() ?: break
-            graph.vertices[v].state = VertexState.VISITED
-            update()
 
             if (v == targetVertexLabel) {
                 break
             }
-            for (i in 0 until graph.adjMatrix[v].size) {
-                highlightEdge(v, i)
-                if (graph.hasEdge(v, i) && graph.vertices[i].state == VertexState.UNVISITED) {
-                    labelsQueue.add(i)
-                    graph.vertices[i].state = VertexState.CURRENT
-                    graph.adjMatrix[v][i]?.state = EdgeState.DONE
+
+            val vNeighbours = graph.getVertexNeighbours(v)
+            for (i in 0 until vNeighbours.size) {
+                highlightUndirectedEdge(v, vNeighbours[i])
+                if (graph.vertices[vNeighbours[i]].state != VertexState.VISITED) {
+                    labelsQueue.add(vNeighbours[i])
+                    graph.vertices[vNeighbours[i]].state = VertexState.VISITED
+                    graph.adjMatrix[v][vNeighbours[i]]?.state = EdgeState.DONE
+                    graph.adjMatrix[vNeighbours[i]][v]?.state = EdgeState.DONE
                     update()
                 }
             }
-
-
         }
-
         complete()
     }
 

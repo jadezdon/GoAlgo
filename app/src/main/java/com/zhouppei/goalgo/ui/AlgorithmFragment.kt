@@ -15,10 +15,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.zhouppei.goalgo.algorithms.AlgorithmView
 import com.zhouppei.goalgo.algorithms.OnCompleteListener
-import com.zhouppei.goalgo.algorithms.graph.AStarView
-import com.zhouppei.goalgo.algorithms.graph.BFSView
-import com.zhouppei.goalgo.algorithms.graph.DFSView
-import com.zhouppei.goalgo.algorithms.graph.GraphView
+import com.zhouppei.goalgo.algorithms.graph.*
 import com.zhouppei.goalgo.algorithms.sorting.*
 import com.zhouppei.goalgo.databinding.FragmentAlgorithmBinding
 import com.zhouppei.goalgo.models.GraphAlgorithm
@@ -108,10 +105,25 @@ class AlgorithmFragment : Fragment() {
             })
 
             when (this) {
-                is GraphView -> {}
+                is GraphView -> getGraphViewConfig()?.let { setGraphViewConfig(it) }
                 is SortView -> getSortViewConfig()?.let { setSortViewConfiguration(it) }
             }
+
+            if (this is DFSView) setIsTargetExist(false)
         }
+    }
+
+    private fun getGraphViewConfig(): GraphViewConfig? {
+        sharedPreferences = context?.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
+
+        sharedPreferences?.let {
+            if (it.contains(Constants.SHARED_PREF_GRAPHVIEW_CONFIGURATION)) {
+                val str = it.getString(Constants.SHARED_PREF_GRAPHVIEW_CONFIGURATION, "")
+                val itemType = object : TypeToken<GraphViewConfig>() {}.type
+                return gson.fromJson(str, itemType)
+            }
+        }
+        return null
     }
 
     private fun getSortViewConfig(): SortViewConfig? {

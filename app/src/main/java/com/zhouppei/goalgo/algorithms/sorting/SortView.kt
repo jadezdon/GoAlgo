@@ -75,12 +75,12 @@ abstract class SortView @JvmOverloads constructor(
         super.new()
     }
 
-    fun setSortViewConfiguration(config: SortViewConfig) {
-        this.config = config
-        setCurrentStateColor(this.config.currentStateColor)
-        setUnsortedStateColor(this.config.unsortedStateColor)
-        setSortedStateColor(this.config.sortedStateColor)
-        setPivotColor(this.config.pivotColor)
+    fun setSortViewConfiguration(sortViewConfig: SortViewConfig) {
+        config = sortViewConfig
+        setCurrentStateColor(config.currentStateColor)
+        setUnsortedStateColor(config.unsortedStateColor)
+        setSortedStateColor(config.sortedStateColor)
+        setPivotColor(config.pivotColor)
     }
 
     fun setAnimationSpeed(speedInMiliSec: Long) {

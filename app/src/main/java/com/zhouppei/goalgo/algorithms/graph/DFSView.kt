@@ -20,22 +20,19 @@ class DFSView @JvmOverloads constructor(
     }
 
     private suspend fun dfs(v: Int) {
-        graph.vertices[v].state = VertexState.CURRENT
-        update()
-
-        for (i in 0 until graph.adjMatrix[v].size) {
-            if (graph.hasEdge(v, i)) {
-                highlightEdge(v, i)
-                if (graph.vertices[i].state == VertexState.UNVISITED) {
-                    graph.adjMatrix[v][i]?.state = EdgeState.DONE
-                    update()
-                    dfs(i)
-                }
-            }
-        }
-
         graph.vertices[v].state = VertexState.VISITED
         update()
+
+        val vNeighbours = graph.getVertexNeighbours(v)
+        for (i in 0 until vNeighbours.size) {
+            highlightUndirectedEdge(v, vNeighbours[i])
+            if (graph.vertices[vNeighbours[i]].state != VertexState.VISITED) {
+                graph.adjMatrix[v][vNeighbours[i]]?.state = EdgeState.DONE
+                graph.adjMatrix[vNeighbours[i]][v]?.state = EdgeState.DONE
+                update()
+                dfs(vNeighbours[i])
+            }
+        }
     }
 
     override fun sourceCode(): String {

@@ -20,19 +20,23 @@ abstract class GridView @JvmOverloads constructor(
     private var maxItemCountInRow = 15
     private var maxItemCountInCol = 15
 
-
     init {
         grid = Grid(config.itemCountInRow, config.itemCountInCol)
     }
 
     private val wallPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.parseColor(config.wallColor)
-        strokeWidth = 2f
+        strokeWidth = 1f
     }
 
     private val itemDefaultPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
         color = Color.parseColor(config.itemDefaultColor)
+    }
+
+    private val itemBorderPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+        color = Color.parseColor(config.wallColor)
     }
 
     fun setGridViewConfig(gridViewConfig: GridViewConfig) {
@@ -61,7 +65,7 @@ abstract class GridView @JvmOverloads constructor(
 
         for (r in 0 until grid.row) {
             for (c in 0 until grid.col) {
-                grid.items[r][c].coordinate = Pair(paddingLeft + itemSize / 2 + (2 * c + 1) * itemSize, paddingTop + itemSize / 2 + (2 * r + 1))
+                grid.items[r][c].coordinate = Pair(paddingLeft + (2 * c + 1) * (itemSize / 2), paddingTop + (2 * r + 1) * (itemSize / 2))
                 grid.items[r][c].boundingRectF = RectF(
                     grid.items[r][c].coordinate.first - itemSize / 2,
                     grid.items[r][c].coordinate.second - itemSize / 2,
@@ -84,6 +88,41 @@ abstract class GridView @JvmOverloads constructor(
         for (r in 0 until grid.row) {
             for (c in 0 until grid.col) {
                 canvas.drawRect(grid.items[r][c].boundingRectF, itemDefaultPaint)
+                // left wall
+                canvas.drawLine(
+                    grid.items[r][c].boundingRectF.left,
+                    grid.items[r][c].boundingRectF.top,
+                    grid.items[r][c].boundingRectF.left,
+                    grid.items[r][c].boundingRectF.bottom,
+                    wallPaint
+                )
+
+                // bottom wall
+                canvas.drawLine(
+                    grid.items[r][c].boundingRectF.left,
+                    grid.items[r][c].boundingRectF.bottom,
+                    grid.items[r][c].boundingRectF.right,
+                    grid.items[r][c].boundingRectF.bottom,
+                    wallPaint
+                )
+
+                // right wall
+                canvas.drawLine(
+                    grid.items[r][c].boundingRectF.right,
+                    grid.items[r][c].boundingRectF.top,
+                    grid.items[r][c].boundingRectF.right,
+                    grid.items[r][c].boundingRectF.bottom,
+                    wallPaint
+                )
+
+                // top wall
+                canvas.drawLine(
+                    grid.items[r][c].boundingRectF.left,
+                    grid.items[r][c].boundingRectF.top,
+                    grid.items[r][c].boundingRectF.right,
+                    grid.items[r][c].boundingRectF.top,
+                    wallPaint
+                )
             }
         }
     }
@@ -100,11 +139,11 @@ abstract class GridView @JvmOverloads constructor(
 
     companion object {
         private val LOG_TAG = GraphView::class.qualifiedName
-        const val DEFAULT_ITEM_COLOR = "#FEDD00"
-        const val DEFAULT_UNVISITED_STATE_COLOR = "#C1CDCD"
+        const val DEFAULT_ITEM_COLOR = "#ffffff"
+        const val DEFAULT_UNVISITED_STATE_COLOR = "#FEDD00"
         const val DEFAULT_VISITED_STATE_COLOR = "#4ae057"
         const val DEFAULT_START_VERTEX_COLOR = "#fe4600"
-        const val DEFAULT_WALL_COLOR = "#fe46ef"
+        const val DEFAULT_WALL_COLOR = "#85c2ff"
         const val DEFAULT_ITEM_COUNT_IN_ROW = 20
         const val DEFAULT_ITEM_COUNT_IN_COL = 20
 

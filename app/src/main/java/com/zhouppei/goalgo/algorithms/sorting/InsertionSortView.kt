@@ -2,7 +2,7 @@ package com.zhouppei.goalgo.algorithms.sorting
 
 import android.content.Context
 import android.util.AttributeSet
-import com.zhouppei.goalgo.models.ItemState
+import com.zhouppei.goalgo.models.ItemType
 import com.zhouppei.goalgo.views.SortView
 
 class InsertionSortView @JvmOverloads constructor(
@@ -22,10 +22,10 @@ class InsertionSortView @JvmOverloads constructor(
             sortingInterval = Pair(0, i)
 
             captionText = "key = $key"
-            items[i].state = ItemState.CURRENT
+            items[i].type = ItemType.CURRENT
             items[i].isPivot = true
             update()
-            items[i].state = ItemState.UNSORTED
+            items[i].type = ItemType.UNSORTED
 
 
             j = i - 1
@@ -47,10 +47,10 @@ class InsertionSortView @JvmOverloads constructor(
 
             items[j + 1].value = key
 
-            items[j + 1].state = ItemState.CURRENT
+            items[j + 1].type = ItemType.CURRENT
             items[j + 1].isPivot = true
             update()
-            items[j + 1].state = ItemState.UNSORTED
+            items[j + 1].type = ItemType.UNSORTED
             items[j + 1].isPivot = false
         }
 

@@ -70,11 +70,11 @@ abstract class AlgorithmView @JvmOverloads constructor(
     }
 
     private fun drawCaption(canvas: Canvas) {
-        if (isRunning && captionText.isNotBlank()) {
+        if (captionText.isNotBlank()) {
             if (captionTextLayout == null) {
                 canvas.drawText(
                     captionText,
-                    paddingLeft + 20f,
+                    paddingLeft.toFloat(),
                     captionTextPaint.textSize,
                     captionTextPaint
                 )

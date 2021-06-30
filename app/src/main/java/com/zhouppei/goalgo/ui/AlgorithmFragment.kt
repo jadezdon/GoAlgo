@@ -16,7 +16,7 @@ import com.google.gson.reflect.TypeToken
 import com.zhouppei.goalgo.algorithms.graph.*
 import com.zhouppei.goalgo.algorithms.sorting.*
 import com.zhouppei.goalgo.databinding.FragmentAlgorithmBinding
-import com.zhouppei.goalgo.models.GraphAlgorithm
+import com.zhouppei.goalgo.models.GraphSearchAlgorithm
 import com.zhouppei.goalgo.models.SortingAlgorithm
 import com.zhouppei.goalgo.utils.Constants
 import com.zhouppei.goalgo.views.*
@@ -115,9 +115,9 @@ class AlgorithmFragment : Fragment() {
             SortingAlgorithm.MergeSort.str -> MergeSortView(requireContext())
             SortingAlgorithm.ShellSort.str -> ShellSortView(requireContext())
             SortingAlgorithm.CocktailShakerSort.str -> CocktailShakerSortView(requireContext())
-            GraphAlgorithm.DFS.str -> DFSView(requireContext())
-            GraphAlgorithm.BFS.str -> BFSView(requireContext())
-            GraphAlgorithm.ASTAR.str -> AStarView(requireContext())
+            GraphSearchAlgorithm.DFS.str -> DFSView(requireContext())
+            GraphSearchAlgorithm.BFS.str -> BFSView(requireContext())
+            GraphSearchAlgorithm.ASTAR.str -> AStarView(requireContext())
             else -> BubbleSortView(requireContext())
         }
     }

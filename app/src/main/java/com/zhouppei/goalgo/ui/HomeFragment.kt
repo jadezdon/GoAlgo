@@ -9,27 +9,14 @@ import android.widget.ImageView
 import androidx.navigation.fragment.findNavController
 import com.zhouppei.goalgo.R
 import com.zhouppei.goalgo.databinding.FragmentHomeBinding
-import com.zhouppei.goalgo.models.GraphAlgorithm
+import com.zhouppei.goalgo.models.AlgorithmGroup
+import com.zhouppei.goalgo.models.GraphSearchAlgorithm
 import com.zhouppei.goalgo.models.SortingAlgorithm
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var graphAlgoListAdapter: AlgorithmNameListAdapter
-    private lateinit var sortingAlgoListAdapter: AlgorithmNameListAdapter
-    private val graphAlgorithmNames = mutableListOf<String>()
-    private val sortingAlgorithmNames = mutableListOf<String>()
-
-    init {
-        GraphAlgorithm.values().forEach {
-            graphAlgorithmNames.add(it.str)
-        }
-        SortingAlgorithm.values().forEach {
-            sortingAlgorithmNames.add(it.str)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,44 +28,22 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupRecyclerViews() {
-        graphAlgoListAdapter = AlgorithmNameListAdapter(object : NameClickListener {
-            override fun onClick(name: String) {
-                goToRunAlgorithmPage(name)
+        val algorithmGroupList = mutableListOf<AlgorithmGroup>().apply {
+            add(AlgorithmGroup("Graph search", R.drawable.ic_graph,  GraphSearchAlgorithm.valuesToNameList()))
+            add(AlgorithmGroup("Sorting", R.drawable.ic_sort, SortingAlgorithm.valuesToNameList()))
+        }
+        binding.algoGroupRecyclerview.adapter = AlgorithmGroupListAdapter(
+            algorithmGroupList,
+            object : NameClickListener {
+                override fun onClick(name: String) {
+                    goToRunAlgorithmPage(name)
+                }
             }
-        })
-        binding.graphAlgoRecyclerview.adapter = graphAlgoListAdapter
-        graphAlgoListAdapter.submitList(graphAlgorithmNames)
-
-        sortingAlgoListAdapter = AlgorithmNameListAdapter(object : NameClickListener {
-            override fun onClick(name: String) {
-                goToRunAlgorithmPage(name)
-            }
-        })
-        binding.sortingAlgoRecyclerview.adapter = sortingAlgoListAdapter
-        sortingAlgoListAdapter.submitList(sortingAlgorithmNames)
+        )
     }
 
     private fun goToRunAlgorithmPage(name: String) {
         findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAlgorithmFragment(name))
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.graphExpandButton.tag = false
-        binding.sortingExpandButton.tag = false
-
-        binding.graphExpandButton.setOnClickListener {
-            binding.graphAlgoListLayout.visibility = if (it.tag as Boolean) View.GONE else View.VISIBLE
-            (it as ImageView).setImageResource(if (it.tag as Boolean) R.drawable.ic_arrow_down else R.drawable.ic_arrow_up)
-            it.tag = !(it.tag as Boolean)
-        }
-
-        binding.sortingExpandButton.setOnClickListener {
-            binding.sortingAlgoListLayout.visibility = if (it.tag as Boolean) View.GONE else View.VISIBLE
-            (it as ImageView).setImageResource(if (it.tag as Boolean) R.drawable.ic_arrow_down else R.drawable.ic_arrow_up)
-            it.tag = !(it.tag as Boolean)
-        }
     }
 
     override fun onDestroyView() {

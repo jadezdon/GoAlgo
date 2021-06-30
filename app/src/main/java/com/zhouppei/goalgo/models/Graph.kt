@@ -10,31 +10,19 @@ class Graph(var vertexCount: Int) {
     fun addEdge(vertexLabel1: Int, vertexLabel2: Int) {
         if (hasEdge(vertexLabel1, vertexLabel2)) return
 
-        if (isUndirected) {
-            adjMatrix[vertexLabel1][vertexLabel2] = Edge(vertexLabel1, vertexLabel2)
-            adjMatrix[vertexLabel2][vertexLabel1] = Edge(vertexLabel1, vertexLabel2)
-            vertices[vertexLabel1].degree += 1
-            vertices[vertexLabel2].degree += 1
-        } else {
-            adjMatrix[vertexLabel1][vertexLabel2] = Edge(vertexLabel1, vertexLabel2)
-            vertices[vertexLabel1].degree += 1
-            vertices[vertexLabel2].degree += 1
-        }
+        adjMatrix[vertexLabel1][vertexLabel2] = Edge(vertexLabel1, vertexLabel2)
+        if (isUndirected) adjMatrix[vertexLabel2][vertexLabel1] = Edge(vertexLabel1, vertexLabel2)
+        vertices[vertexLabel1].degree += 1
+        vertices[vertexLabel2].degree += 1
     }
 
     fun removeEdge(vertexLabel1: Int, vertexLabel2: Int) {
         if (!hasEdge(vertexLabel1, vertexLabel2)) return
 
-        if (isUndirected) {
-            adjMatrix[vertexLabel1][vertexLabel2] = null
-            adjMatrix[vertexLabel2][vertexLabel1] = null
-            vertices[vertexLabel1].degree -= 1
-            vertices[vertexLabel2].degree -= 1
-        } else {
-            adjMatrix[vertexLabel1][vertexLabel2] = null
-            vertices[vertexLabel1].degree -= 1
-            vertices[vertexLabel2].degree -= 1
-        }
+        adjMatrix[vertexLabel1][vertexLabel2] = null
+        if (isUndirected) adjMatrix[vertexLabel2][vertexLabel1] = null
+        vertices[vertexLabel1].degree -= 1
+        vertices[vertexLabel2].degree -= 1
     }
 
     fun getVertexNeighbours(vertexLabel: Int): MutableList<Int> {
@@ -56,19 +44,19 @@ class Graph(var vertexCount: Int) {
 
 class Vertex(var label: Int) {
     var coordinate = Pair(0f, 0f)
-    var state = VertexState.UNVISITED
+    var type = VertexType.UNVISITED
     var boundingRectF = RectF(0f, 0f, 0f, 0f)
     var degree = 0
 }
 
 class Edge(var vertexLabel1: Int, var vertexLabel2: Int) {
-    var state = EdgeState.DEFAULT
+    var type = EdgeType.DEFAULT
 }
 
-enum class EdgeState {
-    DEFAULT, HIGHLIGHT, DONE
+enum class EdgeType {
+    DEFAULT, HIGHLIGHT, DONE, PATH
 }
 
-enum class VertexState {
-    VISITED, UNVISITED, CURRENT
+enum class VertexType {
+    VISITED, UNVISITED, CURRENT, PATH
 }

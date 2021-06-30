@@ -30,7 +30,6 @@ abstract class GraphView @JvmOverloads constructor(
     private var maxVertexCountInRow = 15
     private var maxVertexCountInCol = 15
 
-
     init {
         graph = Graph(config.vertexCount)
         targetVertexLabel = config.vertexCount - 1
@@ -43,6 +42,11 @@ abstract class GraphView @JvmOverloads constructor(
 
     private val edgeHighlightedPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.parseColor(config.edgeHighlightedColor)
+        strokeWidth = 2f
+    }
+
+    private val edgePathPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = Color.parseColor(config.pathColor)
         strokeWidth = 3f
     }
 
@@ -57,19 +61,25 @@ abstract class GraphView @JvmOverloads constructor(
         strokeWidth = 5f
     }
 
-    private val currentVertexPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+    private val vertexCurrentPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
         color = Color.parseColor(config.currentStateColor)
     }
 
-    private val visitedVertexPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+    private val vertexVisitedPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
         color = Color.parseColor(config.visitedStateColor)
     }
 
-    private val unvisitedVertexPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+    private val vertexUnvisitedPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
         color = Color.parseColor(config.unvisitedStateColor)
+    }
+
+    private val vertexPathPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.FILL
+        color = Color.parseColor(config.pathColor)
+        strokeWidth = 5f
     }
 
     private val startVertexPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -91,13 +101,15 @@ abstract class GraphView @JvmOverloads constructor(
 
     fun setGraphViewConfig(graphViewConfig: GraphViewConfig) {
         config = graphViewConfig
-        visitedVertexPaint.color = Color.parseColor(config.visitedStateColor)
-        unvisitedVertexPaint.color = Color.parseColor(config.unvisitedStateColor)
-        currentVertexPaint.color = Color.parseColor(config.currentStateColor)
+        vertexVisitedPaint.color = Color.parseColor(config.visitedStateColor)
+        vertexUnvisitedPaint.color = Color.parseColor(config.unvisitedStateColor)
+        vertexCurrentPaint.color = Color.parseColor(config.currentStateColor)
+        vertexPathPaint.color = Color.parseColor(config.pathColor)
         startVertexPaint.color = Color.parseColor(config.startVertexColor)
+        targetVertexPaint.color = Color.parseColor(config.targetVertexColor)
         edgeDefaultPaint.color = Color.parseColor(config.edgeDefaultColor)
         edgeHighlightedPaint.color = Color.parseColor(config.edgeHighlightedColor)
-        targetVertexPaint.color = Color.parseColor(config.targetVertexColor)
+        edgePathPaint.color = Color.parseColor(config.pathColor)
         if (!isRunning) invalidate()
     }
 
@@ -114,21 +126,12 @@ abstract class GraphView @JvmOverloads constructor(
     suspend fun highlightEdge(vertexLabel1: Int, vertexLabel2: Int) {
         if (!graph.hasEdge(vertexLabel1, vertexLabel2)) return
 
-        val prevState = graph.adjMatrix[vertexLabel1][vertexLabel2]?.state
-        graph.adjMatrix[vertexLabel1][vertexLabel2]?.state = EdgeState.HIGHLIGHT
-        if (graph.isUndirected) graph.adjMatrix[vertexLabel2][vertexLabel1]?.state = EdgeState.HIGHLIGHT
+        val prevState = graph.adjMatrix[vertexLabel1][vertexLabel2]?.type
+        graph.adjMatrix[vertexLabel1][vertexLabel2]?.type = EdgeType.HIGHLIGHT
+        if (graph.isUndirected) graph.adjMatrix[vertexLabel2][vertexLabel1]?.type = EdgeType.HIGHLIGHT
         update()
-        graph.adjMatrix[vertexLabel1][vertexLabel2]?.state = prevState ?: EdgeState.DEFAULT
-        if (graph.isUndirected) graph.adjMatrix[vertexLabel2][vertexLabel1]?.state = prevState ?: EdgeState.DEFAULT
-    }
-
-    suspend fun highlightDirectedEdge(vertexLabel1: Int, vertexLabel2: Int) {
-        if (!graph.hasEdge(vertexLabel1, vertexLabel2)) return
-
-        val prevState = graph.adjMatrix[vertexLabel1][vertexLabel2]?.state
-        graph.adjMatrix[vertexLabel1][vertexLabel2]?.state = EdgeState.HIGHLIGHT
-        update()
-        graph.adjMatrix[vertexLabel1][vertexLabel2]?.state = prevState ?: EdgeState.DEFAULT
+        graph.adjMatrix[vertexLabel1][vertexLabel2]?.type = prevState ?: EdgeType.DEFAULT
+        if (graph.isUndirected) graph.adjMatrix[vertexLabel2][vertexLabel1]?.type = prevState ?: EdgeType.DEFAULT
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -154,7 +157,7 @@ abstract class GraphView @JvmOverloads constructor(
         graph = Graph(config.vertexCount)
 
         generateVertices()
-        generateUndirectedEdges()
+        generateEdges()
     }
 
     private fun generateVertices() {
@@ -176,7 +179,7 @@ abstract class GraphView @JvmOverloads constructor(
         }
     }
 
-    private fun generateUndirectedEdges() {
+    private fun generateEdges() {
         for (i in 0 until graph.vertexCount) {
             for (j in i + 1 until graph.vertexCount) {
                 var hasAnyIntersect = false
@@ -270,24 +273,24 @@ abstract class GraphView @JvmOverloads constructor(
         super.onDraw(canvas)
 
         canvas?.let {
-            drawUndirectedEdges(it)
+            drawEdges(it)
             drawVertices(it)
-            drawCaption(it)
         }
     }
 
-    private fun drawUndirectedEdges(canvas: Canvas) {
+    private fun drawEdges(canvas: Canvas) {
         for (i in 0 until graph.adjMatrix.size) {
             for (j in i + 1 until graph.adjMatrix[i].size) {
                 if (graph.hasEdge(i, j)) {
-                    when (graph.adjMatrix[i][j]?.state) {
-                        EdgeState.DEFAULT -> edgeDefaultPaint
-                        EdgeState.HIGHLIGHT -> {
+                    when (graph.adjMatrix[i][j]?.type) {
+                        EdgeType.DEFAULT -> edgeDefaultPaint
+                        EdgeType.HIGHLIGHT -> {
                             canvas.drawRoundRect(graph.vertices[i].boundingRectF, ROUND_RECT_RADIUS, ROUND_RECT_RADIUS, vertexHighlightedPaint)
                             canvas.drawRoundRect(graph.vertices[j].boundingRectF, ROUND_RECT_RADIUS, ROUND_RECT_RADIUS, vertexHighlightedPaint)
                             edgeHighlightedPaint
                         }
-                        EdgeState.DONE -> edgeDonePaint
+                        EdgeType.DONE -> edgeDonePaint
+                        EdgeType.PATH -> edgePathPaint
                         else -> edgeDefaultPaint
                     }.let { paint ->
                         canvas.drawLine(
@@ -307,15 +310,13 @@ abstract class GraphView @JvmOverloads constructor(
         for (i in 0 until graph.vertices.size) {
             if (graph.vertices[i].coordinate.first == 0f && graph.vertices[i].coordinate.first == 0f) continue
 
-            when (graph.vertices[i].state) {
-                VertexState.CURRENT -> canvas.drawRoundRect(graph.vertices[i].boundingRectF, ROUND_RECT_RADIUS, ROUND_RECT_RADIUS, currentVertexPaint)
-                VertexState.VISITED -> canvas.drawRoundRect(graph.vertices[i].boundingRectF, ROUND_RECT_RADIUS, ROUND_RECT_RADIUS, visitedVertexPaint)
-                VertexState.UNVISITED -> canvas.drawRoundRect(
-                    graph.vertices[i].boundingRectF,
-                    ROUND_RECT_RADIUS,
-                    ROUND_RECT_RADIUS,
-                    unvisitedVertexPaint
-                )
+            when (graph.vertices[i].type) {
+                VertexType.CURRENT -> vertexCurrentPaint
+                VertexType.VISITED -> vertexVisitedPaint
+                VertexType.UNVISITED -> vertexUnvisitedPaint
+                VertexType.PATH -> vertexPathPaint
+            }.let { paint ->
+                canvas.drawRoundRect(graph.vertices[i].boundingRectF, ROUND_RECT_RADIUS, ROUND_RECT_RADIUS, paint)
             }
 
             if (config.isLabelVisible) {
@@ -335,30 +336,10 @@ abstract class GraphView @JvmOverloads constructor(
         }
     }
 
-    private fun drawCaption(canvas: Canvas) {
-        if (isRunning && captionText.isNotBlank()) {
-            if (captionTextLayout == null) {
-                canvas.drawText(
-                    captionText,
-                    paddingLeft + 20f,
-                    captionTextPaint.textSize,
-                    captionTextPaint
-                )
-            } else {
-                canvas.save()
-                canvas.translate(paddingLeft.toFloat(), 0f)
-                captionTextLayout!!.draw(canvas)
-                canvas.restore()
-            }
-        }
-    }
-
     override fun new() {
         initializeParams()
         super.new()
     }
-
-
 
     override fun complete() {
         invalidate()
@@ -374,6 +355,7 @@ abstract class GraphView @JvmOverloads constructor(
         const val DEFAULT_TARGET_VERTEX_COLOR = "#fe46ef"
         const val EDGE_DEFAULT_COLOR = "#C1CDCD"
         const val EDGE_HIGHLIGHTED_COLOR = "#ff033e"
+        const val DEFAULT_PATH_COLOR = "#fe4600"
         const val DEFAULT_VERTEX_COUNT = 50
         const val ROUND_RECT_RADIUS = 10f
     }
@@ -389,6 +371,7 @@ class GraphViewConfig : AlgorithmConfig() {
     var unvisitedStateColor = GraphView.DEFAULT_UNVISITED_STATE_COLOR
 
     var edgeDefaultColor = GraphView.EDGE_DEFAULT_COLOR
+    var pathColor = GraphView.DEFAULT_PATH_COLOR
     var edgeHighlightedColor = GraphView.EDGE_HIGHLIGHTED_COLOR
 
     var isLabelVisible = true

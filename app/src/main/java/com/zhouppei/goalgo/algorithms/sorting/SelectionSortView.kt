@@ -2,7 +2,7 @@ package com.zhouppei.goalgo.algorithms.sorting
 
 import android.content.Context
 import android.util.AttributeSet
-import com.zhouppei.goalgo.models.ItemState
+import com.zhouppei.goalgo.models.ItemType
 import com.zhouppei.goalgo.views.SortView
 
 class SelectionSortView @JvmOverloads constructor(
@@ -25,27 +25,27 @@ class SelectionSortView @JvmOverloads constructor(
                 compare(minIdx, j)
 
                 if (items[j].value < items[minIdx].value) {
-                    items[minIdx].state = ItemState.UNSORTED
+                    items[minIdx].type = ItemType.UNSORTED
 
                     minIdx = j
                     captionText = "Min: [$minIdx] = ${items[minIdx].value}"
 
-                    items[minIdx].state = ItemState.CURRENT
+                    items[minIdx].type = ItemType.CURRENT
                     update()
                 }
             }
 
-            items[items.size - 1].state = ItemState.UNSORTED
-            items[minIdx].state = ItemState.CURRENT
-            items[i].state = ItemState.CURRENT
+            items[items.size - 1].type = ItemType.UNSORTED
+            items[minIdx].type = ItemType.CURRENT
+            items[i].type = ItemType.CURRENT
             items[i].isPivot = false
             update()
 
             captionText = ""
             swap(i, minIdx)
 
-            items[minIdx].state = ItemState.UNSORTED
-            items[i].state = ItemState.SORTED
+            items[minIdx].type = ItemType.UNSORTED
+            items[i].type = ItemType.SORTED
             update()
         }
 

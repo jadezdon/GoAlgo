@@ -2,7 +2,7 @@ package com.zhouppei.goalgo.algorithms.sorting
 
 import android.content.Context
 import android.util.AttributeSet
-import com.zhouppei.goalgo.models.ItemState
+import com.zhouppei.goalgo.models.ItemType
 import com.zhouppei.goalgo.views.SortView
 import kotlin.math.min
 
@@ -36,8 +36,8 @@ class MergeSortView @JvmOverloads constructor(
 
                 while (left <= mid && right <= end) {
                     compare(left, right)
-                    items[left].state = ItemState.CURRENT
-                    items[right].state = ItemState.CURRENT
+                    items[left].type = ItemType.CURRENT
+                    items[right].type = ItemType.CURRENT
 
                     if (items[left].value < items[right].value) {
                         tempList.add(items[left].value)
@@ -46,7 +46,7 @@ class MergeSortView @JvmOverloads constructor(
                         items[left].isPivot = true
                         update()
                         items[left].isPivot = false
-                        items[left].state = ItemState.UNSORTED
+                        items[left].type = ItemType.UNSORTED
 
                         left += 1
                     } else {
@@ -56,19 +56,19 @@ class MergeSortView @JvmOverloads constructor(
                         items[right].isPivot = true
                         update()
                         items[right].isPivot = false
-                        items[right].state = ItemState.UNSORTED
+                        items[right].type = ItemType.UNSORTED
 
                         right += 1
                     }
                 }
 
                 if (left > mid) {
-                    items[left-1].state = ItemState.UNSORTED
+                    items[left-1].type = ItemType.UNSORTED
                     update()
                 }
 
                 if (right > end) {
-                    items[right-1].state = ItemState.UNSORTED
+                    items[right-1].type = ItemType.UNSORTED
                     update()
                 }
 
@@ -76,10 +76,10 @@ class MergeSortView @JvmOverloads constructor(
                     tempList.add(items[left].value)
 
                     setCaption(listToString(tempList))
-                    items[left].state = ItemState.CURRENT
+                    items[left].type = ItemType.CURRENT
                     items[left].isPivot = true
                     update()
-                    items[left].state = ItemState.UNSORTED
+                    items[left].type = ItemType.UNSORTED
                     items[left].isPivot = false
 
                     left += 1
@@ -89,10 +89,10 @@ class MergeSortView @JvmOverloads constructor(
                     tempList.add(items[right].value)
 
                     setCaption(listToString(tempList))
-                    items[right].state = ItemState.CURRENT
+                    items[right].type = ItemType.CURRENT
                     items[right].isPivot = true
                     update()
-                    items[right].state = ItemState.UNSORTED
+                    items[right].type = ItemType.UNSORTED
                     items[right].isPivot = false
 
                     right += 1
@@ -101,14 +101,14 @@ class MergeSortView @JvmOverloads constructor(
                 var tempIdx = 0
                 for (idx in start until end+1) {
                     setCaption(listToString(tempList, tempIdx))
-                    items[idx].state = ItemState.CURRENT
+                    items[idx].type = ItemType.CURRENT
                     update()
 
                     items[idx].value = tempList[tempIdx]
 
                     setCaption(listToString(tempList, tempIdx))
                     update()
-                    items[idx].state = ItemState.UNSORTED
+                    items[idx].type = ItemType.UNSORTED
 
                     tempIdx += 1
                 }

@@ -1,7 +1,7 @@
 # GoAlgo
 GoAlgo is an algorithm visualizer Android application
 
-## Algorithms
+## [Algorithms](https://en.wikipedia.org/wiki/List_of_algorithms)
 
 - Graph search
   - [x] [BFS](https://en.wikipedia.org/wiki/Breadth-first_search)
@@ -21,3 +21,4 @@ GoAlgo is an algorithm visualizer Android application
   - [ ] Randomized Kruskal's
   - [ ] Randomized Prim's
   - [ ] Recursive division
+

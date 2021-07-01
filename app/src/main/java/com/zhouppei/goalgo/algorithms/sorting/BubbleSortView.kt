@@ -2,7 +2,7 @@ package com.zhouppei.goalgo.algorithms.sorting
 
 import android.content.Context
 import android.util.AttributeSet
-import com.zhouppei.goalgo.models.ItemType
+import com.zhouppei.goalgo.models.SortItemType
 import com.zhouppei.goalgo.views.SortView
 
 class BubbleSortView @JvmOverloads constructor(
@@ -22,8 +22,8 @@ class BubbleSortView @JvmOverloads constructor(
                     swap(j, j+1)
                 }
             }
-            items[items.size - i - 1].type = ItemType.SORTED
-            if (items.size - i - 2 >= 0) items[items.size - i - 2].type = ItemType.UNSORTED
+            items[items.size - i - 1].type = SortItemType.SORTED
+            if (items.size - i - 2 >= 0) items[items.size - i - 2].type = SortItemType.UNSORTED
             update()
         }
 

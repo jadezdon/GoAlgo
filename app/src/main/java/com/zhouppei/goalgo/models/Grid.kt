@@ -11,11 +11,11 @@ class GridItem {
     var hasLeftWall = true
     var hasRightWall = true
     var hasBottomWall = true
-    var state = GridItemState.NONE
+    var type = GridItemType.NONE
     var coordinate = Pair(0f, 0f)
     var boundingRectF = RectF(0f, 0f, 0f, 0f)
 }
 
-enum class GridItemState {
+enum class GridItemType {
     NONE
 }

@@ -2,14 +2,14 @@ package com.zhouppei.goalgo.models
 
 import android.graphics.RectF
 
-class Item(
+class SortItem(
     var value: Int,
-    var type: ItemType = ItemType.UNSORTED
+    var type: SortItemType = SortItemType.UNSORTED
 ) {
     var coordinates: RectF = RectF(0f, 0f, 0f, 0f)
     var isPivot = false
 }
 
-enum class ItemType {
+enum class SortItemType {
     UNSORTED, SORTED, CURRENT
 }

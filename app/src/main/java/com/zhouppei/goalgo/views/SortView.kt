@@ -5,8 +5,8 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
-import com.zhouppei.goalgo.models.Item
-import com.zhouppei.goalgo.models.ItemType
+import com.zhouppei.goalgo.models.SortItem
+import com.zhouppei.goalgo.models.SortItemType
 import kotlinx.coroutines.delay
 import kotlin.math.min
 import kotlin.random.Random
@@ -18,7 +18,7 @@ abstract class SortView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : AlgorithmView(context, attrs, defStyleAttr) {
 
-    protected var items: MutableList<Item>
+    protected var items: MutableList<SortItem>
     private var sortItemWidth = 25
     private var maxSortItemHeight = 100
     private var sortItemPadding = 8
@@ -63,7 +63,7 @@ abstract class SortView @JvmOverloads constructor(
         strokeWidth = 5f
     }
 
-    private fun generateItems(size: Int): MutableList<Item> = MutableList(size) { Item(Random.nextInt(1, ITEM_MAX_VALUE)) }
+    private fun generateItems(size: Int): MutableList<SortItem> = MutableList(size) { SortItem(Random.nextInt(1, ITEM_MAX_VALUE)) }
 
     override fun new() {
         items = generateItems(config.itemsSize)
@@ -88,24 +88,24 @@ abstract class SortView @JvmOverloads constructor(
 
     suspend fun highlight(indexList: List<Int>) {
         indexList.forEach {
-            items[it].type = ItemType.CURRENT
+            items[it].type = SortItemType.CURRENT
         }
         invalidate()
         delay(config.animationSpeed)
         indexList.forEach {
-            items[it].type = ItemType.UNSORTED
+            items[it].type = SortItemType.UNSORTED
         }
     }
 
     suspend fun compare(leftPosition: Int, rightPosition: Int) {
-        items[leftPosition].type = ItemType.CURRENT
-        items[rightPosition].type = ItemType.CURRENT
+        items[leftPosition].type = SortItemType.CURRENT
+        items[rightPosition].type = SortItemType.CURRENT
 
         invalidate()
         delay(config.animationSpeed)
 
-        items[leftPosition].type = ItemType.UNSORTED
-        items[rightPosition].type = ItemType.UNSORTED
+        items[leftPosition].type = SortItemType.UNSORTED
+        items[rightPosition].type = SortItemType.UNSORTED
     }
 
     suspend fun swap(leftPosition: Int, rightPosition: Int) {
@@ -113,14 +113,14 @@ abstract class SortView @JvmOverloads constructor(
         items[leftPosition].value = items[rightPosition].value
         items[rightPosition].value = tempValue
 
-        items[leftPosition].type = ItemType.CURRENT
-        items[rightPosition].type = ItemType.CURRENT
+        items[leftPosition].type = SortItemType.CURRENT
+        items[rightPosition].type = SortItemType.CURRENT
 
         invalidate()
         delay(config.animationSpeed)
 
-        items[leftPosition].type = ItemType.UNSORTED
-        items[rightPosition].type = ItemType.UNSORTED
+        items[leftPosition].type = SortItemType.UNSORTED
+        items[rightPosition].type = SortItemType.UNSORTED
     }
 
     suspend fun completeAnimation() {
@@ -128,7 +128,7 @@ abstract class SortView @JvmOverloads constructor(
             sortingInterval = Pair(0, items.size - 1)
 
             for (i in 0 until items.size) {
-                items[i].type = ItemType.SORTED
+                items[i].type = SortItemType.SORTED
                 invalidate()
                 delay(30L)
             }
@@ -136,7 +136,7 @@ abstract class SortView @JvmOverloads constructor(
     }
 
     override fun complete() {
-        items.forEach { it.type = ItemType.SORTED }
+        items.forEach { it.type = SortItemType.SORTED }
         invalidate()
 
         super.complete()
@@ -173,9 +173,9 @@ abstract class SortView @JvmOverloads constructor(
 
             if ((sortingInterval.first <= index && index <= sortingInterval.second) || !isRunning) {
                 when (item.type) {
-                    ItemType.CURRENT -> canvas.drawRoundRect(item.coordinates, 10f, 10f, currentItemPaint)
-                    ItemType.UNSORTED -> canvas.drawRoundRect(item.coordinates, 10f, 10f, unsortedItemPaint)
-                    ItemType.SORTED -> canvas.drawRoundRect(item.coordinates, 10f, 10f, sortedItemPaint)
+                    SortItemType.CURRENT -> canvas.drawRoundRect(item.coordinates, 10f, 10f, currentItemPaint)
+                    SortItemType.UNSORTED -> canvas.drawRoundRect(item.coordinates, 10f, 10f, unsortedItemPaint)
+                    SortItemType.SORTED -> canvas.drawRoundRect(item.coordinates, 10f, 10f, sortedItemPaint)
                 }
             } else {
                 canvas.drawRoundRect(item.coordinates, 10f, 10f, unsortedItemNotInIntervalPaint)

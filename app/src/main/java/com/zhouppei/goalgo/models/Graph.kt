@@ -1,6 +1,7 @@
 package com.zhouppei.goalgo.models
 
 import android.graphics.RectF
+import kotlin.math.sqrt
 
 class Graph(var vertexCount: Int) {
     var vertices = MutableList(vertexCount) { Vertex(it) }
@@ -31,6 +32,13 @@ class Graph(var vertexCount: Int) {
             if (i != vertexLabel && hasEdge(vertexLabel, i)) list.add(i)
         }
         return list
+    }
+
+    fun distanceBetweenVertices(vertexLabel1: Int, vertexLabel2: Int): Float {
+        return sqrt(
+            (vertices[vertexLabel2].coordinate.first - vertices[vertexLabel1].coordinate.first) * (vertices[vertexLabel2].coordinate.first - vertices[vertexLabel1].coordinate.first)
+                    + (vertices[vertexLabel2].coordinate.second - vertices[vertexLabel1].coordinate.second) * (vertices[vertexLabel2].coordinate.second - vertices[vertexLabel1].coordinate.second)
+        )
     }
 
     fun hasEdge(vertexLabel1: Int, vertexLabel2: Int): Boolean {

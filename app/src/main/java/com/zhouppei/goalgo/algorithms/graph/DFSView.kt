@@ -25,13 +25,13 @@ class DFSView @JvmOverloads constructor(
         update()
 
         val vNeighbours = graph.getVertexNeighbours(v)
-        for (i in 0 until vNeighbours.size) {
-            highlightEdge(v, vNeighbours[i])
-            if (graph.vertices[vNeighbours[i]].type == VertexType.UNVISITED) {
-                graph.adjMatrix[v][vNeighbours[i]]?.type = EdgeType.DONE
-                graph.adjMatrix[vNeighbours[i]][v]?.type = EdgeType.DONE
+        for (u in vNeighbours) {
+            highlightEdge(v, u)
+            if (graph.vertices[u].type == VertexType.UNVISITED) {
+                graph.adjMatrix[v][u]?.type = EdgeType.DONE
+                graph.adjMatrix[u][v]?.type = EdgeType.DONE
                 update()
-                dfs(vNeighbours[i])
+                dfs(u)
             }
         }
 

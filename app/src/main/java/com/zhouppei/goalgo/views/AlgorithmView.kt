@@ -24,9 +24,9 @@ abstract class AlgorithmView @JvmOverloads constructor(
     protected var canvasWidth = 100
     protected var canvasHeight = 100
     protected var isRunning = false
-    protected var captionText = ""
-    protected var captionTextLayout: StaticLayout? = null
 
+    protected var captionText = ""
+    private var captionTextLayout: StaticLayout? = null
     private var onCompleteListener: OnCompleteListener? = null
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {

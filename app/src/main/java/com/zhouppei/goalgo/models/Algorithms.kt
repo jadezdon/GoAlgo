@@ -11,6 +11,7 @@ class AlgorithmGroup(
 enum class GraphSearchAlgorithm(val str: String) {
     BFS("Breadth-first search (BFS)"),
     DFS("Depth-first search (DFS)"),
+    Dijkstras("Dijkstra's"),
     ASTAR("A *");
 
     companion object {

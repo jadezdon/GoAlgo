@@ -99,7 +99,7 @@ class AlgorithmFragment : Fragment() {
             when (this) {
                 is GraphView -> getGraphViewConfig()?.let { setGraphViewConfig(it) }
                 is SortView -> getSortViewConfig()?.let { setSortViewConfig(it) }
-                is GridView -> getGridViewConfig()?.let {  }
+                is GridView -> getGridViewConfig()?.let { setGridViewConfig(it) }
             }
 
             if (this is DFSView) setIsTargetExist(false)
@@ -117,6 +117,7 @@ class AlgorithmFragment : Fragment() {
             SortingAlgorithm.CocktailShakerSort.str -> CocktailShakerSortView(requireContext())
             GraphSearchAlgorithm.DFS.str -> DFSView(requireContext())
             GraphSearchAlgorithm.BFS.str -> BFSView(requireContext())
+            GraphSearchAlgorithm.Dijkstras.str -> DijsktrasView(requireContext())
             GraphSearchAlgorithm.ASTAR.str -> AStarView(requireContext())
             else -> BubbleSortView(requireContext())
         }
@@ -260,7 +261,7 @@ class AlgorithmFragment : Fragment() {
         if (this::sortingConfigBottomSheet.isInitialized) sortingConfigBottomSheet.dismiss()
         if (this::graphConfigBottomSheet.isInitialized) graphConfigBottomSheet.dismiss()
         if (this::gridConfigBottomSheet.isInitialized) gridConfigBottomSheet.dismiss()
-        if (this::algorithmJob.isInitialized && !algorithmJob.isCancelled) algorithmJob.cancel()
+        if (this::algorithmJob.isInitialized && algorithmJob.isActive) algorithmJob.cancel()
     }
 
     override fun onDestroyView() {

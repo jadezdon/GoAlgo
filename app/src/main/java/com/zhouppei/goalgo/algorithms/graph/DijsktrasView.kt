@@ -5,9 +5,8 @@ import android.util.AttributeSet
 import com.zhouppei.goalgo.models.EdgeType
 import com.zhouppei.goalgo.models.VertexType
 import com.zhouppei.goalgo.views.GraphView
-import java.util.*
 
-class BFSView @JvmOverloads constructor(
+class DijsktrasView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -18,33 +17,43 @@ class BFSView @JvmOverloads constructor(
 
         setCaption("Start: $startVertexLabel, Target: $targetVertexLabel")
 
-        val labelsQueue: Queue<Int> = LinkedList()
-        val pred = MutableList(graph.vertexCount) { -1 }
-        val dist = MutableList(graph.vertexCount) { Int.MAX_VALUE }
+        val labelsSet: MutableSet<Int> = mutableSetOf()
+        val prev = MutableList(graph.vertexCount) { -1 }
+        val dist = MutableList(graph.vertexCount) { Float.MAX_VALUE }
 
-        dist[startVertexLabel] = 0
+        labelsSet.addAll((0 until graph.vertexCount).toList())
+        dist[startVertexLabel] = 0f
         graph.vertices[startVertexLabel].type = VertexType.VISITED
         update()
-        labelsQueue.add(startVertexLabel)
 
         var isTargetFound = false
-        while (labelsQueue.isNotEmpty() && !isTargetFound) {
-            val v = labelsQueue.poll() ?: break
+        while (labelsSet.isNotEmpty() && !isTargetFound) {
+            var v = labelsSet.first()
+            var minDist = dist[v]
+            for (u in labelsSet) {
+                if (dist[u] < minDist) {
+                    minDist = dist[u]
+                    v = u
+                }
+            }
+            labelsSet.remove(v)
 
             val vNeighbours = graph.getVertexNeighbours(v)
             for (u in vNeighbours) {
+                if (!labelsSet.contains(u)) continue
+
                 highlightEdge(v, u)
-                if (graph.vertices[u].type != VertexType.VISITED) {
+                val alternitive = dist[v] + graph.distanceBetweenVertices(u, v)
+                if (alternitive < dist[u]) {
                     graph.vertices[u].type = VertexType.VISITED
                     graph.adjMatrix[v][u]?.type = EdgeType.DONE
                     if (graph.isUndirected) graph.adjMatrix[u][v]?.type = EdgeType.DONE
                     update()
 
-                    dist[u] = dist[v] + 1
-                    pred[u] = v
+                    dist[u] = alternitive
+                    prev[u] = v
 
-                    labelsQueue.add(u)
-                    if (graph.vertices[u].label == targetVertexLabel) {
+                    if (u == targetVertexLabel) {
                         isTargetFound = true
                         break
                     }
@@ -56,9 +65,9 @@ class BFSView @JvmOverloads constructor(
             val path = mutableListOf<Int>()
             var current = targetVertexLabel
             path.add(current)
-            while (pred[current] != -1) {
-                path.add(pred[current])
-                current = pred[current]
+            while (prev[current] != -1) {
+                path.add(prev[current])
+                current = prev[current]
             }
 
             setCaption("$captionText, Path: ")

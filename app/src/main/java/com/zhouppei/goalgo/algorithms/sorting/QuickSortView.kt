@@ -2,7 +2,7 @@ package com.zhouppei.goalgo.algorithms.sorting
 
 import android.content.Context
 import android.util.AttributeSet
-import com.zhouppei.goalgo.models.ItemType
+import com.zhouppei.goalgo.models.SortItemType
 import com.zhouppei.goalgo.views.SortView
 
 class QuickSortView @JvmOverloads constructor(
@@ -30,7 +30,7 @@ class QuickSortView @JvmOverloads constructor(
             // rearrange elements across pivot
             var partitionIdx = start
             items[end].isPivot = true
-            items[partitionIdx].type = ItemType.CURRENT
+            items[partitionIdx].type = SortItemType.CURRENT
             update()
 
             for (j in start until end) {

@@ -8,6 +8,7 @@ import com.zhouppei.goalgo.models.*
 import kotlinx.coroutines.delay
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.sqrt
 import kotlin.random.Random
 
 abstract class GraphView @JvmOverloads constructor(
@@ -200,22 +201,13 @@ abstract class GraphView @JvmOverloads constructor(
             if (graph.vertices[i].degree <= 3) continue
 
             val connectedVertices = graph.getVertexNeighbours(i)
-            val possibleRemovableEdge = mutableListOf<Pair<Int, Int>>()
             for (j in 0 until connectedVertices.size) {
-                if (graph.vertices[connectedVertices[j]].degree > 3) possibleRemovableEdge.add(Pair(i, connectedVertices[j]))
-            }
-
-            if (possibleRemovableEdge.size == 0) continue
-            if (possibleRemovableEdge.size == 1) {
-                graph.removeEdge(possibleRemovableEdge[0].first, possibleRemovableEdge[0].second)
-                continue
-            }
-            var removeCount = Random.nextInt(1, possibleRemovableEdge.size)
-            while (removeCount > 0 && graph.vertices[i].degree > 3) {
-                val v = possibleRemovableEdge.random()
-                possibleRemovableEdge.remove(v)
-                graph.removeEdge(v.first, v.second)
-                removeCount -= 1
+                if (graph.vertices[i].degree <= 3) break
+                if (graph.vertices[connectedVertices[j]].degree > 3
+                    && graph.distanceBetweenVertices(connectedVertices[j], i) > canvasWidth * (2f / 3f)
+                ) {
+                    graph.removeEdge(i, connectedVertices[j])
+                }
             }
         }
     }
@@ -238,7 +230,10 @@ abstract class GraphView @JvmOverloads constructor(
         }
 
         if (linePoint1.first == vertex.coordinate.first && linePoint2.first == vertex.coordinate.first
-            && min(linePoint1.second, linePoint2.second) < vertex.coordinate.second && vertex.coordinate.second < max(linePoint1.second, linePoint2.second)
+            && min(linePoint1.second, linePoint2.second) < vertex.coordinate.second && vertex.coordinate.second < max(
+                linePoint1.second,
+                linePoint2.second
+            )
         ) {
             return true
         }
@@ -290,7 +285,6 @@ abstract class GraphView @JvmOverloads constructor(
                             edgeHighlightedPaint
                         }
                         EdgeType.DONE -> edgeDonePaint
-                        EdgeType.PATH -> edgePathPaint
                         else -> edgeDefaultPaint
                     }.let { paint ->
                         canvas.drawLine(
@@ -301,6 +295,20 @@ abstract class GraphView @JvmOverloads constructor(
                             paint
                         )
                     }
+                }
+            }
+        }
+
+        for (i in 0 until graph.adjMatrix.size) {
+            for (j in i + 1 until graph.adjMatrix[i].size) {
+                if (graph.hasEdge(i, j) && graph.adjMatrix[i][j]?.type == EdgeType.PATH) {
+                    canvas.drawLine(
+                        graph.vertices[i].coordinate.first,
+                        graph.vertices[i].coordinate.second,
+                        graph.vertices[j].coordinate.first,
+                        graph.vertices[j].coordinate.second,
+                        edgePathPaint
+                    )
                 }
             }
         }
@@ -349,11 +357,11 @@ abstract class GraphView @JvmOverloads constructor(
     companion object {
         private val LOG_TAG = GraphView::class.qualifiedName
         const val DEFAULT_CURRENT_STATE_COLOR = "#FEDD00"
-        const val DEFAULT_UNVISITED_STATE_COLOR = "#C1CDCD"
-        const val DEFAULT_VISITED_STATE_COLOR = "#4ae057"
+        const val DEFAULT_UNVISITED_STATE_COLOR = "#dbeaeb"
+        const val DEFAULT_VISITED_STATE_COLOR = "#b4e8b3"
         const val DEFAULT_START_VERTEX_COLOR = "#fe4600"
         const val DEFAULT_TARGET_VERTEX_COLOR = "#fe46ef"
-        const val EDGE_DEFAULT_COLOR = "#C1CDCD"
+        const val EDGE_DEFAULT_COLOR = "#e8f0ec"
         const val EDGE_HIGHLIGHTED_COLOR = "#ff033e"
         const val DEFAULT_PATH_COLOR = "#fe4600"
         const val DEFAULT_VERTEX_COUNT = 50

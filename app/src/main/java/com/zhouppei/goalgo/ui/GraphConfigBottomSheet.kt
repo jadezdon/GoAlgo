@@ -98,9 +98,9 @@ class GraphConfigBottomSheet: BottomSheetDialogFragment() {
 
     private fun setupGraphViewParams() {
         binding.apply {
-            showCurrentColorPickerButton.setBackgroundColor(Color.parseColor(graphViewConfig.currentStateColor))
-            showUnvisitedColorPickerButton.setBackgroundColor(Color.parseColor(graphViewConfig.unvisitedStateColor))
-            showVisitedColorPickerButton.setBackgroundColor(Color.parseColor(graphViewConfig.visitedStateColor))
+            showCurrentColorPickerButton.setBackgroundColor(Color.parseColor(graphViewConfig.vertexCurrentColor))
+            showUnvisitedColorPickerButton.setBackgroundColor(Color.parseColor(graphViewConfig.vertexUnvisitedColor))
+            showVisitedColorPickerButton.setBackgroundColor(Color.parseColor(graphViewConfig.vertexVisitedColor))
             showStartVertexColorPickerButton.setBackgroundColor(Color.parseColor(graphViewConfig.startVertexColor))
             showTargetVertexColorPickerButton.setBackgroundColor(Color.parseColor(graphViewConfig.targetVertexColor))
             showEdgeDefaultColorPickerButton.setBackgroundColor(Color.parseColor(graphViewConfig.edgeDefaultColor))
@@ -121,10 +121,10 @@ class GraphConfigBottomSheet: BottomSheetDialogFragment() {
         binding.showCurrentColorPickerButton.setOnClickListener {
             colorPickerDialog = ColorPickerDialog(
                 requireContext(),
-                graphViewConfig.currentStateColor,
+                graphViewConfig.vertexCurrentColor,
                 object : ColorPickerDialogListener {
                     override fun setSelectedColorString(colorString: String) {
-                        graphViewConfig.currentStateColor = colorString
+                        graphViewConfig.vertexCurrentColor = colorString
                         it.setBackgroundColor(Color.parseColor(colorString))
                         listener.setConfig(graphViewConfig)
                     }
@@ -138,10 +138,10 @@ class GraphConfigBottomSheet: BottomSheetDialogFragment() {
         binding.showUnvisitedColorPickerButton.setOnClickListener {
             colorPickerDialog = ColorPickerDialog(
                 requireContext(),
-                graphViewConfig.unvisitedStateColor,
+                graphViewConfig.vertexUnvisitedColor,
                 object : ColorPickerDialogListener {
                     override fun setSelectedColorString(colorString: String) {
-                        graphViewConfig.unvisitedStateColor = colorString
+                        graphViewConfig.vertexUnvisitedColor = colorString
                         it.setBackgroundColor(Color.parseColor(colorString))
                         listener.setConfig(graphViewConfig)
                     }
@@ -155,10 +155,10 @@ class GraphConfigBottomSheet: BottomSheetDialogFragment() {
         binding.showVisitedColorPickerButton.setOnClickListener {
             colorPickerDialog = ColorPickerDialog(
                 requireContext(),
-                graphViewConfig.visitedStateColor,
+                graphViewConfig.vertexVisitedColor,
                 object : ColorPickerDialogListener {
                     override fun setSelectedColorString(colorString: String) {
-                        graphViewConfig.visitedStateColor = colorString
+                        graphViewConfig.vertexVisitedColor = colorString
                         it.setBackgroundColor(Color.parseColor(colorString))
                         listener.setConfig(graphViewConfig)
                     }

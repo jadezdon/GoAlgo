@@ -2,7 +2,9 @@ package com.zhouppei.goalgo.ui
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -14,9 +16,14 @@ import androidx.navigation.fragment.navArgs
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.zhouppei.goalgo.algorithms.graph.*
+import com.zhouppei.goalgo.algorithms.maze.RandomizedDFSView
+import com.zhouppei.goalgo.algorithms.maze.RandomizedKruskalsView
+import com.zhouppei.goalgo.algorithms.maze.RandomizedPrimsView
+import com.zhouppei.goalgo.algorithms.maze.RecursiveDivisionView
 import com.zhouppei.goalgo.algorithms.sorting.*
 import com.zhouppei.goalgo.databinding.FragmentAlgorithmBinding
 import com.zhouppei.goalgo.models.GraphSearchAlgorithm
+import com.zhouppei.goalgo.models.MazeGenerationAlgorithm
 import com.zhouppei.goalgo.models.SortingAlgorithm
 import com.zhouppei.goalgo.utils.Constants
 import com.zhouppei.goalgo.views.*
@@ -47,6 +54,8 @@ class AlgorithmFragment : Fragment() {
     private var sharedPreferences: SharedPreferences? = null
     private val gson = Gson()
     private lateinit var algorithmJob: Job
+
+    private var currentOrientation: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -80,7 +89,13 @@ class AlgorithmFragment : Fragment() {
             setPadding(40, 50, 40, 50)
             setOnCompleteListener(object : OnCompleteListener {
                 override fun onAlgorithmComplete() {
+                    currentOrientation?.let { orientation ->  activity?.requestedOrientation = orientation }
+
                     binding.newButton.apply {
+                        isEnabled = true
+                        alpha = 1f
+                    }
+                    binding.showCodeButton.apply {
                         isEnabled = true
                         alpha = 1f
                     }
@@ -118,8 +133,18 @@ class AlgorithmFragment : Fragment() {
             GraphSearchAlgorithm.DFS.str -> DFSView(requireContext())
             GraphSearchAlgorithm.BFS.str -> BFSView(requireContext())
             GraphSearchAlgorithm.Dijkstras.str -> DijsktrasView(requireContext())
-            GraphSearchAlgorithm.ASTAR.str -> AStarView(requireContext())
-            else -> BubbleSortView(requireContext())
+            MazeGenerationAlgorithm.RandomizedDFS.str -> RandomizedDFSView(requireContext())
+            MazeGenerationAlgorithm.RandomizedKruskals.str -> RandomizedKruskalsView(requireContext())
+            MazeGenerationAlgorithm.RandomizedPrims.str -> RandomizedPrimsView(requireContext())
+            MazeGenerationAlgorithm.RecursiveDivision.str -> RecursiveDivisionView(requireContext())
+            else -> {
+                Toast.makeText(context, "${args.algorithmName} is not implemented yet", Toast.LENGTH_SHORT).apply {
+                    setGravity(Gravity.CENTER, 0, 0)
+                }.show()
+                findNavController().navigateUp()
+
+                BubbleSortView(requireContext())
+            }
         }
     }
 
@@ -164,11 +189,10 @@ class AlgorithmFragment : Fragment() {
 
     private fun setupControlButtonsListeners() {
         binding.runButton.setOnClickListener {
+            currentOrientation = ActivityInfo.SCREEN_ORIENTATION_USER
+            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
+
             algorithmJob = GlobalScope.launch(Dispatchers.Main) {
-                binding.newButton.apply {
-                    isEnabled = false
-                    alpha = 0.5f
-                }
                 algorithmView.run()
             }
             it.visibility = View.GONE
@@ -177,15 +201,25 @@ class AlgorithmFragment : Fragment() {
                 isEnabled = false
                 alpha = 0.5f
             }
+            binding.showCodeButton.apply {
+                isEnabled = false
+                alpha = 0.5f
+            }
         }
 
         binding.stopButton.setOnClickListener {
+            currentOrientation?.let { orientation ->  activity?.requestedOrientation = orientation }
+
             algorithmJob.cancel()
             it.apply {
                 isEnabled = false
                 alpha = 0.5f
             }
             binding.newButton.apply {
+                isEnabled = true
+                alpha = 1f
+            }
+            binding.showCodeButton.apply {
                 isEnabled = true
                 alpha = 1f
             }

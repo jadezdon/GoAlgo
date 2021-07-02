@@ -10,7 +10,9 @@
         android:id="@+id/topbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/spacing_normal">
+        android:layout_marginHorizontal="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:layout_marginBottom="@dimen/spacing_tiny">
 
         <ImageView
             android:id="@+id/goBack_button"
@@ -53,6 +55,16 @@
         android:orientation="horizontal">
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/new_button"
+            style="@style/IconOnlyButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_small"
+            app:iconTint="@color/white"
+            app:icon="@drawable/ic_refresh"
+            app:backgroundTint="@color/blue_600"/>
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/run_button"
             style="@style/IconOnlyButton"
             android:layout_width="wrap_content"
@@ -72,16 +84,6 @@
             app:icon="@drawable/ic_stop"
             app:iconTint="@color/white"
             app:backgroundTint="@color/red" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/new_button"
-            style="@style/IconOnlyButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/spacing_small"
-            app:iconTint="@color/white"
-            app:icon="@drawable/ic_refresh"
-            app:backgroundTint="@color/blue_600"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/showCode_button"

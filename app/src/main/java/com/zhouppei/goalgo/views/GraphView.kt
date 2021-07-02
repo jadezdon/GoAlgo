@@ -8,8 +8,6 @@ import com.zhouppei.goalgo.models.*
 import kotlinx.coroutines.delay
 import kotlin.math.max
 import kotlin.math.min
-import kotlin.math.sqrt
-import kotlin.random.Random
 
 abstract class GraphView @JvmOverloads constructor(
     context: Context,
@@ -52,7 +50,7 @@ abstract class GraphView @JvmOverloads constructor(
     }
 
     private val edgeDonePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = Color.parseColor(config.visitedStateColor)
+        color = Color.parseColor(config.vertexVisitedColor)
         strokeWidth = 3f
     }
 
@@ -64,17 +62,17 @@ abstract class GraphView @JvmOverloads constructor(
 
     private val vertexCurrentPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
-        color = Color.parseColor(config.currentStateColor)
+        color = Color.parseColor(config.vertexCurrentColor)
     }
 
     private val vertexVisitedPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
-        color = Color.parseColor(config.visitedStateColor)
+        color = Color.parseColor(config.vertexVisitedColor)
     }
 
     private val vertexUnvisitedPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
-        color = Color.parseColor(config.unvisitedStateColor)
+        color = Color.parseColor(config.vertexUnvisitedColor)
     }
 
     private val vertexPathPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -102,9 +100,9 @@ abstract class GraphView @JvmOverloads constructor(
 
     fun setGraphViewConfig(graphViewConfig: GraphViewConfig) {
         config = graphViewConfig
-        vertexVisitedPaint.color = Color.parseColor(config.visitedStateColor)
-        vertexUnvisitedPaint.color = Color.parseColor(config.unvisitedStateColor)
-        vertexCurrentPaint.color = Color.parseColor(config.currentStateColor)
+        vertexVisitedPaint.color = Color.parseColor(config.vertexVisitedColor)
+        vertexUnvisitedPaint.color = Color.parseColor(config.vertexUnvisitedColor)
+        vertexCurrentPaint.color = Color.parseColor(config.vertexCurrentColor)
         vertexPathPaint.color = Color.parseColor(config.pathColor)
         startVertexPaint.color = Color.parseColor(config.startVertexColor)
         targetVertexPaint.color = Color.parseColor(config.targetVertexColor)
@@ -356,9 +354,9 @@ abstract class GraphView @JvmOverloads constructor(
 
     companion object {
         private val LOG_TAG = GraphView::class.qualifiedName
-        const val DEFAULT_CURRENT_STATE_COLOR = "#FEDD00"
-        const val DEFAULT_UNVISITED_STATE_COLOR = "#dbeaeb"
-        const val DEFAULT_VISITED_STATE_COLOR = "#b4e8b3"
+        const val DEFAULT_VERTEX_CURRENT_COLOR = "#FEDD00"
+        const val DEFAULT_VERTEX_UNVISITED_COLOR = "#dbeaeb"
+        const val DEFAULT_VERTEX_VISITED_COLOR = "#b4e8b3"
         const val DEFAULT_START_VERTEX_COLOR = "#fe4600"
         const val DEFAULT_TARGET_VERTEX_COLOR = "#fe46ef"
         const val EDGE_DEFAULT_COLOR = "#e8f0ec"
@@ -374,9 +372,9 @@ class GraphViewConfig : AlgorithmConfig() {
     var startVertexColor = GraphView.DEFAULT_START_VERTEX_COLOR
     var targetVertexColor = GraphView.DEFAULT_TARGET_VERTEX_COLOR
 
-    var currentStateColor = GraphView.DEFAULT_CURRENT_STATE_COLOR
-    var visitedStateColor = GraphView.DEFAULT_VISITED_STATE_COLOR
-    var unvisitedStateColor = GraphView.DEFAULT_UNVISITED_STATE_COLOR
+    var vertexCurrentColor = GraphView.DEFAULT_VERTEX_CURRENT_COLOR
+    var vertexVisitedColor = GraphView.DEFAULT_VERTEX_VISITED_COLOR
+    var vertexUnvisitedColor = GraphView.DEFAULT_VERTEX_UNVISITED_COLOR
 
     var edgeDefaultColor = GraphView.EDGE_DEFAULT_COLOR
     var pathColor = GraphView.DEFAULT_PATH_COLOR

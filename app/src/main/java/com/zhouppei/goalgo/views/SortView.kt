@@ -207,10 +207,10 @@ abstract class SortView @JvmOverloads constructor(
 
     companion object {
         private val LOG_TAG = SortView::class.qualifiedName
-        const val DEFAULT_CURRENT_STATE_COLOR = "#FEDD00"
-        const val DEFAULT_UNSORTED_STATE_COLOR = "#C1CDCD"
-        const val DEFAULT_SORTED_STATE_COLOR = "#2e8b57"
-        const val DEFAULT_PIVOT_COLOR = "#ff4040"
+        const val DEFAULT_ITEM_CURRENT_COLOR = "#FEDD00"
+        const val DEFAULT_ITEM_UNSORTED_COLOR = "#C1CDCD"
+        const val DEFAULT_ITEM_SORTED_COLOR = "#2e8b57"
+        const val DEFAULT_PIVOT_ITEM_COLOR = "#ff4040"
         const val ITEM_MAX_VALUE = 100
         const val DEFAULT_ITEM_SIZE = 20
     }
@@ -219,10 +219,10 @@ abstract class SortView @JvmOverloads constructor(
 class SortViewConfig : AlgorithmConfig() {
     var itemsSize = SortView.DEFAULT_ITEM_SIZE
 
-    var currentStateColor = SortView.DEFAULT_CURRENT_STATE_COLOR
-    var unsortedStateColor = SortView.DEFAULT_UNSORTED_STATE_COLOR
-    var sortedStateColor = SortView.DEFAULT_SORTED_STATE_COLOR
-    var pivotColor = SortView.DEFAULT_PIVOT_COLOR
+    var currentStateColor = SortView.DEFAULT_ITEM_CURRENT_COLOR
+    var unsortedStateColor = SortView.DEFAULT_ITEM_UNSORTED_COLOR
+    var sortedStateColor = SortView.DEFAULT_ITEM_SORTED_COLOR
+    var pivotColor = SortView.DEFAULT_PIVOT_ITEM_COLOR
 
     var isItemValuesVisible = true
     var isItemIndexesVisible = false

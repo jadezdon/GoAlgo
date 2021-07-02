@@ -11,6 +11,7 @@ import com.zhouppei.goalgo.R
 import com.zhouppei.goalgo.databinding.FragmentHomeBinding
 import com.zhouppei.goalgo.models.AlgorithmGroup
 import com.zhouppei.goalgo.models.GraphSearchAlgorithm
+import com.zhouppei.goalgo.models.MazeGenerationAlgorithm
 import com.zhouppei.goalgo.models.SortingAlgorithm
 
 class HomeFragment : Fragment() {
@@ -31,6 +32,7 @@ class HomeFragment : Fragment() {
         val algorithmGroupList = mutableListOf<AlgorithmGroup>().apply {
             add(AlgorithmGroup("Graph search", R.drawable.ic_graph,  GraphSearchAlgorithm.valuesToNameList()))
             add(AlgorithmGroup("Sorting", R.drawable.ic_sort, SortingAlgorithm.valuesToNameList()))
+            add(AlgorithmGroup("Maze generation", R.drawable.ic_maze, MazeGenerationAlgorithm.valuesToNameList()))
         }
         binding.algoGroupRecyclerview.adapter = AlgorithmGroupListAdapter(
             algorithmGroupList,

@@ -68,7 +68,10 @@ class GridConfigBottomSheet: BottomSheetDialogFragment() {
             listener.setConfig(gridViewConfig)
         }
 
-        setupPickDefaultItemColorButton()
+        setupPickUnvisitedCellColorButton()
+        setupPickCurrentCellColorButton()
+        setupPickVisitedCellColorButton()
+        setupPickCellWallColorButton()
     }
 
     private fun getConfigFromSharedPref() {
@@ -85,7 +88,10 @@ class GridConfigBottomSheet: BottomSheetDialogFragment() {
 
     private fun setupGridViewParams() {
         binding.apply {
-            showItemDefaultColorPickerButton.setBackgroundColor(Color.parseColor(gridViewConfig.itemDefaultColor))
+            showUnvisitedColorPickerButton.setBackgroundColor(Color.parseColor(gridViewConfig.unvisitedCellColor))
+            showVisitedColorPickerButton.setBackgroundColor(Color.parseColor(gridViewConfig.visitedCellColor))
+            showCurrentColorPickerButton.setBackgroundColor(Color.parseColor(gridViewConfig.currentCellColor))
+            showCellWallColorPickerButton.setBackgroundColor(Color.parseColor(gridViewConfig.wallColor))
 
             when (gridViewConfig.animationSpeed) {
                 Constants.ANIMATION_SPEED_SLOW -> speedButtonGroup.check(R.id.speed_slow_button)
@@ -97,14 +103,65 @@ class GridConfigBottomSheet: BottomSheetDialogFragment() {
         }
     }
 
-    private fun setupPickDefaultItemColorButton() {
-        binding.showItemDefaultColorPickerButton.setOnClickListener {
+    private fun setupPickUnvisitedCellColorButton() {
+        binding.showUnvisitedColorPickerButton.setOnClickListener {
             colorPickerDialog = ColorPickerDialog(
                 requireContext(),
-                gridViewConfig.itemDefaultColor,
+                gridViewConfig.unvisitedCellColor,
                 object : ColorPickerDialogListener {
                     override fun setSelectedColorString(colorString: String) {
-                        gridViewConfig.itemDefaultColor = colorString
+                        gridViewConfig.unvisitedCellColor = colorString
+                        it.setBackgroundColor(Color.parseColor(colorString))
+                        listener.setConfig(gridViewConfig)
+                    }
+                }
+            )
+            colorPickerDialog.show()
+        }
+    }
+
+    private fun setupPickCurrentCellColorButton() {
+        binding.showCurrentColorPickerButton.setOnClickListener {
+            colorPickerDialog = ColorPickerDialog(
+                requireContext(),
+                gridViewConfig.currentCellColor,
+                object : ColorPickerDialogListener {
+                    override fun setSelectedColorString(colorString: String) {
+                        gridViewConfig.currentCellColor = colorString
+                        it.setBackgroundColor(Color.parseColor(colorString))
+                        listener.setConfig(gridViewConfig)
+                    }
+                }
+            )
+            colorPickerDialog.show()
+        }
+    }
+
+    private fun setupPickVisitedCellColorButton() {
+        binding.showVisitedColorPickerButton.setOnClickListener {
+            colorPickerDialog = ColorPickerDialog(
+                requireContext(),
+                gridViewConfig.visitedCellColor,
+                object : ColorPickerDialogListener {
+                    override fun setSelectedColorString(colorString: String) {
+                        gridViewConfig.visitedCellColor = colorString
+                        it.setBackgroundColor(Color.parseColor(colorString))
+                        listener.setConfig(gridViewConfig)
+                    }
+                }
+            )
+            colorPickerDialog.show()
+        }
+    }
+
+    private fun setupPickCellWallColorButton() {
+        binding.showCellWallColorPickerButton.setOnClickListener {
+            colorPickerDialog = ColorPickerDialog(
+                requireContext(),
+                gridViewConfig.wallColor,
+                object : ColorPickerDialogListener {
+                    override fun setSelectedColorString(colorString: String) {
+                        gridViewConfig.wallColor = colorString
                         it.setBackgroundColor(Color.parseColor(colorString))
                         listener.setConfig(gridViewConfig)
                     }

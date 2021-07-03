@@ -36,28 +36,32 @@ class RecursiveDivisionView @JvmOverloads constructor(
         if (topLeft.first == bottomRight.first && topLeft.second == bottomRight.second) return
         if (topLeft.first > bottomRight.first || topLeft.second > bottomRight.second) return
 
-        if (bottomRight.second - topLeft.second > bottomRight.first - topLeft.first) {
-            val row = Random.nextInt(bottomRight.first - topLeft.first + 1)
-            val col = Random.nextInt(bottomRight.second - topLeft.second)
+        if (bottomRight.second - topLeft.second < bottomRight.first - topLeft.first) {
+            val row = Random.nextInt(bottomRight.first - topLeft.first)
+            val col = Random.nextInt(bottomRight.second - topLeft.second + 1)
 
             for (c in topLeft.second until bottomRight.second + 1) {
-                if (c == col) continue
+                if (c == topLeft.second + col) continue
                 grid.cells[topLeft.first + row][c].hasBottomWall = true
                 grid.cells[topLeft.first + row+1][c].hasTopWall = true
             }
+
+            update()
 
             division(topLeft, Pair(topLeft.first + row, bottomRight.second))
             division(Pair(topLeft.first + row + 1, topLeft.second), bottomRight)
 
         } else {
-            val row = Random.nextInt(bottomRight.first - topLeft.first)
-            val col = Random.nextInt(bottomRight.second - topLeft.second + 1)
+            val row = Random.nextInt(bottomRight.first - topLeft.first + 1)
+            val col = Random.nextInt(bottomRight.second - topLeft.second)
 
             for (r in topLeft.first until bottomRight.first + 1) {
-                if (r == row) continue
+                if (r == topLeft.first + row) continue
                 grid.cells[r][topLeft.second + col].hasRightWall = true
                 grid.cells[r][topLeft.second + col+1].hasLeftWall = true
             }
+
+            update()
 
             division(topLeft, Pair(bottomRight.first, topLeft.second + col))
             division(Pair(topLeft.first, topLeft.second + col + 1), bottomRight)

@@ -2,6 +2,7 @@ package com.zhouppei.goalgo.algorithms.graph
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import com.zhouppei.goalgo.models.EdgeType
 import com.zhouppei.goalgo.models.VertexType
 import com.zhouppei.goalgo.views.GraphView
@@ -11,6 +12,11 @@ class DFSView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : GraphView(context, attrs, defStyleAttr) {
+
+    override fun initParams() {
+        super.initParams()
+        hasTarget = false
+    }
 
     override suspend fun run() {
         super.run()

@@ -3,6 +3,8 @@ package com.zhouppei.goalgo.views
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import android.util.Log
+import com.zhouppei.goalgo.algorithms.graph.DFSView
 import com.zhouppei.goalgo.extensions.clone
 import com.zhouppei.goalgo.models.*
 import kotlinx.coroutines.delay
@@ -18,7 +20,7 @@ abstract class GraphView @JvmOverloads constructor(
     protected var graph: Graph
     protected var startVertexLabel = 0
     protected var targetVertexLabel = 0
-    private var hasTarget = true
+    protected var hasTarget = true
     private var config = GraphViewConfig()
     private var vertexRadius = 10f
     private val vertexPadding = 8
@@ -112,11 +114,6 @@ abstract class GraphView @JvmOverloads constructor(
         if (!isRunning) invalidate()
     }
 
-    fun setIsTargetExist(isExist: Boolean) {
-        hasTarget = isExist
-        if (!isRunning) invalidate()
-    }
-
     suspend fun update() {
         invalidate()
         delay(config.animationSpeed)
@@ -133,12 +130,7 @@ abstract class GraphView @JvmOverloads constructor(
         if (graph.isUndirected) graph.adjMatrix[vertexLabel2][vertexLabel1]?.type = prevState ?: EdgeType.DEFAULT
     }
 
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
-        initializeParams()
-    }
-
-    private fun initializeParams() {
+    override fun initParams() {
         topLeftCorner = Pair(paddingLeft.toFloat(), paddingTop.toFloat())
 
         vertexRadius = (min(canvasWidth, canvasHeight) / maxVertexCountInRow - 2 * vertexPadding) / 2f
@@ -340,11 +332,6 @@ abstract class GraphView @JvmOverloads constructor(
         if (hasTarget) {
             canvas.drawRoundRect(graph.vertices[targetVertexLabel].boundingRectF, ROUND_RECT_RADIUS, ROUND_RECT_RADIUS, targetVertexPaint)
         }
-    }
-
-    override fun new() {
-        initializeParams()
-        super.new()
     }
 
     override fun complete() {

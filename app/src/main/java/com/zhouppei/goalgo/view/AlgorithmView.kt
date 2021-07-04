@@ -29,6 +29,14 @@ abstract class AlgorithmView @JvmOverloads constructor(
     private var captionTextLayout: StaticLayout? = null
     private var onCompleteListener: OnCompleteListener? = null
 
+    fun new() {
+        initParams()
+
+        isRunning = false
+        captionText = ""
+        invalidate()
+    }
+
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
 
@@ -45,6 +53,8 @@ abstract class AlgorithmView @JvmOverloads constructor(
 
         canvasWidth = canvasWidth - paddingLeft - paddingRight
         canvasHeight = canvasHeight - paddingTop - paddingBottom
+
+        initParams()
     }
 
     protected val captionTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -87,12 +97,6 @@ abstract class AlgorithmView @JvmOverloads constructor(
         }
     }
 
-    open fun new() {
-        isRunning = false
-        captionText = ""
-        invalidate()
-    }
-
     open fun complete() {
         isRunning = false
         onCompleteListener?.onAlgorithmComplete()
@@ -115,6 +119,7 @@ abstract class AlgorithmView @JvmOverloads constructor(
 
     abstract fun sourceCode(): String
     abstract fun description(): String
+    abstract fun initParams()
 
     companion object {
         private val LOG_TAG = AlgorithmView::class.qualifiedName

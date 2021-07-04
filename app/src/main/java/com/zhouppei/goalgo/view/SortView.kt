@@ -65,13 +65,6 @@ abstract class SortView @JvmOverloads constructor(
 
     private fun generateItems(size: Int): MutableList<SortItem> = MutableList(size) { SortItem(Random.nextInt(1, ITEM_MAX_VALUE)) }
 
-    override fun new() {
-        items = generateItems(config.itemsSize)
-        initializeParams()
-        sortingInterval = Pair(0, config.itemsSize)
-        super.new()
-    }
-
     fun setSortViewConfig(sortViewConfig: SortViewConfig) {
         config = sortViewConfig
         currentItemPaint.color = Color.parseColor(config.currentStateColor)
@@ -142,12 +135,9 @@ abstract class SortView @JvmOverloads constructor(
         super.complete()
     }
 
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
-        initializeParams()
-    }
+    override fun initParams() {
+        items = generateItems(config.itemsSize)
 
-    private fun initializeParams() {
         sortItemWidth = ((canvasWidth / items.size) - 2 * sortItemPadding)
         textPaint.textSize = min(25f, sortItemWidth * (2f / 3f))
         maxSortItemHeight = (canvasHeight - 2 * sortItemPadding - captionTextPaint.textSize - textPaint.textSize).toInt()
@@ -158,6 +148,8 @@ abstract class SortView @JvmOverloads constructor(
             item.coordinates.bottom = maxSortItemHeight + sortItemPadding.toFloat() + paddingTop
             item.coordinates.top = item.coordinates.bottom - (maxSortItemHeight * (item.value.toFloat() / ITEM_MAX_VALUE))
         }
+
+        sortingInterval = Pair(0, config.itemsSize)
     }
 
     override fun onDraw(canvas: Canvas?) {

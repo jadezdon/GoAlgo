@@ -12,9 +12,8 @@ class RecursiveDivisionView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : GridView(context, attrs, defStyleAttr) {
 
-    override suspend fun run() {
-        super.run()
-
+    override fun initParams() {
+        super.initParams()
         for (r in 0 until grid.rows) {
             for (c in 0 until grid.cols) {
                 if (c+1 < grid.cols) {
@@ -25,7 +24,10 @@ class RecursiveDivisionView @JvmOverloads constructor(
                 }
             }
         }
-        update()
+    }
+
+    override suspend fun run() {
+        super.run()
 
         division(Pair(0, 0), Pair(grid.rows - 1, grid.cols - 1))
 

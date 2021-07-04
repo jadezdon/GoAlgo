@@ -60,12 +60,7 @@ abstract class GridView @JvmOverloads constructor(
         delay(config.animationSpeed)
     }
 
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
-        initializeParams()
-    }
-
-    private fun initializeParams() {
+    override fun initParams() {
         cellSize = min(canvasWidth, canvasHeight) / DEFAULT_CELL_COUNT_IN_ROW.toFloat()
         maxCellCountInRow = (canvasHeight / cellSize).toInt()
         maxCellCountInCol = (canvasWidth / cellSize).toInt()
@@ -160,10 +155,7 @@ abstract class GridView @JvmOverloads constructor(
         grid.cells[location.first][location.second].type = prevType
     }
 
-    override fun new() {
-        initializeParams()
-        super.new()
-    }
+
 
     override fun complete() {
         invalidate()
@@ -172,7 +164,7 @@ abstract class GridView @JvmOverloads constructor(
 
     companion object {
         private val LOG_TAG = GridView::class.qualifiedName
-        const val DEFAULT_UNVISITED_CELL_COLOR = "#ffffff"
+        const val DEFAULT_UNVISITED_CELL_COLOR = "#f9f9f9"
         const val DEFAULT_VISITED_CELL_COLOR = "#D59C58"
         const val DEFAULT_CURRENT_CELL_COLOR = "#BEEB84"
         const val DEFAULT_WALL_COLOR = "#36345A"

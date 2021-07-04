@@ -1,19 +1,17 @@
-package com.zhouppei.goalgo.algorithm.graph
+package com.zhouppei.goalgo.algorithm.rootfinding
 
 import android.content.Context
 import android.util.AttributeSet
-import com.zhouppei.goalgo.view.GridView
+import com.zhouppei.goalgo.view.FunctionView
 
-class AStarView @JvmOverloads constructor(
+class SecantMethodView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : GridView(context, attrs, defStyleAttr) {
+) : FunctionView(context, attrs, defStyleAttr) {
 
     override suspend fun run() {
         super.run()
-
-
 
         complete()
     }

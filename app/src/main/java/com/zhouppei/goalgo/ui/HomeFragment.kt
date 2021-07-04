@@ -5,14 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.navigation.fragment.findNavController
 import com.zhouppei.goalgo.R
 import com.zhouppei.goalgo.databinding.FragmentHomeBinding
-import com.zhouppei.goalgo.models.AlgorithmGroup
-import com.zhouppei.goalgo.models.GraphSearchAlgorithm
-import com.zhouppei.goalgo.models.MazeGenerationAlgorithm
-import com.zhouppei.goalgo.models.SortingAlgorithm
+import com.zhouppei.goalgo.model.*
 
 class HomeFragment : Fragment() {
 
@@ -33,6 +29,7 @@ class HomeFragment : Fragment() {
             add(AlgorithmGroup("Graph search", R.drawable.ic_graph,  GraphSearchAlgorithm.valuesToNameList()))
             add(AlgorithmGroup("Sorting", R.drawable.ic_sort, SortingAlgorithm.valuesToNameList()))
             add(AlgorithmGroup("Maze generation", R.drawable.ic_maze, MazeGenerationAlgorithm.valuesToNameList()))
+            add(AlgorithmGroup("Root-finding (math)", R.drawable.ic_root_finding, RootFindingAlgorithm.valuesToNameList()))
         }
         binding.algoGroupRecyclerview.adapter = AlgorithmGroupListAdapter(
             algorithmGroupList,

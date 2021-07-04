@@ -1,12 +1,10 @@
-package com.zhouppei.goalgo.views
+package com.zhouppei.goalgo.view
 
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
-import android.util.Log
-import com.zhouppei.goalgo.algorithms.graph.DFSView
-import com.zhouppei.goalgo.extensions.clone
-import com.zhouppei.goalgo.models.*
+import com.zhouppei.goalgo.extension.clone
+import com.zhouppei.goalgo.model.*
 import kotlinx.coroutines.delay
 import kotlin.math.max
 import kotlin.math.min

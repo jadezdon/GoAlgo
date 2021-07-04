@@ -1,4 +1,4 @@
-package com.zhouppei.goalgo.models
+package com.zhouppei.goalgo.model
 
 class AlgorithmGroup(
     var name: String,
@@ -44,6 +44,21 @@ enum class MazeGenerationAlgorithm(val str: String) {
     RandomizedKruskals("Randomized Kruskal's"),
     RandomizedPrims("Randomized Prim's"),
     RecursiveDivision("Recursive division");
+
+    companion object {
+        fun valuesToNameList(): MutableList<String> {
+            val list = mutableListOf<String>()
+            values().forEach { list.add(it.str) }
+            return list
+        }
+    }
+}
+
+enum class RootFindingAlgorithm(val str: String) {
+    NewtonsMethod("Newton's method"),
+    SecantMethod("Secant method"),
+    SteffensensMethod("Steffensen's method"),
+    InverseInterpolation("Inverse quadratic interpolation");
 
     companion object {
         fun valuesToNameList(): MutableList<String> {

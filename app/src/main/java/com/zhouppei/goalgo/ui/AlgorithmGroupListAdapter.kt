@@ -7,7 +7,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.zhouppei.goalgo.R
 import com.zhouppei.goalgo.databinding.ItemAlgorithmGroupBinding
-import com.zhouppei.goalgo.models.AlgorithmGroup
+import com.zhouppei.goalgo.model.AlgorithmGroup
 
 class AlgorithmGroupListAdapter(
     private val algorithmGroupList: MutableList<AlgorithmGroup>,

@@ -13,11 +13,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.zhouppei.goalgo.R
-import com.zhouppei.goalgo.views.GraphViewConfig
+import com.zhouppei.goalgo.view.GraphViewConfig
 import com.zhouppei.goalgo.databinding.BottomSheetGraphConfigBinding
 import com.zhouppei.goalgo.ui.colorpicker.ColorPickerDialog
 import com.zhouppei.goalgo.ui.colorpicker.ColorPickerDialogListener
-import com.zhouppei.goalgo.utils.Constants
+import com.zhouppei.goalgo.util.Constants
 
 
 class GraphConfigBottomSheet: BottomSheetDialogFragment() {

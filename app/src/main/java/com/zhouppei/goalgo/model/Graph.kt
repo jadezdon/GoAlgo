@@ -1,4 +1,4 @@
-package com.zhouppei.goalgo.models
+package com.zhouppei.goalgo.model
 
 import android.graphics.RectF
 import kotlin.math.sqrt

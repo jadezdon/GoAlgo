@@ -16,8 +16,8 @@ import com.zhouppei.goalgo.R
 import com.zhouppei.goalgo.databinding.BottomSheetGridConfigBinding
 import com.zhouppei.goalgo.ui.colorpicker.ColorPickerDialog
 import com.zhouppei.goalgo.ui.colorpicker.ColorPickerDialogListener
-import com.zhouppei.goalgo.utils.Constants
-import com.zhouppei.goalgo.views.GridViewConfig
+import com.zhouppei.goalgo.util.Constants
+import com.zhouppei.goalgo.view.GridViewConfig
 
 
 class GridConfigBottomSheet: BottomSheetDialogFragment() {

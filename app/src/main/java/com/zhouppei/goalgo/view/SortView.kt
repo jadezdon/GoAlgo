@@ -1,12 +1,12 @@
-package com.zhouppei.goalgo.views
+package com.zhouppei.goalgo.view
 
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
-import com.zhouppei.goalgo.models.SortItem
-import com.zhouppei.goalgo.models.SortItemType
+import com.zhouppei.goalgo.model.SortItem
+import com.zhouppei.goalgo.model.SortItemType
 import kotlinx.coroutines.delay
 import kotlin.math.min
 import kotlin.random.Random

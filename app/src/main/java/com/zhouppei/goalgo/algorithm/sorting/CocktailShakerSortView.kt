@@ -1,8 +1,8 @@
-package com.zhouppei.goalgo.algorithms.sorting
+package com.zhouppei.goalgo.algorithm.sorting
 
 import android.content.Context
 import android.util.AttributeSet
-import com.zhouppei.goalgo.views.SortView
+import com.zhouppei.goalgo.view.SortView
 
 class CocktailShakerSortView @JvmOverloads constructor(
     context: Context,

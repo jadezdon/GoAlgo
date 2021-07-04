@@ -1,6 +1,6 @@
 package com.zhouppei.goalgo.ui
 
-import com.zhouppei.goalgo.views.GridViewConfig
+import com.zhouppei.goalgo.view.GridViewConfig
 
 
 interface GridConfigListener {

@@ -21,9 +21,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="Reset"
                 android:clickable="true"
-                android:focusable="true"/>
+                android:focusable="true"
+                android:text="Reset" />
 
             <View
                 android:layout_width="50dp"
@@ -129,11 +129,13 @@
                 android:layout_centerVertical="true"
                 android:text="Current item color" />
 
-            <Button
+            <View
                 android:id="@+id/showCurrentColorPicker_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true" />
+                android:layout_width="@dimen/button_width_small"
+                android:layout_height="@dimen/button_height_normal"
+                android:layout_alignParentEnd="true"
+                android:clickable="true"
+                android:focusable="true" />
 
         </RelativeLayout>
 
@@ -148,11 +150,13 @@
                 android:layout_centerVertical="true"
                 android:text="Unsorted item color" />
 
-            <Button
+            <View
                 android:id="@+id/showUnsortedColorPicker_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true" />
+                android:layout_width="@dimen/button_width_small"
+                android:layout_height="@dimen/button_height_normal"
+                android:layout_alignParentEnd="true"
+                android:clickable="true"
+                android:focusable="true" />
 
         </RelativeLayout>
 
@@ -167,11 +171,13 @@
                 android:layout_centerVertical="true"
                 android:text="Sorted item color" />
 
-            <Button
+            <View
                 android:id="@+id/showSortedColorPicker_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true" />
+                android:layout_width="@dimen/button_width_small"
+                android:layout_height="@dimen/button_height_normal"
+                android:layout_alignParentEnd="true"
+                android:clickable="true"
+                android:focusable="true" />
 
         </RelativeLayout>
 
@@ -186,11 +192,13 @@
                 android:layout_centerVertical="true"
                 android:text="Pivot item color" />
 
-            <Button
+            <View
                 android:id="@+id/showPivotColorPicker_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true" />
+                android:layout_width="@dimen/button_width_small"
+                android:layout_height="@dimen/button_height_normal"
+                android:layout_alignParentEnd="true"
+                android:clickable="true"
+                android:focusable="true" />
 
         </RelativeLayout>
 

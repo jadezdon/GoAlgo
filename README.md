@@ -25,6 +25,12 @@ GoAlgo is an algorithm visualizer Android application
   - [ ] Randomized Prim's
   - [ ] Recursive division
 
+- [Root-finding](https://en.wikipedia.org/wiki/Root-finding_algorithms)
+  - [ ] Newton's method
+  - [ ] Secant method
+  - [ ] Steffensen's method
+  - [ ] Inverse interpolation
+
 
 
 ## Credits

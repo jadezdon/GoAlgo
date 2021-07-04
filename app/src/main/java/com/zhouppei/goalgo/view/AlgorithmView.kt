@@ -1,4 +1,4 @@
-package com.zhouppei.goalgo.views
+package com.zhouppei.goalgo.view
 
 import android.app.Activity
 import android.content.Context
@@ -12,7 +12,7 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import android.view.WindowInsets
-import com.zhouppei.goalgo.utils.Constants
+import com.zhouppei.goalgo.util.Constants
 import kotlin.math.max
 import kotlin.math.min
 

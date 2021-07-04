@@ -1,9 +1,9 @@
-package com.zhouppei.goalgo.views
+package com.zhouppei.goalgo.view
 
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
-import com.zhouppei.goalgo.models.*
+import com.zhouppei.goalgo.model.*
 import kotlinx.coroutines.delay
 import kotlin.math.min
 

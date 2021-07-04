@@ -1,6 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.GoAlgo" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+
         <item name="android:textColor">@color/dark_grey</item>
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/blue_600</item>

@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -15,18 +14,20 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.zhouppei.goalgo.algorithms.graph.*
-import com.zhouppei.goalgo.algorithms.maze.RandomizedDFSView
-import com.zhouppei.goalgo.algorithms.maze.RandomizedKruskalsView
-import com.zhouppei.goalgo.algorithms.maze.RandomizedPrimsView
-import com.zhouppei.goalgo.algorithms.maze.RecursiveDivisionView
-import com.zhouppei.goalgo.algorithms.sorting.*
+import com.zhouppei.goalgo.algorithm.graph.*
+import com.zhouppei.goalgo.algorithm.maze.RandomizedDFSView
+import com.zhouppei.goalgo.algorithm.maze.RandomizedKruskalsView
+import com.zhouppei.goalgo.algorithm.maze.RandomizedPrimsView
+import com.zhouppei.goalgo.algorithm.maze.RecursiveDivisionView
+import com.zhouppei.goalgo.algorithm.rootfinding.SecantMethodView
+import com.zhouppei.goalgo.algorithm.sorting.*
 import com.zhouppei.goalgo.databinding.FragmentAlgorithmBinding
-import com.zhouppei.goalgo.models.GraphSearchAlgorithm
-import com.zhouppei.goalgo.models.MazeGenerationAlgorithm
-import com.zhouppei.goalgo.models.SortingAlgorithm
-import com.zhouppei.goalgo.utils.Constants
-import com.zhouppei.goalgo.views.*
+import com.zhouppei.goalgo.model.GraphSearchAlgorithm
+import com.zhouppei.goalgo.model.MazeGenerationAlgorithm
+import com.zhouppei.goalgo.model.RootFindingAlgorithm
+import com.zhouppei.goalgo.model.SortingAlgorithm
+import com.zhouppei.goalgo.util.Constants
+import com.zhouppei.goalgo.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
@@ -116,8 +117,6 @@ class AlgorithmFragment : Fragment() {
                 is SortView -> getSortViewConfig()?.let { setSortViewConfig(it) }
                 is GridView -> getGridViewConfig()?.let { setGridViewConfig(it) }
             }
-
-            if (this is DFSView) setIsTargetExist(false)
         }
     }
 
@@ -137,6 +136,7 @@ class AlgorithmFragment : Fragment() {
             MazeGenerationAlgorithm.RandomizedKruskals.str -> RandomizedKruskalsView(requireContext())
             MazeGenerationAlgorithm.RandomizedPrims.str -> RandomizedPrimsView(requireContext())
             MazeGenerationAlgorithm.RecursiveDivision.str -> RecursiveDivisionView(requireContext())
+            RootFindingAlgorithm.SecantMethod.str -> SecantMethodView(requireContext())
             else -> {
                 Toast.makeText(context, "${args.algorithmName} is not implemented yet", Toast.LENGTH_SHORT).apply {
                     setGravity(Gravity.CENTER, 0, 0)
@@ -296,6 +296,7 @@ class AlgorithmFragment : Fragment() {
         if (this::graphConfigBottomSheet.isInitialized) graphConfigBottomSheet.dismiss()
         if (this::gridConfigBottomSheet.isInitialized) gridConfigBottomSheet.dismiss()
         if (this::algorithmJob.isInitialized && algorithmJob.isActive) algorithmJob.cancel()
+        currentOrientation?.let { orientation ->  activity?.requestedOrientation = orientation }
     }
 
     override fun onDestroyView() {

@@ -1,4 +1,4 @@
-package com.zhouppei.goalgo.utils
+package com.zhouppei.goalgo.util
 
 object Constants {
 

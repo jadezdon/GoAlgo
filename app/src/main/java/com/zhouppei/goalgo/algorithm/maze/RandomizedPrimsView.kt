@@ -1,9 +1,9 @@
-package com.zhouppei.goalgo.algorithms.maze
+package com.zhouppei.goalgo.algorithm.maze
 
 import android.content.Context
 import android.util.AttributeSet
-import com.zhouppei.goalgo.models.CellType
-import com.zhouppei.goalgo.views.GridView
+import com.zhouppei.goalgo.model.CellType
+import com.zhouppei.goalgo.view.GridView
 import kotlin.random.Random
 
 class RandomizedPrimsView @JvmOverloads constructor(

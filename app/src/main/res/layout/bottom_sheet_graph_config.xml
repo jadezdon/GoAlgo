@@ -109,10 +109,12 @@
                 android:layout_centerVertical="true"
                 android:text="Current vertex color" />
 
-            <Button
+            <View
                 android:id="@+id/showCurrentColorPicker_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/button_width_small"
+                android:layout_height="@dimen/button_height_normal"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_alignParentEnd="true" />
 
         </RelativeLayout>
@@ -128,10 +130,12 @@
                 android:layout_centerVertical="true"
                 android:text="Unvisited vertex color" />
 
-            <Button
+            <View
                 android:id="@+id/showUnvisitedColorPicker_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/button_width_small"
+                android:layout_height="@dimen/button_height_normal"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_alignParentEnd="true" />
 
         </RelativeLayout>
@@ -147,10 +151,12 @@
                 android:layout_centerVertical="true"
                 android:text="Visited vertex color" />
 
-            <Button
+            <View
                 android:id="@+id/showVisitedColorPicker_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/button_width_small"
+                android:layout_height="@dimen/button_height_normal"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_alignParentEnd="true" />
 
         </RelativeLayout>
@@ -166,10 +172,12 @@
                 android:layout_centerVertical="true"
                 android:text="Start vertex color" />
 
-            <Button
+            <View
                 android:id="@+id/showStartVertexColorPicker_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/button_width_small"
+                android:layout_height="@dimen/button_height_normal"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_alignParentEnd="true" />
 
         </RelativeLayout>
@@ -185,10 +193,12 @@
                 android:layout_centerVertical="true"
                 android:text="Target vertex color" />
 
-            <Button
+            <View
                 android:id="@+id/showTargetVertexColorPicker_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/button_width_small"
+                android:layout_height="@dimen/button_height_normal"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_alignParentEnd="true" />
 
         </RelativeLayout>
@@ -204,10 +214,12 @@
                 android:layout_centerVertical="true"
                 android:text="Edge default color" />
 
-            <Button
+            <View
                 android:id="@+id/showEdgeDefaultColorPicker_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/button_width_small"
+                android:layout_height="@dimen/button_height_normal"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_alignParentEnd="true" />
 
         </RelativeLayout>
@@ -223,10 +235,12 @@
                 android:layout_centerVertical="true"
                 android:text="Edge highlighted color" />
 
-            <Button
+            <View
                 android:id="@+id/showEdgeHighlightedColorPicker_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/button_width_small"
+                android:layout_height="@dimen/button_height_normal"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_alignParentEnd="true" />
 
         </RelativeLayout>

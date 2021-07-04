@@ -1,9 +1,9 @@
-package com.zhouppei.goalgo.algorithms.sorting
+package com.zhouppei.goalgo.algorithm.sorting
 
 import android.content.Context
 import android.util.AttributeSet
-import com.zhouppei.goalgo.models.SortItemType
-import com.zhouppei.goalgo.views.SortView
+import com.zhouppei.goalgo.model.SortItemType
+import com.zhouppei.goalgo.view.SortView
 
 class QuickSortView @JvmOverloads constructor(
     context: Context,

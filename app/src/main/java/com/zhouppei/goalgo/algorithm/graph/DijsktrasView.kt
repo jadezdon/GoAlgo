@@ -1,10 +1,10 @@
-package com.zhouppei.goalgo.algorithms.graph
+package com.zhouppei.goalgo.algorithm.graph
 
 import android.content.Context
 import android.util.AttributeSet
-import com.zhouppei.goalgo.models.EdgeType
-import com.zhouppei.goalgo.models.VertexType
-import com.zhouppei.goalgo.views.GraphView
+import com.zhouppei.goalgo.model.EdgeType
+import com.zhouppei.goalgo.model.VertexType
+import com.zhouppei.goalgo.view.GraphView
 
 class DijsktrasView @JvmOverloads constructor(
     context: Context,

@@ -15,7 +15,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.zhouppei.goalgo.R
 import com.zhouppei.goalgo.databinding.DialogColorPickerBinding
-import com.zhouppei.goalgo.utils.Constants
+import com.zhouppei.goalgo.util.Constants
 import java.util.*
 
 class ColorPickerDialog(

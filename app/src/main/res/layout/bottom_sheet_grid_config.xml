@@ -89,10 +89,12 @@
                 android:layout_centerVertical="true"
                 android:text="Default cell color" />
 
-            <Button
+            <View
                 android:id="@+id/showUnvisitedColorPicker_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/button_width_small"
+                android:layout_height="@dimen/button_height_normal"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_alignParentEnd="true" />
 
         </RelativeLayout>
@@ -108,10 +110,12 @@
                 android:layout_centerVertical="true"
                 android:text="Unvisited cell color" />
 
-            <Button
+            <View
                 android:id="@+id/showCurrentColorPicker_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/button_width_small"
+                android:layout_height="@dimen/button_height_normal"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_alignParentEnd="true" />
 
         </RelativeLayout>
@@ -127,10 +131,12 @@
                 android:layout_centerVertical="true"
                 android:text="Visited cell color" />
 
-            <Button
+            <View
                 android:id="@+id/showVisitedColorPicker_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/button_width_small"
+                android:layout_height="@dimen/button_height_normal"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_alignParentEnd="true" />
 
         </RelativeLayout>
@@ -146,10 +152,12 @@
                 android:layout_centerVertical="true"
                 android:text="Cell border color" />
 
-            <Button
+            <View
                 android:id="@+id/showCellWallColorPicker_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/button_width_small"
+                android:layout_height="@dimen/button_height_normal"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_alignParentEnd="true" />
 
         </RelativeLayout>

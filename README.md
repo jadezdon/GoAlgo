@@ -38,46 +38,46 @@ An Android app for visualizing algorithms with animation.
 
 #### Breadth-first search (BFS)
 
-<img src="screenshots/BFS.gif" alt="BFS" style="width:300px;" />
+<img src="screenshots/BFS.gif" alt="BFS" style="width:40%;" />
 
 #### Depth-first search (DFS)
 
-<img src="screenshots/DFS.gif" style="width:300px;" />
+<img src="screenshots/DFS.gif" style="width:40%;" />
 
 #### Dijkstra's algorithm
 
-<img src="screenshots/Dijkstras.gif" style="width:300px;" />
+<img src="screenshots/Dijkstras.gif" style="width:40%;" />
 
 
 
 ### Sorting algorithms
 
 #### Quick sort
-<img src="screenshots/quicksort.gif" style="width:300px;" />
+<img src="screenshots/quicksort.gif" style="width:40%;" />
 
 #### Bubble sort
 
-<img src="screenshots/bubblesort.gif" style="width:300px;" />
+<img src="screenshots/bubblesort.gif" style="width:40%;" />
 
 #### Insertion sort
 
-<img src="screenshots/insertionsort.gif" style="width:300px;" />
+<img src="screenshots/insertionsort.gif" style="width:40%;" />
 
 #### Selection sort
 
-<img src="screenshots/selectionsort.gif" style="width:300px;" />
+<img src="screenshots/selectionsort.gif" style="width:40%;" />
 
 #### Merge sort
 
-<img src="screenshots/mergesort.gif" style="width:300px;" />
+<img src="screenshots/mergesort.gif" style="width:40%;" />
 
 #### Shell sort
 
-<img src="screenshots/shellsort.gif" style="width:300px;" />
+<img src="screenshots/shellsort.gif" style="width:40%;" />
 
 #### Cocktail shaker sort
 
-<img src="screenshots/cocktail_shaker_sort.gif" style="width:300px;" />
+<img src="screenshots/cocktail_shaker_sort.gif" style="width:40%;" />
 
 
 
@@ -85,52 +85,52 @@ An Android app for visualizing algorithms with animation.
 
 #### Randomized DFS
 
-<img src="screenshots/randomized_DFS.gif" style="width:300px;" />
+<img src="screenshots/randomized_DFS.gif" style="width:40%;" />
 
 #### Randomized Kruskal's
 
-<img src="screenshots/randomized_kruskals.gif" style="width:300px;" />
+<img src="screenshots/randomized_kruskals.gif" style="width:40%;" />
 
 #### Randomized Prim's
 
-<img src="screenshots/randomized_prims.gif" style="width:300px;" />
+<img src="screenshots/randomized_prims.gif" style="width:40%;" />
 
 #### Recursive division
 
-<img src="screenshots/recursive_division.gif" style="width:300px;" />
+<img src="screenshots/recursive_division.gif" style="width:40%;" />
 
 ### Root-finding (math)
 
 #### Secant method
 
-<img src="screenshots/secant_method.gif" style="width:300px;" />
+<img src="screenshots/secant_method.gif" style="width:40%;" />
 
 #### Steffensen's method
 
-<img src="screenshots/steffensens_method.gif" style="width:300px;" />
+<img src="screenshots/steffensens_method.gif" style="width:40%;" />
 
 #### Inverse quadratic interpolation
 
-<img src="screenshots/inverse_interpolation.gif" style="width:300px;" />
+<img src="screenshots/inverse_interpolation.gif" style="width:40%;" />
 
 ### All view is responsive, and customizable (change animation speed, change color)
 
-<img src="screenshots/graph_landscape.jpg" />
+<img src="screenshots/graph_landscape.jpg" style="width:40%;" />
 
-<img src="screenshots/sort_landscape.jpg" />
+<img src="screenshots/sort_landscape.jpg" style="width:40%;" />
 
-<img src="screenshots/maze_landscape.jpg"/>
+<img src="screenshots/maze_landscape.jpg" style="width:40%;"/>
 
-<img src="screenshots/root_finding_landscape.jpg" />
+<img src="screenshots/root_finding_landscape.jpg" style="width:40%;" />
 
 
-<img src="screenshots/graph_config.jpg" style="width:300px;" />
+<img src="screenshots/graph_config.jpg" style="width:40%;" />
 
-<img src="screenshots/sort_config.jpg" style="width:300px;" />
+<img src="screenshots/sort_config.jpg" style="width:40%;" />
 
-<img src="screenshots/maze_config.jpg" style="width:300px;" />
+<img src="screenshots/maze_config.jpg" style="width:40%;" />
 
-<img src="screenshots/root_finding_config.jpg" style="width:300px;" />
+<img src="screenshots/root_finding_config.jpg" style="width:40%;" />
 
 ## Credits
 

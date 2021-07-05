@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lighter_grey"
     android:orientation="vertical"
     tools:context=".ui.HomeFragment">
 
@@ -12,7 +11,8 @@
         style="@style/Theme.Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/spacing_normal"
+        android:layout_marginBottom="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_large"
         android:paddingHorizontal="@dimen/spacing_large"
         android:text="Algorithms" />
 
@@ -20,7 +20,7 @@
         android:id="@+id/algoGroup_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/spacing_normal"
+        android:paddingVertical="@dimen/spacing_tiny"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_algorithm_group" />
 </LinearLayout>

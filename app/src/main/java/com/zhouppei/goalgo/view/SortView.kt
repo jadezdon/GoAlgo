@@ -65,7 +65,7 @@ abstract class SortView @JvmOverloads constructor(
 
     private fun generateItems(size: Int): MutableList<SortItem> = MutableList(size) { SortItem(Random.nextInt(1, ITEM_MAX_VALUE)) }
 
-    fun setSortViewConfig(sortViewConfig: SortViewConfig) {
+    fun setConfig(sortViewConfig: SortViewConfig) {
         config = sortViewConfig
         currentItemPaint.color = Color.parseColor(config.currentStateColor)
         unsortedItemPaint.color = Color.parseColor(config.unsortedStateColor)

@@ -4,10 +4,12 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/spacing_tiny">
 
-    <Button
+    <View
         android:id="@+id/color_button"
-        android:layout_width="40dp"
+        android:layout_width="45dp"
         android:layout_height="45dp"
-        android:backgroundTint="@color/grey"/>
+        android:background="@color/grey"
+        android:focusable="true"
+        android:clickable="true"/>
 
 </RelativeLayout>

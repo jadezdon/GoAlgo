@@ -46,7 +46,7 @@ abstract class GridView @JvmOverloads constructor(
         color = Color.parseColor(config.currentCellColor)
     }
 
-    fun setGridViewConfig(gridViewConfig: GridViewConfig) {
+    fun setConfig(gridViewConfig: GridViewConfig) {
         config = gridViewConfig
         wallPaint.color = Color.parseColor(config.wallColor)
         unvisitedCellPaint.color = Color.parseColor(config.unvisitedCellColor)

@@ -43,14 +43,10 @@ class AlgorithmFragment : Fragment() {
 
     private lateinit var algorithmView: AlgorithmView
 
-    private lateinit var sortingConfigBottomSheet: SortingConfigBottomSheet
     private var sortingConfigListener: SortingConfigListener? = null
-
-    private lateinit var graphConfigBottomSheet: GraphConfigBottomSheet
     private var graphConfigListener: GraphConfigListener? = null
-
-    private lateinit var gridConfigBottomSheet: GridConfigBottomSheet
     private var gridConfigListener: GridConfigListener? = null
+    private var functionConfigListener: FunctionConfigListener? = null
 
     private var sharedPreferences: SharedPreferences? = null
     private val gson = Gson()
@@ -72,8 +68,6 @@ class AlgorithmFragment : Fragment() {
         binding.title.text = args.algorithmName
 
         initAlgorithmView()
-
-        initAlgorithmConfigListener()
 
         binding.algorithmViewLayout.addView(algorithmView)
 
@@ -113,9 +107,22 @@ class AlgorithmFragment : Fragment() {
             })
 
             when (this) {
-                is GraphView -> getGraphViewConfig()?.let { setGraphViewConfig(it) }
-                is SortView -> getSortViewConfig()?.let { setSortViewConfig(it) }
-                is GridView -> getGridViewConfig()?.let { setGridViewConfig(it) }
+                is GraphView -> {
+                    getGraphViewConfig()?.let { setConfig(it) }
+                    initGraphConfigListener()
+                }
+                is SortView -> {
+                    getSortViewConfig()?.let { setConfig(it) }
+                    initSortingConfigListener()
+                }
+                is GridView -> {
+                    getGridViewConfig()?.let { setConfig(it) }
+                    initGridConfigListener()
+                }
+                is FunctionView -> {
+                    getFunctionViewConfig()?.let { setConfig(it) }
+                    initFunctionConfigListener()
+                }
             }
         }
     }
@@ -155,6 +162,19 @@ class AlgorithmFragment : Fragment() {
             if (it.contains(Constants.SHARED_PREF_GRIDVIEW_CONFIGURATION)) {
                 val str = it.getString(Constants.SHARED_PREF_GRIDVIEW_CONFIGURATION, "")
                 val itemType = object : TypeToken<GridViewConfig>() {}.type
+                return gson.fromJson(str, itemType)
+            }
+        }
+        return null
+    }
+
+    private fun getFunctionViewConfig(): FunctionViewConfig? {
+        sharedPreferences = context?.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
+
+        sharedPreferences?.let {
+            if (it.contains(Constants.SHARED_PREF_FUNCTIONVIEW_CONFIGURATION)) {
+                val str = it.getString(Constants.SHARED_PREF_FUNCTIONVIEW_CONFIGURATION, "")
+                val itemType = object : TypeToken<FunctionViewConfig>() {}.type
                 return gson.fromJson(str, itemType)
             }
         }
@@ -241,18 +261,10 @@ class AlgorithmFragment : Fragment() {
         }
     }
 
-    private fun initAlgorithmConfigListener() {
-        when (algorithmView) {
-            is GraphView -> initGraphConfigListener()
-            is SortView -> initSortingConfigListener()
-            is GridView -> initGridConfigListener()
-        }
-    }
-
     private fun initGraphConfigListener() {
         graphConfigListener = object : GraphConfigListener {
             override fun setConfig(config: GraphViewConfig) {
-                (algorithmView as? GraphView)?.setGraphViewConfig(config)
+                (algorithmView as? GraphView)?.setConfig(config)
             }
         }
     }
@@ -260,7 +272,7 @@ class AlgorithmFragment : Fragment() {
     private fun initGridConfigListener() {
         gridConfigListener = object : GridConfigListener {
             override fun setConfig(config: GridViewConfig) {
-                (algorithmView as? GridView)?.setGridViewConfig(config)
+                (algorithmView as? GridView)?.setConfig(config)
             }
         }
     }
@@ -268,7 +280,15 @@ class AlgorithmFragment : Fragment() {
     private fun initSortingConfigListener() {
         sortingConfigListener = object : SortingConfigListener {
             override fun setConfig(config: SortViewConfig) {
-                (algorithmView as? SortView)?.setSortViewConfig(config)
+                (algorithmView as? SortView)?.setConfig(config)
+            }
+        }
+    }
+
+    private fun initFunctionConfigListener() {
+        functionConfigListener = object : FunctionConfigListener {
+            override fun setConfig(config: FunctionViewConfig) {
+                (algorithmView as? FunctionView)?.setConfig(config)
             }
         }
     }
@@ -285,6 +305,9 @@ class AlgorithmFragment : Fragment() {
                 is GridView -> gridConfigListener?.let { listener ->
                     GridConfigBottomSheet.newInstance(listener).apply { show(it, tag) }
                 }
+                is FunctionView -> functionConfigListener?.let { listener ->
+                    FunctionConfigBottomSheet.newInstance(listener).apply { show(it, tag) }
+                }
                 else -> {}
             }
         }
@@ -292,9 +315,6 @@ class AlgorithmFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (this::sortingConfigBottomSheet.isInitialized) sortingConfigBottomSheet.dismiss()
-        if (this::graphConfigBottomSheet.isInitialized) graphConfigBottomSheet.dismiss()
-        if (this::gridConfigBottomSheet.isInitialized) gridConfigBottomSheet.dismiss()
         if (this::algorithmJob.isInitialized && algorithmJob.isActive) algorithmJob.cancel()
         currentOrientation?.let { orientation ->  activity?.requestedOrientation = orientation }
     }

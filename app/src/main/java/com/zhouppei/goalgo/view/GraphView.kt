@@ -98,7 +98,7 @@ abstract class GraphView @JvmOverloads constructor(
         textAlign = Paint.Align.CENTER
     }
 
-    fun setGraphViewConfig(graphViewConfig: GraphViewConfig) {
+    fun setConfig(graphViewConfig: GraphViewConfig) {
         config = graphViewConfig
         vertexVisitedPaint.color = Color.parseColor(config.vertexVisitedColor)
         vertexUnvisitedPaint.color = Color.parseColor(config.vertexUnvisitedColor)

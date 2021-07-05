@@ -20,14 +20,14 @@ GoAlgo is an algorithm visualizer Android application
   - [x] Shell sort
   - [x] Cocktail shaker sort
 - [Maze generation](https://en.wikipedia.org/wiki/Maze_generation_algorithm)
-  - [ ] Randomized DFS
-  - [ ] Randomized Kruskal's
-  - [ ] Randomized Prim's
-  - [ ] Recursive division
+  - [x] Randomized DFS
+  - [x] Randomized Kruskal's
+  - [x] Randomized Prim's
+  - [x] Recursive division
 
 - [Root-finding](https://en.wikipedia.org/wiki/Root-finding_algorithms)
   - [ ] Newton's method
-  - [ ] Secant method
+  - [ ] [Secant method](https://en.wikipedia.org/wiki/Secant_method)
   - [ ] Steffensen's method
   - [ ] Inverse interpolation
 

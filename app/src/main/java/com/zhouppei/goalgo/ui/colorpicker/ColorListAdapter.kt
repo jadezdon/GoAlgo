@@ -2,6 +2,7 @@ package com.zhouppei.goalgo.ui.colorpicker
 
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.recyclerview.widget.DiffUtil
@@ -27,7 +28,7 @@ class ColorListAdapter(
     }
 
     inner class ViewHolder(binding: ItemColorButtonBinding): RecyclerView.ViewHolder(binding.root) {
-        val button: Button = binding.colorButton
+        val button: View = binding.colorButton
     }
 }
 

@@ -19,7 +19,9 @@ import com.zhouppei.goalgo.algorithm.maze.RandomizedDFSView
 import com.zhouppei.goalgo.algorithm.maze.RandomizedKruskalsView
 import com.zhouppei.goalgo.algorithm.maze.RandomizedPrimsView
 import com.zhouppei.goalgo.algorithm.maze.RecursiveDivisionView
+import com.zhouppei.goalgo.algorithm.rootfinding.InverseInterpolationMethodView
 import com.zhouppei.goalgo.algorithm.rootfinding.SecantMethodView
+import com.zhouppei.goalgo.algorithm.rootfinding.SteffensensMethodView
 import com.zhouppei.goalgo.algorithm.sorting.*
 import com.zhouppei.goalgo.databinding.FragmentAlgorithmBinding
 import com.zhouppei.goalgo.model.GraphSearchAlgorithm
@@ -144,6 +146,8 @@ class AlgorithmFragment : Fragment() {
             MazeGenerationAlgorithm.RandomizedPrims.str -> RandomizedPrimsView(requireContext())
             MazeGenerationAlgorithm.RecursiveDivision.str -> RecursiveDivisionView(requireContext())
             RootFindingAlgorithm.SecantMethod.str -> SecantMethodView(requireContext())
+            RootFindingAlgorithm.SteffensensMethod.str -> SteffensensMethodView(requireContext())
+            RootFindingAlgorithm.InverseInterpolation.str -> InverseInterpolationMethodView(requireContext())
             else -> {
                 Toast.makeText(context, "${args.algorithmName} is not implemented yet", Toast.LENGTH_SHORT).apply {
                     setGravity(Gravity.CENTER, 0, 0)

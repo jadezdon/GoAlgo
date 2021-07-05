@@ -55,7 +55,6 @@ enum class MazeGenerationAlgorithm(val str: String) {
 }
 
 enum class RootFindingAlgorithm(val str: String) {
-    NewtonsMethod("Newton's method"),
     SecantMethod("Secant method"),
     SteffensensMethod("Steffensen's method"),
     InverseInterpolation("Inverse quadratic interpolation");

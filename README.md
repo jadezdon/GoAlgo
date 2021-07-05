@@ -1,5 +1,5 @@
 # GoAlgo
-GoAlgo is an algorithm visualizer Android application
+GoAlgo is an algorithm visualizer Android application.
 
 ## [Algorithms](https://en.wikipedia.org/wiki/List_of_algorithms)
 
@@ -26,10 +26,9 @@ GoAlgo is an algorithm visualizer Android application
   - [x] Recursive division
 
 - [Root-finding](https://en.wikipedia.org/wiki/Root-finding_algorithms)
-  - [ ] Newton's method
-  - [ ] [Secant method](https://en.wikipedia.org/wiki/Secant_method)
-  - [ ] Steffensen's method
-  - [ ] Inverse interpolation
+  - [x] [Secant method](https://en.wikipedia.org/wiki/Secant_method)
+  - [x] [Steffensen's method](https://en.wikipedia.org/wiki/Steffensen%27s_method)
+  - [x] [Inverse interpolation](https://en.wikipedia.org/wiki/Inverse_quadratic_interpolation)
 
 
 

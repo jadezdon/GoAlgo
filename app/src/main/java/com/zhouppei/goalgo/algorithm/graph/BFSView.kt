@@ -63,8 +63,8 @@ class BFSView @JvmOverloads constructor(
 
             setCaption("$captionText, Path: ")
             for (i in path.size - 1 downTo 1) {
-                graph.adjMatrix[path[i]][path[i-1]]?.type = EdgeType.PATH
-                if (graph.isUndirected) graph.adjMatrix[path[i-1]][path[i]]?.type = EdgeType.PATH
+                graph.adjMatrix[path[i]][path[i - 1]]?.type = EdgeType.PATH
+                if (graph.isUndirected) graph.adjMatrix[path[i - 1]][path[i]]?.type = EdgeType.PATH
                 graph.vertices[path[i]].type = VertexType.PATH
                 setCaption("$captionText ${path[i]} ")
                 update()
@@ -79,10 +79,29 @@ class BFSView @JvmOverloads constructor(
     }
 
     override fun sourceCode(): String {
-        TODO("Not yet implemented")
+        return "<p>" +
+                " 1  procedure BFS(G, root) is\n" +
+                " 2      let Q be a queue\n" +
+                " 3      label root as explored\n" +
+                " 4      Q.enqueue(root)\n" +
+                " 5      while Q is not empty do\n" +
+                " 6          v := Q.dequeue()\n" +
+                " 7          if v is the goal then\n" +
+                " 8              return v\n" +
+                " 9          for all edges from v to w in G.adjacentEdges(v) do\n" +
+                "10              if w is not labeled as explored then\n" +
+                "11                  label w as explored\n" +
+                "12                  Q.enqueue(w)" +
+                "</p>"
     }
 
     override fun description(): String {
-        TODO("Not yet implemented")
+        return "<p>" +
+                "Input: A graph G and a starting vertex root of G\n" +
+                "Output: Goal state. The parent links trace the shortest path back to root\n" +
+                "Breadth-first search (BFS) is an algorithm for searching a tree data structure for a node that satisfies a given property. " +
+                "It starts at the tree root and explores all nodes at the present depth prior to moving on to the nodes at the next depth level. " +
+                "Extra memory, usually a queue, is needed to keep track of the child nodes that were encountered but not yet explored." +
+                "</p>"
     }
 }

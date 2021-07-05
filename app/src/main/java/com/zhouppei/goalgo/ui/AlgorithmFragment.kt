@@ -92,10 +92,10 @@ class AlgorithmFragment : Fragment() {
                         isEnabled = true
                         alpha = 1f
                     }
-                    binding.showCodeButton.apply {
-                        isEnabled = true
-                        alpha = 1f
-                    }
+//                    binding.showCodeButton.apply {
+//                        isEnabled = true
+//                        alpha = 1f
+//                    }
                     binding.runButton.apply {
                         visibility = View.VISIBLE
                         isEnabled = false
@@ -225,10 +225,10 @@ class AlgorithmFragment : Fragment() {
                 isEnabled = false
                 alpha = 0.5f
             }
-            binding.showCodeButton.apply {
-                isEnabled = false
-                alpha = 0.5f
-            }
+//            binding.showCodeButton.apply {
+//                isEnabled = false
+//                alpha = 0.5f
+//            }
         }
 
         binding.stopButton.setOnClickListener {
@@ -243,10 +243,10 @@ class AlgorithmFragment : Fragment() {
                 isEnabled = true
                 alpha = 1f
             }
-            binding.showCodeButton.apply {
-                isEnabled = true
-                alpha = 1f
-            }
+//            binding.showCodeButton.apply {
+//                isEnabled = true
+//                alpha = 1f
+//            }
         }
 
         binding.newButton.setOnClickListener {

@@ -45,10 +45,22 @@ class DFSView @JvmOverloads constructor(
     }
 
     override fun sourceCode(): String {
-        TODO("Not yet implemented")
+        return "<p>" +
+                "1 procedure DFS(G, v) is\n" +
+                "2     label v as discovered\n" +
+                "3     for all directed edges from v to w that are in G.adjacentEdges(v) do\n" +
+                "4         if vertex w is not labeled as discovered then\n" +
+                "5             recursively call DFS(G, w)" +
+                "</p>"
     }
 
     override fun description(): String {
-        TODO("Not yet implemented")
+        return "<p>" +
+                "Input: A graph G and a vertex v of G\n" +
+                "Output: All vertices reachable from v labeled as discovered\n" +
+                "Depth-first search (DFS) is an algorithm for traversing or searching tree or graph data structures. " +
+                "The algorithm starts at the root node (selecting some arbitrary node as the root node in the case of a graph) and explores as far as " +
+                "possible along each branch before backtracking." +
+                "</p>"
     }
 }

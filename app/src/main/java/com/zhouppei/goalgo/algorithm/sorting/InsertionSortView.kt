@@ -59,10 +59,23 @@ class InsertionSortView @JvmOverloads constructor(
     }
 
     override fun sourceCode(): String {
-        TODO("Not yet implemented")
+        return "i ← 1 <br>" +
+                "while i < length(A) <br>" +
+                "    x ← A[i] <br>" +
+                "    j ← i - 1 <br>" +
+                "    while j >= 0 and A[j] > x <br>" +
+                "        A[j+1] ← A[j] <br>" +
+                "        j ← j - 1 <br>" +
+                "    end while <br>" +
+                "    A[j+1] ← x <br>" +
+                "    i ← i + 1 <br>" +
+                "end while"
     }
 
     override fun description(): String {
-        TODO("Not yet implemented")
+        return "Insertion sort is a simple sorting algorithm that builds the final sorted array (or list) one item at a time. " +
+                "It is much less efficient on large lists than more advanced algorithms such as quicksort, heapsort, or merge sort. " +
+                "However, insertion sort provides several advantages: efficient for (quite) small data sets, much like other quadratic sorting algorithms," +
+                "stable, in-place."
     }
 }

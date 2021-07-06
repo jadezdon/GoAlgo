@@ -45,10 +45,35 @@ class SteffensensMethodView @JvmOverloads constructor(
     }
 
     override fun sourceCode(): String {
-        TODO("Not yet implemented")
+        return "def g(f, x: float, fx: float):<br>" +
+                "    \"\"\"First-order divided difference function.<br>" +
+                "<br>" +
+                "    Arguments:<br>" +
+                "        f(callable): Function input to g<br>" +
+                "        x(float): Point at which to evaluate g<br>" +
+                "        fx(float): Function f evaluated at x <br>" +
+                "    \"\"\"<br>" +
+                "    return lambda x: f(x + fx) / fx - 1<br>" +
+                "<br>" +
+                "def steff(f, x: float):<br>" +
+                "    \"\"\"Steffenson algorithm for finding roots.<br>" +
+                "<br>" +
+                "    This recursive generator yields the x_n+1 value first then, when the generator iterates,<br>" +
+                "    it yields x_n + 2 from the next level of recursion.<br>" +
+                "<br>" +
+                "    Arguments:<br>" +
+                "        f(callable): Function whose root we are searching for<br>" +
+                "        x(float): Starting value upon first call, each level n that the function recurses x is x_n<br>" +
+                "    \"\"\"<br>" +
+                "    fx = f(x)<br>" +
+                "    gx = g(f,x, fx)(x)<br>" +
+                "    if gx != 0:<br>" +
+                "        yield x - fx / gx  # First give x_n + 1<br>" +
+                "        yield from steff(f, x - fx / gx)  # Then give new iterator"
     }
 
     override fun description(): String {
-        TODO("Not yet implemented")
+        return "In numerical analysis, Steffensen's method is a root-finding technique named after Johan Frederik Steffensen which is similar " +
+                "to Newton's method. Steffensen's method also achieves quadratic convergence, but without using derivatives as Newton's method does."
     }
 }

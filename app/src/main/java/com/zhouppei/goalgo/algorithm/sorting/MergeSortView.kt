@@ -133,10 +133,55 @@ class MergeSortView @JvmOverloads constructor(
     }
 
     override fun sourceCode(): String {
-        TODO("Not yet implemented")
+        return "function merge_sort(list m) is <br>" +
+                "    // Base case. A list of zero or one elements is sorted, by definition. <br>" +
+                "    if length of m ≤ 1 then <br>" +
+                "        return m <br>" +
+                " <br>" +
+                "    // Recursive case. First, divide the list into equal-sized sublists <br>" +
+                "    // consisting of the first half and second half of the list. <br>" +
+                "    // This assumes lists start at index 0. <br>" +
+                "    var left := empty list <br>" +
+                "    var right := empty list <br>" +
+                "    for each x with index i in m do <br>" +
+                "        if i < (length of m)/2 then <br>" +
+                "            add x to left <br>" +
+                "        else <br>" +
+                "            add x to right <br>" +
+                " <br>" +
+                "    // Recursively sort both sublists. <br>" +
+                "    left := merge_sort(left) <br>" +
+                "    right := merge_sort(right) <br>" +
+                " <br>" +
+                "    // Then merge the now-sorted sublists. <br>" +
+                "    return merge(left, right)" +
+                " <br>" +
+                "function merge(left, right) is <br>" +
+                "    var result := empty list <br>" +
+                " <br>" +
+                "    while left is not empty and right is not empty do <br>" +
+                "        if first(left) ≤ first(right) then <br>" +
+                "            append first(left) to result <br>" +
+                "            left := rest(left) <br>" +
+                "        else <br>" +
+                "            append first(right) to result <br>" +
+                "            right := rest(right) <br>" +
+                " <br>" +
+                "    // Either left or right may have elements left; consume them. <br>" +
+                "    // (Only one of the following loops will actually be entered.) <br>" +
+                "    while left is not empty do <br>" +
+                "        append first(left) to result <br>" +
+                "        left := rest(left) <br>" +
+                "    while right is not empty do <br>" +
+                "        append first(right) to result <br>" +
+                "        right := rest(right) <br>" +
+                "    return result"
     }
 
     override fun description(): String {
-        TODO("Not yet implemented")
+        return "Merge sort (also commonly spelled as mergesort) is an efficient, general-purpose, and comparison-based sorting algorithm. " +
+                "Most implementations produce a stable sort, which means that the order of equal elements is the same in the input and output. " +
+                "Merge sort is a divide and conquer algorithm that was invented by John von Neumann in 1945. " +
+                "A detailed description and analysis of bottom-up merge sort appeared in a report by Goldstine and von Neumann as early as 1948."
     }
 }

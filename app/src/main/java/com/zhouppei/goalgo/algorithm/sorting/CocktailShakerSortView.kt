@@ -45,10 +45,34 @@ class CocktailShakerSortView @JvmOverloads constructor(
     }
 
     override fun sourceCode(): String {
-        TODO("Not yet implemented")
+        return "procedure cocktailShakerSort(A : list of sortable items) is <br>" +
+                "    do <br>" +
+                "        swapped := false <br>" +
+                "        for each i in 0 to length(A) − 2 do: <br>" +
+                "            if A[i] > A[i + 1] then // test whether the two elements are in the wrong order <br>" +
+                "                swap(A[i], A[i + 1]) // let the two elements change places <br>" +
+                "                swapped := true <br>" +
+                "            end if <br>" +
+                "        end for <br>" +
+                "        if not swapped then <br>" +
+                "            // we can exit the outer loop here if no swaps occurred. <br>" +
+                "            break do-while loop <br>" +
+                "        end if <br>" +
+                "        swapped := false <br>" +
+                "        for each i in length(A) − 2 to 0 do: <br>" +
+                "            if A[i] > A[i + 1] then <br>" +
+                "                swap(A[i], A[i + 1]) <br>" +
+                "                swapped := true <br>" +
+                "            end if <br>" +
+                "        end for <br>" +
+                "    while swapped // if no elements have been swapped, then the list is sorted <br>" +
+                "end procedure"
     }
 
     override fun description(): String {
-        TODO("Not yet implemented")
+        return "Cocktail shaker sort, also known as bidirectional bubble sort, cocktail sort, shaker sort (which can also refer to a variant of selection sort), " +
+                "ripple sort, shuffle sort, or shuttle sort, is an extension of bubble sort. The algorithm extends bubble sort by " +
+                "operating in two directions. While it improves on bubble sort by more quickly moving items to the beginning of the list, " +
+                "it provides only marginal performance improvements."
     }
 }

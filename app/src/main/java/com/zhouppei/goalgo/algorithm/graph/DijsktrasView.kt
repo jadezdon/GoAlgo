@@ -88,36 +88,32 @@ class DijsktrasView @JvmOverloads constructor(
     }
 
     override fun sourceCode(): String {
-        return "<p>" +
-                " 1  function Dijkstra(Graph, source):\n" +
-                " 2\n" +
-                " 3      create vertex set Q\n" +
-                " 4\n" +
-                " 5      for each vertex v in Graph:            \n" +
-                " 6          dist[v] ← INFINITY                 \n" +
-                " 7          prev[v] ← UNDEFINED                \n" +
-                " 8          add v to Q                     \n" +
-                " 9      dist[source] ← 0                       \n" +
-                "10     \n" +
-                "11      while Q is not empty:\n" +
-                "12          u ← vertex in Q with min dist[u]   \n" +
-                "13                                             \n" +
-                "14          remove u from Q\n" +
-                "15         \n" +
-                "16          for each neighbor v of u:           // only v that are still in Q\n" +
-                "17              alt ← dist[u] + length(u, v)\n" +
-                "18              if alt < dist[v]:              \n" +
-                "19                  dist[v] ← alt\n" +
-                "20                  prev[v] ← u\n" +
-                "21\n" +
-                "22      return dist[], prev[]" +
-                "</p>"
+        return  " 1  function Dijkstra(Graph, source): <br>" +
+                " 2 <br>" +
+                " 3      create vertex set Q <br>" +
+                " 4 <br>" +
+                " 5      for each vertex v in Graph:             <br>" +
+                " 6          dist[v] ← INFINITY                  <br>" +
+                " 7          prev[v] ← UNDEFINED                 <br>" +
+                " 8          add v to Q                      <br>" +
+                " 9      dist[source] ← 0                        <br>" +
+                "10      <br>" +
+                "11      while Q is not empty: <br>" +
+                "12          u ← vertex in Q with min dist[u]    <br>" +
+                "13                                              <br>" +
+                "14          remove u from Q <br>" +
+                "15          <br>" +
+                "16          for each neighbor v of u:           // only v that are still in Q <br>" +
+                "17              alt ← dist[u] + length(u, v) <br>" +
+                "18              if alt < dist[v]:               <br>" +
+                "19                  dist[v] ← alt <br>" +
+                "20                  prev[v] ← u <br>" +
+                "21 <br>" +
+                "22      return dist[], prev[]" 
     }
 
     override fun description(): String {
-        return "<p>" +
-                "Dijkstra's algorithm is an algorithm for finding the shortest paths between nodes in a graph, which may represent, " +
-                "for example, road networks. It was conceived by computer scientist Edsger W. Dijkstra in 1956 and published three years later." +
-                "</p>"
+        return  "Dijkstra's algorithm is an algorithm for finding the shortest paths between nodes in a graph, which may represent, " +
+                "for example, road networks. It was conceived by computer scientist Edsger W. Dijkstra in 1956 and published three years later." 
     }
 }

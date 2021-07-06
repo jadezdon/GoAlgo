@@ -50,6 +50,8 @@ class AlgorithmFragment : Fragment() {
     private var gridConfigListener: GridConfigListener? = null
     private var functionConfigListener: FunctionConfigListener? = null
 
+    private lateinit var descriptionDialog: DescriptionDialog
+
     private var sharedPreferences: SharedPreferences? = null
     private val gson = Gson()
     private lateinit var algorithmJob: Job
@@ -92,10 +94,10 @@ class AlgorithmFragment : Fragment() {
                         isEnabled = true
                         alpha = 1f
                     }
-//                    binding.showCodeButton.apply {
-//                        isEnabled = true
-//                        alpha = 1f
-//                    }
+                    binding.showCodeButton.apply {
+                        isEnabled = true
+                        alpha = 1f
+                    }
                     binding.runButton.apply {
                         visibility = View.VISIBLE
                         isEnabled = false
@@ -225,10 +227,10 @@ class AlgorithmFragment : Fragment() {
                 isEnabled = false
                 alpha = 0.5f
             }
-//            binding.showCodeButton.apply {
-//                isEnabled = false
-//                alpha = 0.5f
-//            }
+            binding.showCodeButton.apply {
+                isEnabled = false
+                alpha = 0.5f
+            }
         }
 
         binding.stopButton.setOnClickListener {
@@ -243,10 +245,10 @@ class AlgorithmFragment : Fragment() {
                 isEnabled = true
                 alpha = 1f
             }
-//            binding.showCodeButton.apply {
-//                isEnabled = true
-//                alpha = 1f
-//            }
+            binding.showCodeButton.apply {
+                isEnabled = true
+                alpha = 1f
+            }
         }
 
         binding.newButton.setOnClickListener {
@@ -262,6 +264,11 @@ class AlgorithmFragment : Fragment() {
             }
 
             algorithmView.new()
+        }
+
+        binding.showCodeButton.setOnClickListener {
+            descriptionDialog = DescriptionDialog(requireContext(), algorithmView.sourceCode(), algorithmView.description())
+            descriptionDialog.show()
         }
     }
 
@@ -320,6 +327,7 @@ class AlgorithmFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         if (this::algorithmJob.isInitialized && algorithmJob.isActive) algorithmJob.cancel()
+        if (this::descriptionDialog.isInitialized) descriptionDialog.dismiss()
         currentOrientation?.let { orientation ->  activity?.requestedOrientation = orientation }
     }
 

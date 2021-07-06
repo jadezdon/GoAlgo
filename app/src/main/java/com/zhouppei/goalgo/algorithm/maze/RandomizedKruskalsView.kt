@@ -43,10 +43,14 @@ class RandomizedKruskalsView @JvmOverloads constructor(
     }
 
     override fun sourceCode(): String {
-        TODO("Not yet implemented")
+        return  "1  Create a list of all walls, and create a set for each cell, each containing just that one cell.<br>" +
+                "2  For each wall, in some random order:<br>" +
+                "3      If the cells divided by this wall belong to distinct sets:<br>" +
+                "4          Remove the current wall.<br>" +
+                "5          Join the sets of the formerly divided cells."
     }
 
     override fun description(): String {
-        TODO("Not yet implemented")
+        return "This algorithm is a randomized version of Kruskal's algorithm."
     }
 }

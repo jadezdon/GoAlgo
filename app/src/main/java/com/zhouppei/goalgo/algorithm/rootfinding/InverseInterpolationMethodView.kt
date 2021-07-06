@@ -56,10 +56,12 @@ class InverseInterpolationMethodView @JvmOverloads constructor(
     }
 
     override fun sourceCode(): String {
-        TODO("Not yet implemented")
+        return ""
     }
 
     override fun description(): String {
-        TODO("Not yet implemented")
+        return "In numerical analysis, inverse quadratic interpolation is a root-finding algorithm, meaning that it is an algorithm for solving " +
+                "equations of the form f(x) = 0. The idea is to use quadratic interpolation to approximate the inverse of f. " +
+                "This algorithm is rarely used on its own, but it is important because it forms part of the popular Brent's method."
     }
 }

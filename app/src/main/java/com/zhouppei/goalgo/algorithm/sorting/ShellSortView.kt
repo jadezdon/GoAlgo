@@ -58,10 +58,34 @@ class ShellSortView @JvmOverloads constructor(
     }
 
     override fun sourceCode(): String {
-        TODO("Not yet implemented")
+        return  "# Sort an array a[0...n-1]. <br>" +
+                "gaps = [n / 2, n / 4, ... 2, 1] <br>" +
+                " <br>" +
+                "# Start with the largest gap and work down to a gap of 1 <br>" +
+                "foreach (gap in gaps) <br>" +
+                "{ <br>" +
+                "    # Do a gapped insertion sort for this gap size. <br>" +
+                "    # The first gap elements a[0..gap-1] are already in gapped order <br>" +
+                "    # keep adding one more element until the entire array is gap sorted <br>" +
+                "    for (i = gap; i < n; i += 1) <br>" +
+                "    { <br>" +
+                "        # add a[i] to the elements that have been gap sorted <br>" +
+                "        # save a[i] in temp and make a hole at position i <br>" +
+                "        temp = a[i] <br>" +
+                "        # shift earlier gap-sorted elements up until the correct location for a[i] is found <br>" +
+                "        for (j = i; j >= gap and a[j - gap] > temp; j -= gap) <br>" +
+                "        { <br>" +
+                "            a[j] = a[j - gap] <br>" +
+                "        } <br>" +
+                "        # put temp (the original a[i]) in its correct location <br>" +
+                "        a[j] = temp <br>" +
+                "    } <br>" +
+                "}"
     }
 
     override fun description(): String {
-        TODO("Not yet implemented")
+        return  "Shellsort, also known as Shell sort or Shell's method, is an in-place comparison sort. It can be seen as either a generalization " +
+                "of sorting by exchange (bubble sort) or sorting by insertion (insertion sort). The method starts by sorting pairs of elements " +
+                "far apart from each other, then progressively reducing the gap between elements to be compared."
     }
 }

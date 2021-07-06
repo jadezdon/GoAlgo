@@ -39,10 +39,19 @@ class RandomizedDFSView @JvmOverloads constructor(
     }
 
     override fun sourceCode(): String {
-        TODO("Not yet implemented")
+        return  "1  Choose the initial cell, mark it as visited and push it to the stack<br>" +
+                "2  While the stack is not empty<br>" +
+                "3      Pop a cell from the stack and make it a current cell<br>" +
+                "4      If the current cell has any neighbours which have not been visited<br>" +
+                "5          Push the current cell to the stack<br>" +
+                "6          Choose one of the unvisited neighbours<br>" +
+                "7          Remove the wall between the current cell and the chosen cell<br>" +
+                "8          Mark the chosen cell as visited and push it to the stack"
     }
 
     override fun description(): String {
-        TODO("Not yet implemented")
+        return  "This algorithm, also known as the \"recursive backtracker\" algorithm, is a randomized version of the depth-first search algorithm.<br>" +
+                "Frequently implemented with a stack, this approach is one of the simplest ways to generate a maze using a computer. " +
+                "Consider the space for a maze being a large grid of cells (like a large chess board), each cell starting with four walls."
     }
 }

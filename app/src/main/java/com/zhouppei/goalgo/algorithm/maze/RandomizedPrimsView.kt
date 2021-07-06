@@ -48,10 +48,16 @@ class RandomizedPrimsView @JvmOverloads constructor(
     }
 
     override fun sourceCode(): String {
-        TODO("Not yet implemented")
+        return "1  Start with a grid full of walls.<br>" +
+                "2  Pick a cell, mark it as part of the maze. Add the walls of the cell to the wall list.<br>" +
+                "3  While there are walls in the list:<br>" +
+                "4      Pick a random wall from the list. If only one of the cells that the wall divides is visited, then:<br>" +
+                "5          Make the wall a passage and mark the unvisited cell as part of the maze.<br>" +
+                "6          Add the neighboring walls of the cell to the wall list.<br>" +
+                "7      Remove the wall from the list."
     }
 
     override fun description(): String {
-        TODO("Not yet implemented")
+        return "This algorithm is a randomized version of Prim's algorithm."
     }
 }

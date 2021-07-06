@@ -62,10 +62,26 @@ class QuickSortView @JvmOverloads constructor(
     }
 
     override fun sourceCode(): String {
-        TODO("Not yet implemented")
+        return "algorithm quicksort(A, lo, hi) is <br>" +
+                "    if lo < hi then <br>" +
+                "        p := partition(A, lo, hi) <br>" +
+                "        quicksort(A, lo, p - 1) <br>" +
+                "        quicksort(A, p + 1, hi) <br>" +
+                " <br>" +
+                "algorithm partition(A, lo, hi) is <br>" +
+                "    pivot := A[hi] <br>" +
+                "    i := lo <br>" +
+                "    for j := lo to hi do <br>" +
+                "        if A[j] < pivot then <br>" +
+                "            swap A[i] with A[j] <br>" +
+                "            i := i + 1 <br>" +
+                "    swap A[i] with A[hi] <br>" +
+                "    return i"
     }
 
     override fun description(): String {
-        return ""
+        return "Quicksort is an in-place sorting algorithm. Developed by British computer scientist Tony Hoare in 1959 and published in 1961, " +
+                "it is still a commonly used algorithm for sorting. When implemented well, it can be somewhat faster than merge sort and about " +
+                "two or three times faster than heapsort."
     }
 }

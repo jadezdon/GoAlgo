@@ -54,10 +54,16 @@ class SecantMethodView @JvmOverloads constructor(
     }
 
     override fun sourceCode(): String {
-        TODO("Not yet implemented")
+        return "def secant_method(f, x0, x1, iterations):<br>" +
+                "    \"\"\"Return the root calculated using the secant method.\"\"\"<br>" +
+                "    for i in range(iterations):<br>" +
+                "        x2 = x1 - f(x1) * (x1 - x0) / float(f(x1) - f(x0))<br>" +
+                "        x0, x1 = x1, x2<br>" +
+                "    return x2"
     }
 
     override fun description(): String {
-        TODO("Not yet implemented")
+        return "In numerical analysis, the secant method is a root-finding algorithm that uses a succession of roots of secant lines to " +
+                "better approximate a root of a function f. The secant method can be thought of as a finite-difference approximation of Newton's method."
     }
 }

@@ -31,10 +31,26 @@ class BubbleSortView @JvmOverloads constructor(
     }
 
     override fun sourceCode(): String {
-        TODO("Not yet implemented")
+        return "procedure bubbleSort(A : list of sortable items)<br>" +
+                "    n := length(A)<br>" +
+                "    repeat<br>" +
+                "        swapped := false<br>" +
+                "        for i := 1 to n-1 inclusive do<br>" +
+                "            /* if this pair is out of order */<br>" +
+                "            if A[i-1] > A[i] then<br>" +
+                "                /* swap them and remember something changed */<br>" +
+                "                swap(A[i-1], A[i])<br>" +
+                "                swapped := true<br>" +
+                "            end if<br>" +
+                "        end for<br>" +
+                "    until not swapped<br>" +
+                "end procedure"
     }
 
     override fun description(): String {
-        TODO("Not yet implemented")
+        return "Bubble sort, sometimes referred to as sinking sort, is a simple sorting algorithm that repeatedly steps through the list, " +
+                "compares adjacent elements and swaps them if they are in the wrong order. The pass through the list is repeated until " +
+                "the list is sorted. The algorithm, which is a comparison sort, is named for the way smaller or larger elements \"bubble\" " +
+                "to the top of the list."
     }
 }

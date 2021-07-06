@@ -79,29 +79,25 @@ class BFSView @JvmOverloads constructor(
     }
 
     override fun sourceCode(): String {
-        return "<p>" +
-                " 1  procedure BFS(G, root) is\n" +
-                " 2      let Q be a queue\n" +
-                " 3      label root as explored\n" +
-                " 4      Q.enqueue(root)\n" +
-                " 5      while Q is not empty do\n" +
-                " 6          v := Q.dequeue()\n" +
-                " 7          if v is the goal then\n" +
-                " 8              return v\n" +
-                " 9          for all edges from v to w in G.adjacentEdges(v) do\n" +
-                "10              if w is not labeled as explored then\n" +
-                "11                  label w as explored\n" +
-                "12                  Q.enqueue(w)" +
-                "</p>"
+        return  " 1  procedure BFS(G, root) is<br>" +
+                " 2      let Q be a queue<br>" +
+                " 3      label root as explored<br>" +
+                " 4      Q.enqueue(root)<br>" +
+                " 5      while Q is not empty do<br>" +
+                " 6          v := Q.dequeue()<br>" +
+                " 7          if v is the goal then<br>" +
+                " 8              return v<br>" +
+                " 9          for all edges from v to w in G.adjacentEdges(v) do<br>" +
+                "10              if w is not labeled as explored then<br>" +
+                "11                  label w as explored<br>" +
+                "12                  Q.enqueue(w)"
     }
 
     override fun description(): String {
-        return "<p>" +
-                "Input: A graph G and a starting vertex root of G\n" +
-                "Output: Goal state. The parent links trace the shortest path back to root\n" +
+        return  "<b>Input</b>: A graph G and a starting vertex root of G<br>" +
+                "<b>Output</b>: Goal state. The parent links trace the shortest path back to root<br>" +
                 "Breadth-first search (BFS) is an algorithm for searching a tree data structure for a node that satisfies a given property. " +
                 "It starts at the tree root and explores all nodes at the present depth prior to moving on to the nodes at the next depth level. " +
-                "Extra memory, usually a queue, is needed to keep track of the child nodes that were encountered but not yet explored." +
-                "</p>"
+                "Extra memory, usually a queue, is needed to keep track of the child nodes that were encountered but not yet explored."
     }
 }
